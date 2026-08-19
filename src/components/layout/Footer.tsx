@@ -77,11 +77,13 @@ export function Footer() {
             <div className="space-y-2 text-sm text-slate-400 pt-2">
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span>Gulshan-2, Dhaka-1212, Bangladesh</span>
+                <span>New Eskaton, Dhaka, Bangladesh</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span>+880 1712-345678 (WhatsApp Support)</span>
+                <a href="tel:+8801318043562" className="hover:text-white transition">
+                  +880 1318-043562 (WhatsApp Support)
+                </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
@@ -147,9 +149,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-white transition">
-                  Admin Login
-                </Link>
+                <a href="https://wa.me/8801318043562" target="_blank" rel="noopener noreferrer" className="hover:text-white text-emerald-400 transition">
+                  WhatsApp Helpline
+                </a>
               </li>
             </ul>
           </div>

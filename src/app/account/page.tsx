@@ -33,11 +33,11 @@ export default async function AccountPage() {
       <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-xl font-black">
-            AH
+            AD
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-900">Rahim Ahmed</h1>
-            <p className="text-xs text-slate-500 mt-0.5">customer@atmodeskbd.com · +880 1712-345678</p>
+            <h1 className="text-2xl font-extrabold text-slate-900">Atmodesk Member</h1>
+            <p className="text-xs text-slate-500 mt-0.5">+880 1318-043562 · New Eskaton, Dhaka</p>
             <span className="inline-block mt-2 px-2.5 py-0.5 bg-emerald-50 text-emerald-700 font-bold text-[10px] rounded-full uppercase tracking-wider">
               Verified Customer
             </span>
@@ -46,10 +46,10 @@ export default async function AccountPage() {
 
         <div className="flex gap-2 w-full sm:w-auto">
           <Link
-            href="/admin"
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5"
+            href="/track-order"
+            className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-xs"
           >
-            <Shield className="w-3.5 h-3.5" /> Admin Portal
+            <Package className="w-3.5 h-3.5" /> Track Orders
           </Link>
           <Link
             href="/wishlist"

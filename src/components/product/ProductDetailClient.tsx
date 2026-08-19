@@ -304,14 +304,14 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
 
           {/* WhatsApp Direct Order Button */}
           <a
-            href={`https://wa.me/8801712345678?text=${encodeURIComponent(
+            href={`https://wa.me/8801318043562?text=${encodeURIComponent(
               `Hello ATMODESK, I want to order "${product.name}" (SKU: ${product.sku}) priced at ৳${currentPrice}. Please confirm delivery.`
             )}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-xs"
           >
-            <span>💬</span> Order Directly via WhatsApp (+880 1712-345678)
+            <span>💬</span> Order Directly via WhatsApp (+880 1318-043562)
           </a>
         </div>
 
