@@ -13,39 +13,57 @@ import {
   Clock,
 } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function AdminDashboardPage() {
-  // Aggregate real database stats
-  const [
-    totalProducts,
-    totalOrders,
-    orders,
-    lowStockProducts,
-    totalCustomers,
-    categoriesCount,
-  ] = await Promise.all([
-    prisma.product.count({ where: { isActive: true } }),
-    prisma.order.count(),
-    prisma.order.findMany({
-      take: 8,
-      orderBy: { createdAt: 'desc' },
-      include: { items: true, address: true },
-    }),
-    prisma.product.findMany({
-      where: { stock: { lte: 10 }, isActive: true },
-      take: 5,
-    }),
-    prisma.user.count({ where: { role: 'CUSTOMER' } }),
-    prisma.category.count(),
-  ])
+  let totalProducts = 0
+  let totalOrders = 0
+  let orders: any[] = []
+  let lowStockProducts: any[] = []
+  let totalCustomers = 0
+  let categoriesCount = 0
+  let totalRevenue = 0
+  let allOrders: any[] = []
 
-  // Total Revenue Calculation
-  const allOrders = await prisma.order.findMany({
-    select: { total: true, status: true, createdAt: true },
-  })
+  try {
+    const [
+      tp,
+      to,
+      ord,
+      low,
+      cust,
+      cats,
+    ] = await Promise.all([
+      prisma.product.count({ where: { isActive: true } }),
+      prisma.order.count(),
+      prisma.order.findMany({
+        take: 8,
+        orderBy: { createdAt: 'desc' },
+        include: { items: true, address: true },
+      }),
+      prisma.product.findMany({
+        where: { stock: { lte: 10 }, isActive: true },
+        take: 5,
+      }),
+      prisma.user.count({ where: { role: 'CUSTOMER' } }),
+      prisma.category.count(),
+    ])
 
-  const totalRevenue = allOrders.reduce((sum, o) => sum + (o.status !== 'CANCELLED' ? o.total : 0), 0)
+    totalProducts = tp
+    totalOrders = to
+    orders = ord
+    lowStockProducts = low
+    totalCustomers = cust
+    categoriesCount = cats
+
+    allOrders = await prisma.order.findMany({
+      select: { total: true, status: true, createdAt: true },
+    })
+    totalRevenue = allOrders.reduce((sum, o) => sum + (o.status !== 'CANCELLED' ? o.total : 0), 0)
+  } catch (err) {
+    console.error('Admin Dashboard query error:', err)
+  }
 
   // Orders status count
   const pendingCount = allOrders.filter((o) => o.status === 'PENDING').length

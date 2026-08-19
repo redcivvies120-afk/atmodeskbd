@@ -60,20 +60,30 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   if (sort === 'rating') orderBy = { rating: 'desc' }
   if (sort === 'popular') orderBy = { soldCount: 'desc' }
 
-  // Fetch products and categories
-  const [products, totalCount, categories] = await Promise.all([
-    prisma.product.findMany({
-      where,
-      orderBy,
-      include: { images: true, category: true },
-      skip: (currentPage - 1) * pageSize,
-      take: pageSize,
-    }),
-    prisma.product.count({ where }),
-    prisma.category.findMany({ where: { isActive: true } }),
-  ])
+  let products: any[] = []
+  let totalCount = 0
+  let categories: any[] = []
 
-  const totalPages = Math.ceil(totalCount / pageSize)
+  try {
+    const [p, count, cats] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        orderBy,
+        include: { images: true, category: true },
+        skip: (currentPage - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.product.count({ where }),
+      prisma.category.findMany({ where: { isActive: true } }),
+    ])
+    products = p
+    totalCount = count
+    categories = cats
+  } catch (err) {
+    console.error('Products page query error:', err)
+  }
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

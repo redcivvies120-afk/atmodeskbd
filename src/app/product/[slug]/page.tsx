@@ -38,31 +38,39 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: {
-      images: true,
-      category: true,
-      brand: true,
-      variants: true,
-      specs: true,
-    },
-  })
+  let product: any = null
+  let relatedProducts: any[] = []
+
+  try {
+    product = await prisma.product.findUnique({
+      where: { slug },
+      include: {
+        images: true,
+        category: true,
+        brand: true,
+        variants: true,
+        specs: true,
+      },
+    })
+
+    if (product && product.isActive) {
+      relatedProducts = await prisma.product.findMany({
+        where: {
+          categoryId: product.categoryId,
+          id: { not: product.id },
+          isActive: true,
+        },
+        include: { images: true, category: true },
+        take: 4,
+      })
+    }
+  } catch (err) {
+    console.error('Product page lookup error:', err)
+  }
 
   if (!product || !product.isActive) {
     notFound()
   }
-
-  // Fetch related products in the same category
-  const relatedProducts = await prisma.product.findMany({
-    where: {
-      categoryId: product.categoryId,
-      id: { not: product.id },
-      isActive: true,
-    },
-    include: { images: true, category: true },
-    take: 4,
-  })
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">

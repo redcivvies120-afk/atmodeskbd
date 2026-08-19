@@ -22,9 +22,20 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function HomePage() {
-  // Fetch real database records
-  const [categories, featuredProducts, bestSellers, newArrivals, discountProducts] =
-    await Promise.all([
+  let categories: any[] = [
+    { id: '1', name: 'Smart Clocks', slug: 'smart-clocks' },
+    { id: '2', name: 'Weather Stations', slug: 'weather-stations' },
+    { id: '3', name: 'Audio & Earbuds', slug: 'audio' },
+    { id: '4', name: 'Desk Tech & Hubs', slug: 'desk-tech' },
+    { id: '5', name: 'Ambient Lights', slug: 'ambient-lights' },
+  ]
+  let featuredProducts: any[] = []
+  let bestSellers: any[] = []
+  let newArrivals: any[] = []
+  let discountProducts: any[] = []
+
+  try {
+    const [c, f, b, n, d] = await Promise.all([
       prisma.category.findMany({
         where: { isActive: true },
         take: 6,
@@ -52,6 +63,15 @@ export default async function HomePage() {
         orderBy: { discount: 'desc' },
       }),
     ])
+
+    if (c.length > 0) categories = c
+    featuredProducts = f
+    bestSellers = b
+    newArrivals = n
+    discountProducts = d
+  } catch (err) {
+    console.error('Prisma query fallback:', err)
+  }
 
   return (
     <div className="space-y-16 pb-16">
