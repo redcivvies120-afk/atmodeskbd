@@ -158,24 +158,24 @@ export function Footer() {
 
           {/* Payment & Courier Partners */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">We Accept</h4>
+            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Payment Methods</h4>
             <div className="grid grid-cols-3 gap-2 mb-6">
-              <div className="bg-white/10 hover:bg-white/15 p-2 rounded-lg text-center text-xs font-semibold text-pink-400 transition">
-                bKash
+              <div className="bg-[#E2136E] text-white p-2 rounded-xl text-center text-xs font-black tracking-wider shadow-xs flex items-center justify-center gap-1">
+                <span>bKash</span>
               </div>
-              <div className="bg-white/10 hover:bg-white/15 p-2 rounded-lg text-center text-xs font-semibold text-orange-400 transition">
-                Nagad
+              <div className="bg-[#F7941D] text-white p-2 rounded-xl text-center text-xs font-black tracking-wider shadow-xs flex items-center justify-center gap-1">
+                <span>নগদ / Nagad</span>
               </div>
-              <div className="bg-white/10 hover:bg-white/15 p-2 rounded-lg text-center text-xs font-semibold text-purple-400 transition">
-                Rocket
+              <div className="bg-[#8C3494] text-white p-2 rounded-xl text-center text-xs font-black tracking-wider shadow-xs flex items-center justify-center gap-1">
+                <span>Rocket</span>
               </div>
-              <div className="bg-white/10 hover:bg-white/15 p-2 rounded-lg text-center text-xs font-semibold text-blue-400 transition">
+              <div className="bg-slate-800 text-sky-400 p-2 rounded-xl text-center text-xs font-bold border border-slate-700">
                 Visa
               </div>
-              <div className="bg-white/10 hover:bg-white/15 p-2 rounded-lg text-center text-xs font-semibold text-red-400 transition">
+              <div className="bg-slate-800 text-rose-400 p-2 rounded-xl text-center text-xs font-bold border border-slate-700">
                 Mastercard
               </div>
-              <div className="bg-white/10 hover:bg-white/15 p-2 rounded-lg text-center text-xs font-semibold text-emerald-400 transition">
+              <div className="bg-emerald-900/60 text-emerald-400 p-2 rounded-xl text-center text-xs font-bold border border-emerald-800">
                 Cash on Del.
               </div>
             </div>
@@ -193,9 +193,15 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} ATMODESK.bd · All rights reserved. Registered in Bangladesh.</p>
           <div className="flex items-center gap-6">
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span>Return Policy</span>
+            <Link href="/terms" className="hover:text-slate-300 transition underline underline-offset-2">
+              Terms &amp; Conditions (TOC)
+            </Link>
+            <Link href="/privacy" className="hover:text-slate-300 transition">
+              Privacy Policy
+            </Link>
+            <Link href="/returns" className="hover:text-slate-300 transition">
+              7-Day Return Policy
+            </Link>
           </div>
         </div>
       </div>

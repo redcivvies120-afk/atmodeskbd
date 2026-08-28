@@ -362,19 +362,22 @@ export default function CheckoutPage() {
                 onClick={() => setPaymentMethod('BKASH')}
                 className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-center justify-between ${
                   paymentMethod === 'BKASH'
-                    ? 'border-pink-600 bg-pink-50/40 shadow-xs'
+                    ? 'border-[#E2136E] bg-pink-50/50 shadow-xs'
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-black text-xs">
+                  <div className="px-2.5 py-1.5 rounded-xl bg-[#E2136E] text-white flex items-center justify-center font-black text-xs shadow-xs">
                     bKash
                   </div>
                   <div>
-                    <strong className="text-sm text-slate-900 block">bKash Online Payment</strong>
+                    <strong className="text-sm text-slate-900 block">bKash Mobile Banking</strong>
                     <span className="text-xs text-slate-500">Pay securely via bKash Personal or Merchant wallet</span>
                   </div>
                 </div>
+                <span className="text-xs font-bold text-[#E2136E] bg-pink-100 px-2 py-0.5 rounded-full">
+                  Instant
+                </span>
               </label>
 
               {/* Nagad */}
@@ -382,19 +385,22 @@ export default function CheckoutPage() {
                 onClick={() => setPaymentMethod('NAGAD')}
                 className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-center justify-between ${
                   paymentMethod === 'NAGAD'
-                    ? 'border-orange-600 bg-orange-50/40 shadow-xs'
+                    ? 'border-[#F7941D] bg-orange-50/50 shadow-xs'
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-black text-xs">
-                    Nagad
+                  <div className="px-2.5 py-1.5 rounded-xl bg-[#F7941D] text-white flex items-center justify-center font-black text-xs shadow-xs">
+                    নগদ / Nagad
                   </div>
                   <div>
-                    <strong className="text-sm text-slate-900 block">Nagad Payment</strong>
+                    <strong className="text-sm text-slate-900 block">Nagad Digital Payment</strong>
                     <span className="text-xs text-slate-500">Pay directly from your Nagad digital wallet</span>
                   </div>
                 </div>
+                <span className="text-xs font-bold text-[#F7941D] bg-orange-100 px-2 py-0.5 rounded-full">
+                  Instant
+                </span>
               </label>
 
               {/* Card */}
