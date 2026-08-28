@@ -62,6 +62,19 @@ export function isValidBDPhone(phone: string): boolean {
   return /^(\+?880|0)?1[3-9]\d{8}$/.test(cleaned)
 }
 
+// Normalize Bangladesh phone to standard 11-digit format (e.g. 01318043562)
+export function normalizeBDPhone(phone: string): string {
+  if (!phone) return ''
+  const digits = phone.replace(/\D/g, '')
+  if (digits.startsWith('880') && digits.length >= 13) {
+    return '0' + digits.slice(3)
+  }
+  if (digits.length === 10 && digits.startsWith('1')) {
+    return '0' + digits
+  }
+  return digits
+}
+
 // Format date
 export function formatDate(date: Date | string): string {
   return new Intl.DateTimeFormat('en-BD', {

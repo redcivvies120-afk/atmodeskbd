@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
+import { normalizeBDPhone } from '@/lib/utils'
 
 export async function POST(req: Request) {
   try {
@@ -16,20 +17,23 @@ export async function POST(req: Request) {
     }
 
     const cleanInput = identifier.trim()
+    const normalizedPhone = normalizeBDPhone(cleanInput)
 
-    // Find user by email or phone
+    // Find user by email or phone (check both raw input and normalized phone)
     const user = await prisma.user.findFirst({
       where: {
         OR: [
           { email: cleanInput.toLowerCase() },
           { phone: cleanInput },
+          { phone: normalizedPhone },
+          { email: `${normalizedPhone}@customer.atmodeskbd.com` },
         ],
       },
     })
 
     if (!user || !user.password) {
       return NextResponse.json(
-        { error: 'Invalid phone/email or password' },
+        { error: 'No active customer account found with these credentials. Please check your phone number/password or register a new account.' },
         { status: 401 }
       )
     }
@@ -37,7 +41,7 @@ export async function POST(req: Request) {
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
       return NextResponse.json(
-        { error: 'Invalid phone/email or password' },
+        { error: 'Incorrect password. Please try again.' },
         { status: 401 }
       )
     }

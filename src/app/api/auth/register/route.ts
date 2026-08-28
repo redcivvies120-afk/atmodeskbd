@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
+import { normalizeBDPhone } from '@/lib/utils'
 
 export async function POST(req: Request) {
   try {
@@ -22,10 +23,10 @@ export async function POST(req: Request) {
       )
     }
 
-    const cleanPhone = phone.trim().replace(/[^0-9+]/g, '')
+    const cleanPhone = normalizeBDPhone(phone)
     const userEmail = email && email.trim().length > 0 
       ? email.trim().toLowerCase() 
-      : `${cleanPhone.replace('+', '')}@customer.atmodeskbd.com`
+      : `${cleanPhone}@customer.atmodeskbd.com`
 
     // Check if user already exists by phone or email
     const existingUser = await prisma.user.findFirst({
