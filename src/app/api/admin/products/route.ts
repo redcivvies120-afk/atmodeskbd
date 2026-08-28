@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { slugify } from '@/lib/utils'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export async function POST(req: Request) {
   try {
+    await ensureDatabaseTables()
     const body = await req.json()
     const {
       name,

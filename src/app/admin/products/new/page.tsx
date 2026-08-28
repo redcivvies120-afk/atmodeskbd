@@ -3,14 +3,22 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { AdminProductForm } from './AdminProductForm'
 import { ArrowLeft } from 'lucide-react'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function NewProductPage() {
-  const categories = await prisma.category.findMany({
-    where: { isActive: true },
-    orderBy: { name: 'asc' },
-  })
+  let categories: any[] = []
+  try {
+    await ensureDatabaseTables()
+    categories = await prisma.category.findMany({
+      where: { isActive: true },
+      orderBy: { name: 'asc' },
+    })
+  } catch (err) {
+    console.error('NewProductPage error:', err)
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">

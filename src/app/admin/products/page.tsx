@@ -3,15 +3,22 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { ProductListClient } from './ProductListClient'
 import { Plus } from 'lucide-react'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function AdminProductsPage() {
-  const products = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: { category: true, images: true },
-  })
+  let products: any[] = []
+  try {
+    await ensureDatabaseTables()
+    products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { category: true, images: true },
+    })
+  } catch (err) {
+    console.error('AdminProductsPage error:', err)
+  }
 
   return (
     <div className="space-y-6">

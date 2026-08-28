@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export async function POST(req: Request) {
   try {
+    await ensureDatabaseTables()
     const body = await req.json()
     const { code, type, value, minOrderAmount } = body
     if (!code || !value) return NextResponse.json({ error: 'Code and Value are required' }, { status: 400 })

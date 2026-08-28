@@ -4,19 +4,30 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import { EditProductForm } from './EditProductForm'
 import { ArrowLeft } from 'lucide-react'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const [product, categories] = await Promise.all([
-    prisma.product.findUnique({
-      where: { id },
-      include: { images: true, category: true },
-    }),
-    prisma.category.findMany({ where: { isActive: true }, orderBy: { name: 'asc' } }),
-  ])
+  let product: any = null
+  let categories: any[] = []
+
+  try {
+    await ensureDatabaseTables()
+    const [p, cats] = await Promise.all([
+      prisma.product.findUnique({
+        where: { id },
+        include: { images: true, category: true },
+      }),
+      prisma.category.findMany({ where: { isActive: true }, orderBy: { name: 'asc' } }),
+    ])
+    product = p
+    categories = cats
+  } catch (err) {
+    console.error('EditProductPage error:', err)
+  }
 
   if (!product) notFound()
 

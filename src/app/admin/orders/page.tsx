@@ -1,8 +1,10 @@
 import React from 'react'
-import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { OrderRowClient } from './OrderRowClient'
+import Link from 'next/link'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 interface OrdersPageProps {
@@ -12,19 +14,25 @@ interface OrdersPageProps {
 export default async function AdminOrdersPage({ searchParams }: OrdersPageProps) {
   const { status } = await searchParams
 
-  const where: any = {}
-  if (status && status !== 'ALL') {
-    where.status = status
-  }
+  let orders: any[] = []
+  try {
+    await ensureDatabaseTables()
+    const where: any = {}
+    if (status && status !== 'ALL') {
+      where.status = status
+    }
 
-  const orders = await prisma.order.findMany({
-    where,
-    orderBy: { createdAt: 'desc' },
-    include: {
-      items: true,
-      address: true,
-    },
-  })
+    orders = await prisma.order.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        items: true,
+        address: true,
+      },
+    })
+  } catch (err) {
+    console.error('AdminOrdersPage error:', err)
+  }
 
   const statusFilters = [
     { label: 'All Orders', val: 'ALL' },
@@ -85,7 +93,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
               {orders.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-10 text-slate-400">
-                    No orders match the selected filter.
+                    No orders yet. When customers place orders they will appear here.
                   </td>
                 </tr>
               ) : (

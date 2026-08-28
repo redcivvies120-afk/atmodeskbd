@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await ensureDatabaseTables()
     const { id } = await params
     const body = await req.json()
     const { status, paymentStatus, trackingNumber } = body

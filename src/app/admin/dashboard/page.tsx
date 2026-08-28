@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Clock,
 } from 'lucide-react'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -27,6 +28,7 @@ export default async function AdminDashboardPage() {
   let allOrders: any[] = []
 
   try {
+    await ensureDatabaseTables()
     const [
       tp,
       to,

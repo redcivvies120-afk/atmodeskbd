@@ -1,13 +1,21 @@
 import React from 'react'
 import { prisma } from '@/lib/prisma'
 import { CouponManagerClient } from './CouponManagerClient'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function AdminCouponsPage() {
-  const coupons = await prisma.coupon.findMany({
-    orderBy: { createdAt: 'desc' },
-  })
+  let coupons: any[] = []
+  try {
+    await ensureDatabaseTables()
+    coupons = await prisma.coupon.findMany({
+      orderBy: { createdAt: 'desc' },
+    })
+  } catch (err) {
+    console.error('AdminCouponsPage error:', err)
+  }
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
