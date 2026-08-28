@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { cookies } from 'next/headers'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
+    await ensureDatabaseTables()
     const cookieStore = await cookies()
     const sessionCookie = cookieStore.get('atmodesk_user')
 

@@ -3,9 +3,11 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 import { normalizeBDPhone } from '@/lib/utils'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export async function POST(req: Request) {
   try {
+    await ensureDatabaseTables()
     const body = await req.json()
     const { identifier, password } = body
 

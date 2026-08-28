@@ -1,6 +1,7 @@
 import React from 'react'
 import { prisma } from '@/lib/prisma'
 import { CustomersClient } from './CustomersClient'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -8,6 +9,7 @@ export const revalidate = 0
 export default async function AdminCustomersPage() {
   let customers: any[] = []
   try {
+    await ensureDatabaseTables()
     customers = await prisma.user.findMany({
       where: { role: 'CUSTOMER' },
       orderBy: { createdAt: 'desc' },
