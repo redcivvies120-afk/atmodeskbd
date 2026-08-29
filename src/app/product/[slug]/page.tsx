@@ -72,8 +72,34 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound()
   }
 
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description || product.name,
+    image: product.images?.map((img: any) => img.url) || [],
+    sku: product.sku,
+    offers: {
+      '@type': 'Offer',
+      url: `https://atmodeskbd-eo1e.vercel.app/product/${product.slug}`,
+      priceCurrency: 'BDT',
+      price: product.price,
+      availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: 'ATMODESK.bd',
+      },
+    },
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+
       {/* Product Detail Component */}
       <ProductDetailClient product={product} />
 

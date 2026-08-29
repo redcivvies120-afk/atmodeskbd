@@ -45,8 +45,54 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'OnlineStore',
+        '@id': 'https://atmodeskbd-eo1e.vercel.app/#store',
+        name: 'ATMODESK.bd',
+        alternateName: 'Atmodeskbd',
+        url: 'https://atmodeskbd-eo1e.vercel.app',
+        logo: 'https://atmodeskbd-eo1e.vercel.app/logo.jpg',
+        description: 'Premium smart clocks, weather stations, and ambient desk accessories in Bangladesh.',
+        telephone: '+8801318043562',
+        priceRange: '৳৳',
+        currenciesAccepted: 'BDT',
+        paymentAccepted: 'Cash, bKash, Nagad, Rocket',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'New Eskaton',
+          addressLocality: 'Dhaka',
+          addressRegion: 'Dhaka',
+          addressCountry: 'BD',
+        },
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://atmodeskbd-eo1e.vercel.app/#website',
+        url: 'https://atmodeskbd-eo1e.vercel.app',
+        name: 'ATMODESK.bd',
+        publisher: {
+          '@id': 'https://atmodeskbd-eo1e.vercel.app/#store',
+        },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: 'https://atmodeskbd-eo1e.vercel.app/search?q={search_term_string}',
+          'query-input': 'required name=search_term_string',
+        },
+      },
+    ],
+  }
+
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900 font-sans selection:bg-sky-500 selection:text-white">
         <Providers>
           <Navbar />
