@@ -30,6 +30,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'ATMODESK Bangladesh' }],
   metadataBase: new URL('https://atmodeskbd-eo1e.vercel.app'),
+  verification: {
+    google: '76Msg-lcct6zmLIiUm1S21WLUuqHr-xDLdpnrg9f1tg',
+  },
   openGraph: {
     title: 'ATMODESK.bd — Smart Clocks & Ambient Desk Tech',
     description: 'Transform your desk with mini smart weather clocks and ambient gadgets. Fast delivery in Bangladesh.',
@@ -88,6 +91,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        <meta name="google-site-verification" content="76Msg-lcct6zmLIiUm1S21WLUuqHr-xDLdpnrg9f1tg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
