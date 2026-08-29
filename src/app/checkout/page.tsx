@@ -9,13 +9,10 @@ import { useToast } from '@/components/shared/Providers'
 import {
   ShieldCheck,
   Truck,
-  ArrowRight,
-  CheckCircle2,
   Lock,
   ShoppingBag,
-  CreditCard,
-  Smartphone,
   Banknote,
+  CheckCircle2,
 } from 'lucide-react'
 
 export default function CheckoutPage() {
@@ -33,7 +30,7 @@ export default function CheckoutPage() {
   const [district, setDistrict] = useState('Dhaka')
   const [postalCode, setPostalCode] = useState('')
   const [shippingLocation, setShippingLocation] = useState<'inside_dhaka' | 'outside_dhaka'>('inside_dhaka')
-  const [paymentMethod, setPaymentMethod] = useState<'COD' | 'BKASH' | 'NAGAD' | 'CARD'>('COD')
+  const [paymentMethod] = useState<'COD'>('COD')
   const [couponCode, setCouponCode] = useState('')
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -91,7 +88,7 @@ export default function CheckoutPage() {
           district: district || city,
           postalCode,
           shippingLocation,
-          paymentMethod,
+          paymentMethod: 'COD',
           couponCode: couponCode.trim() || undefined,
           notes,
           items: items.map((i) => ({
@@ -324,7 +321,7 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Step 3: Payment Method */}
+          {/* Step 3: Payment Method - Cash on Delivery Only */}
           <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
@@ -333,95 +330,29 @@ export default function CheckoutPage() {
               Payment Method
             </h2>
 
-            <div className="space-y-3">
-              {/* Cash on Delivery */}
-              <label
-                onClick={() => setPaymentMethod('COD')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-center justify-between ${
-                  paymentMethod === 'COD'
-                    ? 'border-emerald-600 bg-emerald-50/40 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}
-              >
+            <div className="p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-50/40 shadow-xs space-y-2">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
-                    <Banknote className="w-5 h-5" />
+                  <div className="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                    <Banknote className="w-6 h-6" />
                   </div>
                   <div>
-                    <strong className="text-sm text-slate-900 block">Cash on Delivery (Recommended)</strong>
-                    <span className="text-xs text-slate-500">Pay with cash when your parcel is delivered at your doorstep</span>
+                    <strong className="text-base text-slate-900 block flex items-center gap-2">
+                      Cash on Delivery (COD)
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 inline" />
+                    </strong>
+                    <span className="text-xs text-slate-600">
+                      Pay with cash when your parcel is delivered at your doorstep.
+                    </span>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
-                  Most Popular
+                <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full whitespace-nowrap">
+                  100% Safe
                 </span>
-              </label>
-
-              {/* bKash */}
-              <label
-                onClick={() => setPaymentMethod('BKASH')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-center justify-between ${
-                  paymentMethod === 'BKASH'
-                    ? 'border-[#E2136E] bg-pink-50/50 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="px-2.5 py-1.5 rounded-xl bg-[#E2136E] text-white flex items-center justify-center font-black text-xs shadow-xs">
-                    bKash
-                  </div>
-                  <div>
-                    <strong className="text-sm text-slate-900 block">bKash Mobile Banking</strong>
-                    <span className="text-xs text-slate-500">Pay securely via bKash Personal or Merchant wallet</span>
-                  </div>
-                </div>
-                <span className="text-xs font-bold text-[#E2136E] bg-pink-100 px-2 py-0.5 rounded-full">
-                  Instant
-                </span>
-              </label>
-
-              {/* Nagad */}
-              <label
-                onClick={() => setPaymentMethod('NAGAD')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-center justify-between ${
-                  paymentMethod === 'NAGAD'
-                    ? 'border-[#F7941D] bg-orange-50/50 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="px-2.5 py-1.5 rounded-xl bg-[#F7941D] text-white flex items-center justify-center font-black text-xs shadow-xs">
-                    নগদ / Nagad
-                  </div>
-                  <div>
-                    <strong className="text-sm text-slate-900 block">Nagad Digital Payment</strong>
-                    <span className="text-xs text-slate-500">Pay directly from your Nagad digital wallet</span>
-                  </div>
-                </div>
-                <span className="text-xs font-bold text-[#F7941D] bg-orange-100 px-2 py-0.5 rounded-full">
-                  Instant
-                </span>
-              </label>
-
-              {/* Card */}
-              <label
-                onClick={() => setPaymentMethod('CARD')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-center justify-between ${
-                  paymentMethod === 'CARD'
-                    ? 'border-blue-600 bg-blue-50/40 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
-                    <CreditCard className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <strong className="text-sm text-slate-900 block">Credit / Debit Card</strong>
-                    <span className="text-xs text-slate-500">Visa, Mastercard, DBBL Nexus card supported</span>
-                  </div>
-                </div>
-              </label>
+              </div>
+              <p className="text-[11px] text-slate-500 pl-14 pt-1">
+                ✓ No advance payment required · Inspect your parcel upon delivery
+              </p>
             </div>
           </div>
 
@@ -538,11 +469,14 @@ export default function CheckoutPage() {
           </button>
 
           <div className="pt-2 text-center text-xs text-slate-400 space-y-1">
+            <p className="flex items-center justify-center gap-1 font-semibold text-slate-600">
+              <Banknote className="w-4 h-4 text-emerald-600" />
+              Cash on Delivery · Pay when you receive your order
+            </p>
             <p className="flex items-center justify-center gap-1">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              Verified Authentic Products with Guarantee
+              Verified Authentic Products with 7-Day Guarantee
             </p>
-            <p>You can inspect the product package upon courier delivery.</p>
           </div>
         </div>
       </form>

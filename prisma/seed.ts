@@ -38,8 +38,26 @@ async function main() {
   })
   console.log('✅ Customer user:', customer.email)
 
+  // ── Cleanup previous relational records in correct dependency order ──
+  await prisma.notification.deleteMany().catch(() => {})
+  await prisma.payment.deleteMany().catch(() => {})
+  await prisma.orderItem.deleteMany().catch(() => {})
+  await prisma.order.deleteMany().catch(() => {})
+  await prisma.review.deleteMany().catch(() => {})
+  await prisma.cartItem.deleteMany().catch(() => {})
+  await prisma.cart.deleteMany().catch(() => {})
+  await prisma.wishlistItem.deleteMany().catch(() => {})
+  await prisma.wishlist.deleteMany().catch(() => {})
+  await prisma.productSpec.deleteMany().catch(() => {})
+  await prisma.productImage.deleteMany().catch(() => {})
+  await prisma.productVariant.deleteMany().catch(() => {})
+  await prisma.product.deleteMany().catch(() => {})
+  await prisma.category.deleteMany().catch(() => {})
+  await prisma.brand.deleteMany().catch(() => {})
+  await prisma.coupon.deleteMany().catch(() => {})
+  await prisma.shippingMethod.deleteMany().catch(() => {})
+
   // ── Shipping methods ─────────────────────────────────────────
-  await prisma.shippingMethod.deleteMany()
   await Promise.all([
     prisma.shippingMethod.create({
       data: { name: 'Inside Dhaka', description: 'Delivery within Dhaka city (24-48h)', price: 60, freeAbove: 2000, estimatedDays: '1-2 days', sortOrder: 1 },
@@ -54,7 +72,6 @@ async function main() {
   console.log('✅ Shipping methods seeded')
 
   // ── Categories ───────────────────────────────────────────────
-  await prisma.category.deleteMany()
   const catClocks = await prisma.category.create({
     data: { name: 'Smart Clocks', slug: 'smart-clocks', description: 'WiFi LED matrix clocks & retro displays', sortOrder: 1 },
   })
@@ -77,7 +94,6 @@ async function main() {
   console.log('✅ Categories seeded')
 
   // ── Brands ───────────────────────────────────────────────────
-  await prisma.brand.deleteMany()
   const bAtmo = await prisma.brand.create({ data: { name: 'AtmoDesk', slug: 'atmodesk' } })
   const bPixel = await prisma.brand.create({ data: { name: 'PixelTech', slug: 'pixeltech' } })
   const bAnker = await prisma.brand.create({ data: { name: 'Anker', slug: 'anker' } })
@@ -86,10 +102,6 @@ async function main() {
   console.log('✅ Brands seeded')
 
   // ── Products ─────────────────────────────────────────────────
-  await prisma.productSpec.deleteMany()
-  await prisma.productImage.deleteMany()
-  await prisma.productVariant.deleteMany()
-  await prisma.product.deleteMany()
 
   const productsList = [
     {

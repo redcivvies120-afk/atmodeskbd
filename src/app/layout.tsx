@@ -59,7 +59,7 @@ export default function RootLayout({
         telephone: '+8801318043562',
         priceRange: '৳৳',
         currenciesAccepted: 'BDT',
-        paymentAccepted: 'Cash, bKash, Nagad, Rocket',
+        paymentAccepted: 'Cash on Delivery',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'New Eskaton',

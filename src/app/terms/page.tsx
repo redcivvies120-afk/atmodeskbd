@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { ShieldCheck, FileText, ArrowRight, Truck, RotateCcw, CreditCard, Lock } from 'lucide-react'
+import { ShieldCheck, FileText, ArrowRight, Truck, RotateCcw, Banknote, Lock } from 'lucide-react'
 
 export const metadata = {
   title: 'Terms & Conditions — ATMODESK Bangladesh',
@@ -12,7 +12,7 @@ export default function TermsPage() {
     { id: 'introduction', title: '1. Introduction & Acceptance' },
     { id: 'ordering', title: '2. Orders & Pricing' },
     { id: 'delivery', title: '3. Nationwide Delivery Policy' },
-    { id: 'payments', title: '4. Payment Methods (bKash / Nagad / COD)' },
+    { id: 'payments', title: '4. Payment Method (Cash on Delivery)' },
     { id: 'warranty', title: '5. 7-Day Replacement & Warranty' },
     { id: 'privacy', title: '6. Customer Privacy & Data Protection' },
     { id: 'contact', title: '7. Official Support & Contact' },
@@ -58,7 +58,7 @@ export default function TermsPage() {
         <section id="introduction" className="space-y-3 scroll-mt-24 border-b border-slate-100 pb-8">
           <h3 className="text-lg font-bold text-slate-900">1. Introduction &amp; Acceptance</h3>
           <p>
-            Welcome to <strong>ATMODESK.bd</strong>. By accessing our website (<code>atmodeskbd.vercel.app</code>) or placing an order with us via online checkout or WhatsApp, you agree to be bound by these terms. We specialize in authentic ambient desk electronics, WiFi smart clocks, and lifestyle desk gear in Bangladesh.
+            Welcome to <strong>ATMODESK.bd</strong>. By accessing our website or placing an order with us via online checkout or WhatsApp, you agree to be bound by these terms. We specialize in authentic ambient desk electronics, WiFi smart clocks, and lifestyle desk gear in Bangladesh.
           </p>
         </section>
 
@@ -67,7 +67,7 @@ export default function TermsPage() {
           <h3 className="text-lg font-bold text-slate-900">2. Orders &amp; Pricing</h3>
           <ul className="list-disc pl-5 space-y-1.5 text-xs text-slate-600">
             <li>All prices are stated in <strong>Bangladeshi Taka (৳ BDT)</strong> and are inclusive of standard applicable taxes.</li>
-            <li>We reserve the right to verify customer phone numbers via SMS or phone call before dispatching high-value orders.</li>
+            <li>We reserve the right to verify customer phone numbers via phone call or SMS before dispatching orders.</li>
             <li>Orders placed before 4:00 PM are processed on the same business day.</li>
           </ul>
         </section>
@@ -78,7 +78,7 @@ export default function TermsPage() {
             <Truck className="w-5 h-5 text-sky-600" />
             <h3 className="text-lg font-bold text-slate-900">3. Nationwide Delivery Policy</h3>
           </div>
-          <p>We partner with top Bangladeshi courier services (Steadfast, Pathao, RedX, Paperfly):</p>
+          <p>We partner with top Bangladeshi courier services (Steadfast, Pathao, RedX, Paperfly, Sundarban Courier):</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div className="p-4 bg-sky-50/60 border border-sky-100 rounded-2xl space-y-1">
               <strong className="text-slate-900 text-xs font-bold block">Inside Dhaka City</strong>
@@ -94,16 +94,15 @@ export default function TermsPage() {
         {/* 4. Payments */}
         <section id="payments" className="space-y-3 scroll-mt-24 border-b border-slate-100 pb-8">
           <div className="flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-emerald-600" />
-            <h3 className="text-lg font-bold text-slate-900">4. Payment Methods</h3>
+            <Banknote className="w-5 h-5 text-emerald-600" />
+            <h3 className="text-lg font-bold text-slate-900">4. Payment Method (Cash on Delivery)</h3>
           </div>
           <p>
-            We offer 100% secure payment gateways for Bangladesh:
+            To provide the safest and most convenient shopping experience in Bangladesh, we offer <strong>Cash on Delivery (COD)</strong> exclusively:
           </p>
           <ul className="list-disc pl-5 space-y-1 text-xs text-slate-600">
-            <li><strong>Cash on Delivery (COD):</strong> Check your parcel condition and pay cash directly to the delivery rider.</li>
-            <li><strong>bKash / Nagad / Rocket:</strong> Pay instantly through your mobile banking wallet.</li>
-            <li><strong>Credit / Debit Cards:</strong> Visa and Mastercard online payments.</li>
+            <li><strong>Cash on Delivery (COD):</strong> No advance payment required. Check your parcel condition and pay cash directly to the delivery courier rider at your doorstep.</li>
+            <li>All 64 districts in Bangladesh are eligible for Cash on Delivery.</li>
           </ul>
         </section>
 

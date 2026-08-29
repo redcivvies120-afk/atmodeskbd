@@ -337,7 +337,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
             <div>
               <strong className="text-slate-900 font-semibold block">Payment Security:</strong>
-              <span>Cash on Delivery, bKash, Nagad, Rocket, Visa/Mastercard supported.</span>
+              <span>100% Cash on Delivery — pay when you receive your order at your doorstep.</span>
             </div>
           </div>
         </div>

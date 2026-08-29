@@ -8,7 +8,7 @@ import {
   Mail,
   Phone,
   MapPin,
-  Clock,
+  Banknote,
 } from 'lucide-react'
 
 export function Footer() {
@@ -158,26 +158,15 @@ export function Footer() {
 
           {/* Payment & Courier Partners */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Payment Methods</h4>
-            <div className="grid grid-cols-3 gap-2 mb-6">
-              <div className="bg-[#E2136E] text-white p-2 rounded-xl text-center text-xs font-black tracking-wider shadow-xs flex items-center justify-center gap-1">
-                <span>bKash</span>
+            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Payment Method</h4>
+            <div className="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 mb-6 space-y-2">
+              <div className="flex items-center gap-2.5 text-emerald-400">
+                <Banknote className="w-5 h-5" />
+                <span className="text-xs font-bold uppercase tracking-wider text-white">Cash on Delivery</span>
               </div>
-              <div className="bg-[#F7941D] text-white p-2 rounded-xl text-center text-xs font-black tracking-wider shadow-xs flex items-center justify-center gap-1">
-                <span>নগদ / Nagad</span>
-              </div>
-              <div className="bg-[#8C3494] text-white p-2 rounded-xl text-center text-xs font-black tracking-wider shadow-xs flex items-center justify-center gap-1">
-                <span>Rocket</span>
-              </div>
-              <div className="bg-slate-800 text-sky-400 p-2 rounded-xl text-center text-xs font-bold border border-slate-700">
-                Visa
-              </div>
-              <div className="bg-slate-800 text-rose-400 p-2 rounded-xl text-center text-xs font-bold border border-slate-700">
-                Mastercard
-              </div>
-              <div className="bg-emerald-900/60 text-emerald-400 p-2 rounded-xl text-center text-xs font-bold border border-emerald-800">
-                Cash on Del.
-              </div>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Pay safely in cash when your order is delivered to your doorstep. Available nationwide.
+              </p>
             </div>
 
             <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-2 text-slate-400">Delivery Partners</h4>
