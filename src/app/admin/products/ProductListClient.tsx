@@ -14,19 +14,16 @@ export function ProductListClient({ initialProducts }: { initialProducts: any[] 
   const [search, setSearch] = useState('')
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to permanently delete "${name}"?`)) {
-      return
-    }
+    if (!confirm(`Remove "${name}" from your store?`)) return
 
     try {
-      const res = await fetch(`/api/admin/products/${id}`, {
-        method: 'DELETE',
-      })
-      if (!res.ok) throw new Error('Failed to delete product')
+      const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to delete product')
 
+      // Remove from local list immediately
       setProducts((prev) => prev.filter((p) => p.id !== id))
-      toast(`Deleted "${name}" successfully.`)
-      router.refresh()
+      toast(`"${name}" removed from store.`)
     } catch (err: any) {
       toast(err.message || 'Error deleting product', 'error')
     }

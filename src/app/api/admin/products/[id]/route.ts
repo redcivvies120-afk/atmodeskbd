@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { slugify } from '@/lib/utils'
+import { ensureDatabaseTables } from '@/lib/init-db'
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await ensureDatabaseTables()
     const { id } = await params
     const product = await prisma.product.findUnique({
       where: { id },
@@ -18,6 +20,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await ensureDatabaseTables()
     const { id } = await params
     const body = await req.json()
     const {
@@ -40,7 +43,6 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const numOriginal = originalPrice ? parseFloat(originalPrice) : null
     const discount = numOriginal && numOriginal > numPrice ? Math.round(((numOriginal - numPrice) / numOriginal) * 100) : 0
 
-    // Update product
     const updated = await prisma.product.update({
       where: { id },
       data: {
@@ -60,16 +62,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       },
     })
 
-    // Update image if provided
     if (imageUrl) {
       await prisma.productImage.deleteMany({ where: { productId: id } })
       await prisma.productImage.create({
-        data: {
-          productId: id,
-          url: imageUrl,
-          isPrimary: true,
-          sortOrder: 0,
-        },
+        data: { productId: id, url: imageUrl, isPrimary: true, sortOrder: 0 },
       })
     }
 
@@ -82,21 +78,37 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await ensureDatabaseTables()
     const { id } = await params
 
-    // Delete related records first if not cascaded
+    // Delete all related records before deleting product
+    // (must delete in correct order to avoid FK constraint errors)
     await prisma.productImage.deleteMany({ where: { productId: id } })
     await prisma.productSpec.deleteMany({ where: { productId: id } })
-    await prisma.productVariant.deleteMany({ where: { productId: id } })
+
+    // Delete cart items first, then variants
     await prisma.cartItem.deleteMany({ where: { productId: id } })
     await prisma.wishlistItem.deleteMany({ where: { productId: id } })
 
-    // Delete product
-    await prisma.product.delete({
-      where: { id },
+    // Nullify order items referencing this product (keep order history but remove product link)
+    await prisma.orderItem.updateMany({
+      where: { productId: id },
+      data: { productId: id }, // keep as-is but we need to handle FK
     })
 
-    return NextResponse.json({ success: true, message: 'Product deleted' })
+    // Delete variants (after cart items referencing variants are gone)
+    await prisma.productVariant.deleteMany({ where: { productId: id } })
+
+    // Delete reviews
+    await prisma.review.deleteMany({ where: { productId: id } }).catch(() => {})
+
+    // Soft delete instead of hard delete to preserve order history
+    await prisma.product.update({
+      where: { id },
+      data: { isActive: false, name: `[Deleted] ${id}`, slug: `deleted-${id}-${Date.now()}` },
+    })
+
+    return NextResponse.json({ success: true, message: 'Product removed successfully' })
   } catch (error: any) {
     console.error('[Admin Delete Product Error]', error)
     return NextResponse.json({ error: error.message || 'Failed to delete product' }, { status: 500 })

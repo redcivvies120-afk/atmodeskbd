@@ -13,6 +13,9 @@ export default async function AdminProductsPage() {
   try {
     await ensureDatabaseTables()
     products = await prisma.product.findMany({
+      where: {
+        NOT: { name: { startsWith: '[Deleted]' } },
+      },
       orderBy: { createdAt: 'desc' },
       include: { category: true, images: true },
     })
