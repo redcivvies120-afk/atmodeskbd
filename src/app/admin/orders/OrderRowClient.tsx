@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { formatBDT, formatDate, getOrderStatusColor, getOrderStatusLabel } from '@/lib/utils'
 import { useToast } from '@/components/shared/Providers'
+import { ChevronDown, ChevronUp, Phone, MapPin, Package, MessageCircle } from 'lucide-react'
 
 export function OrderRowClient({ order }: { order: any }) {
   const { toast } = useToast()
@@ -21,7 +22,7 @@ export function OrderRowClient({ order }: { order: any }) {
         body: JSON.stringify({ status: newStatus }),
       })
       if (!res.ok) throw new Error('Failed to update status')
-      toast(`Order ${order.orderNumber} updated to ${getOrderStatusLabel(newStatus)}`)
+      toast(`Order ${order.orderNumber} → ${getOrderStatusLabel(newStatus)}`)
     } catch (err: any) {
       toast(err.message || 'Error updating order', 'error')
     } finally {
@@ -46,39 +47,63 @@ export function OrderRowClient({ order }: { order: any }) {
     }
   }
 
+  const addr = order.address
+  const phone = addr?.phone || ''
+  const waPhone = phone.startsWith('0') ? '88' + phone : phone.replace('+', '')
+
+  // Build full address string
+  const fullAddress = [
+    addr?.line1,
+    addr?.line2,
+    addr?.area,
+    addr?.city,
+    addr?.district,
+    addr?.postalCode,
+  ].filter(Boolean).join(', ')
+
   return (
     <>
-      <tr className="hover:bg-slate-50/50 transition text-xs">
+      {/* Main Row */}
+      <tr
+        className={`hover:bg-slate-50/70 transition text-xs cursor-pointer ${showDetails ? 'bg-sky-50/40' : ''}`}
+        onClick={() => setShowDetails(!showDetails)}
+      >
         <td className="py-3.5 px-4">
           <span className="font-mono font-bold text-slate-900 block">{order.orderNumber}</span>
           <span className="text-[11px] text-slate-400">{formatDate(order.createdAt)}</span>
         </td>
+
         <td className="py-3.5 px-4">
-          <strong className="text-slate-900 block">{order.address?.fullName || 'Customer'}</strong>
-          <span className="text-slate-500">{order.address?.phone}</span>
-          <span className="text-[11px] text-slate-400 block">{order.address?.city}</span>
-        </td>
-        <td className="py-3.5 px-4">
-          <span className="text-slate-700 font-semibold">{order.items.length} items</span>
-          <button
-            onClick={() => setShowDetails(!showDetails)}
-            className="text-[11px] text-sky-600 block hover:underline"
+          <strong className="text-slate-900 block">{addr?.fullName || 'Customer'}</strong>
+          <a
+            href={`tel:${phone}`}
+            onClick={(e) => e.stopPropagation()}
+            className="text-sky-600 font-mono hover:underline block"
           >
-            {showDetails ? 'Hide items' : 'View items'}
-          </button>
+            {phone}
+          </a>
+          <span className="text-[11px] text-slate-400">{addr?.city}{addr?.district ? `, ${addr.district}` : ''}</span>
         </td>
+
+        <td className="py-3.5 px-4">
+          <span className="text-slate-700 font-semibold">{order.items.length} item{order.items.length > 1 ? 's' : ''}</span>
+          <span className="text-[11px] text-sky-600 flex items-center gap-0.5 mt-0.5">
+            {showDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+            {showDetails ? 'Hide details' : 'View details'}
+          </span>
+        </td>
+
         <td className="py-3.5 px-4 font-bold text-slate-900">
           {formatBDT(order.total)}
           <span className="text-[10px] text-slate-400 block font-normal">{order.paymentMethod}</span>
         </td>
-        <td className="py-3.5 px-4">
+
+        <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
           <select
             value={status}
             onChange={(e) => handleStatusChange(e.target.value)}
             disabled={isUpdating}
-            className={`px-2.5 py-1 rounded-full font-bold text-[11px] outline-none border cursor-pointer ${getOrderStatusColor(
-              status
-            )}`}
+            className={`px-2.5 py-1 rounded-full font-bold text-[11px] outline-none border cursor-pointer ${getOrderStatusColor(status)}`}
           >
             <option value="PENDING">Pending</option>
             <option value="CONFIRMED">Confirmed</option>
@@ -89,7 +114,8 @@ export function OrderRowClient({ order }: { order: any }) {
             <option value="CANCELLED">Cancelled</option>
           </select>
         </td>
-        <td className="py-3.5 px-4">
+
+        <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
           <div className="flex items-center gap-1.5">
             <input
               type="text"
@@ -108,24 +134,90 @@ export function OrderRowClient({ order }: { order: any }) {
         </td>
       </tr>
 
-      {/* Expanded item details row */}
+      {/* Expanded Details Row */}
       {showDetails && (
-        <tr className="bg-slate-50/80">
-          <td colSpan={6} className="py-3 px-6 text-xs text-slate-600 space-y-2">
-            <div className="font-bold text-slate-900">Delivery Address:</div>
-            <p>
-              {order.address?.line1}, {order.address?.area}, {order.address?.city} {order.address?.postalCode}
-            </p>
-            <div className="font-bold text-slate-900 pt-1">Items List:</div>
-            <div className="space-y-1">
-              {order.items.map((i: any) => (
-                <div key={i.id} className="flex justify-between max-w-md">
-                  <span>
-                    {i.quantity} × {i.name}
-                  </span>
-                  <strong>{formatBDT(i.total)}</strong>
+        <tr className="bg-sky-50/30 border-t border-sky-100">
+          <td colSpan={6} className="px-6 py-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs">
+
+              {/* Customer Info */}
+              <div className="space-y-2">
+                <h4 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] border-b border-slate-200 pb-1">
+                  Customer Info
+                </h4>
+                <div className="space-y-1 text-slate-600">
+                  <p className="font-bold text-slate-900 text-sm">{addr?.fullName || '—'}</p>
+                  <p className="flex items-center gap-1.5">
+                    <Phone className="w-3 h-3 text-sky-500 flex-shrink-0" />
+                    <a href={`tel:${phone}`} className="text-sky-600 hover:underline font-mono">{phone || '—'}</a>
+                  </p>
+                  <p className="flex items-center gap-1.5">
+                    <MessageCircle className="w-3 h-3 text-emerald-500 flex-shrink-0" />
+                    <a
+                      href={`https://wa.me/${waPhone}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-600 hover:underline"
+                    >
+                      WhatsApp Customer
+                    </a>
+                  </p>
                 </div>
-              ))}
+              </div>
+
+              {/* Delivery Address */}
+              <div className="space-y-2">
+                <h4 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] border-b border-slate-200 pb-1">
+                  Delivery Address
+                </h4>
+                <div className="space-y-1 text-slate-600">
+                  <p className="flex gap-1.5">
+                    <MapPin className="w-3 h-3 text-red-400 flex-shrink-0 mt-0.5" />
+                    <span>{fullAddress || 'No address provided'}</span>
+                  </p>
+                  {addr?.label && (
+                    <span className="inline-block px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-[10px] font-bold">
+                      {addr.label}
+                    </span>
+                  )}
+                  {order.notes && (
+                    <p className="text-amber-700 bg-amber-50 px-2 py-1 rounded-lg mt-1">
+                      📝 Note: {order.notes}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Items Ordered */}
+              <div className="space-y-2">
+                <h4 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] border-b border-slate-200 pb-1">
+                  Items Ordered
+                </h4>
+                <div className="space-y-1.5">
+                  {order.items.map((item: any) => (
+                    <div key={item.id} className="flex items-start justify-between gap-2">
+                      <div className="flex items-start gap-1.5">
+                        <Package className="w-3 h-3 text-slate-400 flex-shrink-0 mt-0.5" />
+                        <span className="text-slate-700">
+                          <strong className="text-slate-900">{item.quantity}×</strong> {item.name}
+                        </span>
+                      </div>
+                      <strong className="text-slate-900 flex-shrink-0">{formatBDT(item.total)}</strong>
+                    </div>
+                  ))}
+                  <div className="flex justify-between pt-2 border-t border-slate-200 font-bold text-slate-900">
+                    <span>Total</span>
+                    <span>{formatBDT(order.total)}</span>
+                  </div>
+                  {order.discountAmount > 0 && (
+                    <p className="text-emerald-600 text-[11px]">
+                      Coupon saved: {formatBDT(order.discountAmount)}
+                      {order.couponCode && ` (${order.couponCode})`}
+                    </p>
+                  )}
+                </div>
+              </div>
+
             </div>
           </td>
         </tr>
