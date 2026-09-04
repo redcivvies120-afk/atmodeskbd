@@ -251,25 +251,19 @@ export default async function HomePage() {
       ) : (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white border border-slate-200 rounded-3xl p-10 text-center space-y-4 shadow-xs">
-            <span className="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mx-auto text-xl font-bold">
-              📦
+            <span className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mx-auto text-2xl">
+              <Sparkles className="w-7 h-7" />
             </span>
-            <h3 className="text-lg font-bold text-slate-900">Your Store is Clean &amp; Ready!</h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              All fake products have been removed. You can now manually add your authentic China smart clocks, weather stations, and gadgets from the Admin Portal.
+            <h3 className="text-xl font-bold text-slate-900">New Products Coming Soon!</h3>
+            <p className="text-sm text-slate-500 max-w-md mx-auto">
+              We&apos;re curating the best smart clocks, weather stations, and desk gadgets for you. Stay tuned for exciting new arrivals!
             </p>
-            <div className="flex justify-center gap-3 pt-2">
+            <div className="pt-2">
               <Link
-                href="/admin/products/new"
-                className="px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl transition shadow-xs"
+                href="/products"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl transition shadow-xs"
               >
-                + Add Your First Product
-              </Link>
-              <Link
-                href="/admin"
-                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition"
-              >
-                Go to Admin Portal
+                Browse Store <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
