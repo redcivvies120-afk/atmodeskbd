@@ -16,6 +16,7 @@ import {
   PhoneCall,
   Clock,
   Sparkles,
+  Camera,
 } from 'lucide-react'
 
 export function Navbar() {
@@ -133,15 +134,24 @@ export function Navbar() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search smart clocks, weather stations, desk gadgets..."
-                className="w-full pl-11 pr-24 py-2.5 bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 focus:border-sky-500 rounded-full text-sm text-slate-900 placeholder:text-slate-400 outline-none transition shadow-xs"
+                className="w-full pl-11 pr-28 py-2.5 bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 focus:border-sky-500 rounded-full text-sm text-slate-900 placeholder:text-slate-400 outline-none transition shadow-xs"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-              <button
-                type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-full transition shadow-xs"
-              >
-                Search
-              </button>
+              <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                <Link
+                  href="/search"
+                  className="p-1.5 text-slate-400 hover:text-sky-600 rounded-full hover:bg-slate-100 transition"
+                  title="Search by Image"
+                >
+                  <Camera className="w-4 h-4" />
+                </Link>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-full transition shadow-xs"
+                >
+                  Search
+                </button>
+              </div>
             </form>
 
             {/* Action Buttons */}
