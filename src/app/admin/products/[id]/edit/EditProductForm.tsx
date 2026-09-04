@@ -188,26 +188,42 @@ export function EditProductForm({ product, categories }: { product: any; categor
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
             Product Image
           </label>
-          {/* Upload button */}
           <div className="space-y-2">
-            <label className="flex items-center justify-center gap-2 px-4 py-3 bg-sky-50 border-2 border-dashed border-sky-300 hover:border-sky-500 rounded-xl text-sm font-semibold text-sky-700 cursor-pointer transition">
-              {uploading ? (
-                <span className="animate-spin">⏳</span>
-              ) : (
-                <span>📤</span>
-              )}
-              {uploading ? 'Uploading...' : 'Click to Upload Image'}
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) uploadImage(file)
-                }}
-                disabled={uploading}
-              />
-            </label>
+            {/* Mobile-friendly buttons */}
+            <div className="flex gap-2">
+              <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-sky-50 hover:bg-sky-100 border-2 border-sky-300 hover:border-sky-500 rounded-xl text-sm font-bold text-sky-700 cursor-pointer transition">
+                🖼️ Select from Gallery
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) uploadImage(file)
+                  }}
+                  disabled={uploading}
+                />
+              </label>
+              <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 hover:border-amber-500 rounded-xl text-sm font-bold text-amber-700 cursor-pointer transition">
+                📷 Take Photo
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) uploadImage(file)
+                  }}
+                  disabled={uploading}
+                />
+              </label>
+            </div>
+            {uploading && (
+              <div className="flex items-center justify-center gap-2 py-2 text-xs text-sky-600 font-semibold">
+                <span className="animate-spin">⏳</span> Uploading...
+              </div>
+            )}
             <input
               type="url"
               value={imageUrl}

@@ -224,44 +224,75 @@ export function AdminProductForm({ categories }: { categories: { id: string; nam
         </label>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Drag & Drop Zone */}
-          <div
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
-            onDragLeave={() => setIsDragging(false)}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            className={`relative flex flex-col items-center justify-center gap-2 p-6 rounded-2xl border-2 border-dashed cursor-pointer transition text-center ${
-              isDragging
-                ? 'border-sky-500 bg-sky-50'
-                : 'border-slate-300 hover:border-sky-400 hover:bg-slate-50/80'
-            }`}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) handleFileSelect(file)
-              }}
-            />
-            {uploading ? (
-              <>
-                <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
-                <p className="text-xs text-slate-500 font-medium">Uploading photo...</p>
-              </>
-            ) : (
-              <>
-                <div className="w-12 h-12 rounded-xl bg-sky-50 flex items-center justify-center">
-                  <ImagePlus className="w-6 h-6 text-sky-500" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-700">Click to upload or drag & drop</p>
-                  <p className="text-[11px] text-slate-400 mt-0.5">JPG, PNG, WebP — max 10 MB</p>
-                </div>
-              </>
-            )}
+          {/* Drag & Drop Zone + Gallery/Camera Buttons */}
+          <div className="space-y-3">
+            {/* Mobile-friendly buttons */}
+            <div className="flex gap-2">
+              <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-sky-50 hover:bg-sky-100 border-2 border-sky-300 hover:border-sky-500 rounded-xl text-sm font-bold text-sky-700 cursor-pointer transition">
+                🖼️ Select from Gallery
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) handleFileSelect(file)
+                  }}
+                  disabled={uploading}
+                />
+              </label>
+              <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 hover:border-amber-500 rounded-xl text-sm font-bold text-amber-700 cursor-pointer transition">
+                📷 Take Photo
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) handleFileSelect(file)
+                  }}
+                  disabled={uploading}
+                />
+              </label>
+            </div>
+
+            {/* Drag & Drop Zone (desktop) */}
+            <div
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`relative flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border-2 border-dashed cursor-pointer transition text-center ${
+                isDragging
+                  ? 'border-sky-500 bg-sky-50'
+                  : 'border-slate-300 hover:border-sky-400 hover:bg-slate-50/80'
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) handleFileSelect(file)
+                }}
+              />
+              {uploading ? (
+                <>
+                  <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                  <p className="text-xs text-slate-500 font-medium">Uploading photo...</p>
+                </>
+              ) : (
+                <>
+                  <div className="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center">
+                    <ImagePlus className="w-5 h-5 text-sky-500" />
+                  </div>
+                  <p className="text-[11px] text-slate-400">Or drag & drop image here · JPG, PNG, WebP — max 10 MB</p>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Preview */}
