@@ -149,6 +149,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/returns" className="hover:text-white transition">
+                  Return &amp; Refund Policy
+                </Link>
+              </li>
+              <li>
                 <a href="https://wa.me/8801318043562" target="_blank" rel="noopener noreferrer" className="hover:text-white text-emerald-400 transition">
                   WhatsApp Helpline
                 </a>
@@ -183,13 +188,13 @@ export function Footer() {
           <p>© {new Date().getFullYear()} ATMODESK.bd · All rights reserved. Registered in Bangladesh.</p>
           <div className="flex items-center gap-6">
             <Link href="/terms" className="hover:text-slate-300 transition underline underline-offset-2">
-              Terms &amp; Conditions (TOC)
+              Terms &amp; Conditions
             </Link>
             <Link href="/privacy" className="hover:text-slate-300 transition">
               Privacy Policy
             </Link>
             <Link href="/returns" className="hover:text-slate-300 transition">
-              7-Day Return Policy
+              Return &amp; Refund Policy
             </Link>
           </div>
         </div>
