@@ -29,30 +29,38 @@ export function AdminProductForm({ categories }: { categories: { id: string; nam
   const [uploading, setUploading] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
 
-  // Upload image to Cloudinary
-  const uploadToCloudinary = async (file: File) => {
+  // Upload image via our server-side API
+  const uploadImage = async (file: File) => {
     setUploading(true)
     try {
+      // Show local preview immediately
+      const localUrl = URL.createObjectURL(file)
+      setImagePreview(localUrl)
+
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('upload_preset', 'atmodeskbd_products')
-      formData.append('folder', 'atmodeskbd/products')
 
-      const res = await fetch('https://api.cloudinary.com/v1_1/atmodeskbd/image/upload', {
+      const res = await fetch('/api/admin/upload', {
         method: 'POST',
         body: formData,
       })
 
-      if (!res.ok) throw new Error('Upload failed')
+      if (!res.ok) {
+        const errData = await res.json()
+        throw new Error(errData.error || 'Upload failed')
+      }
+
       const data = await res.json()
-      setImageUrl(data.secure_url)
-      setImagePreview(data.secure_url)
-      toast('Image uploaded successfully! 🖼️')
-    } catch (err) {
-      // Fallback: show local preview + ask for URL
-      const localUrl = URL.createObjectURL(file)
-      setImagePreview(localUrl)
-      toast('Cloudinary not set up yet. Enter an image URL below instead.', 'error')
+      setImageUrl(data.url)
+      setImagePreview(data.url)
+      
+      if (data.provider === 'base64') {
+        toast('Image saved! (Using fallback storage)', 'success')
+      } else {
+        toast('Image uploaded successfully! 🖼️')
+      }
+    } catch (err: any) {
+      toast(err.message || 'Image upload failed. Try pasting a URL instead.', 'error')
     } finally {
       setUploading(false)
     }
@@ -67,7 +75,7 @@ export function AdminProductForm({ categories }: { categories: { id: string; nam
       toast('Image must be smaller than 10 MB', 'error')
       return
     }
-    uploadToCloudinary(file)
+    uploadImage(file)
   }
 
   const handleDrop = (e: React.DragEvent) => {

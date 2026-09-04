@@ -66,7 +66,36 @@ export function EditProductForm({ product, categories }: { product: any; categor
     }
   }
 
-  return (
+    const [uploading, setUploading] = useState(false)
+    const [imagePreview, setImagePreview] = useState(product.images[0]?.url || '')
+
+    const uploadImage = async (file: File) => {
+      setUploading(true)
+      try {
+        const localUrl = URL.createObjectURL(file)
+        setImagePreview(localUrl)
+
+        const formData = new FormData()
+        formData.append('file', file)
+
+        const res = await fetch('/api/admin/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (!res.ok) throw new Error('Upload failed')
+        const data = await res.json()
+        setImageUrl(data.url)
+        setImagePreview(data.url)
+        toast('Image uploaded! 🖼️')
+      } catch (err: any) {
+        toast(err.message || 'Upload failed', 'error')
+      } finally {
+        setUploading(false)
+      }
+    }
+
+    return (
     <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
@@ -157,15 +186,44 @@ export function EditProductForm({ product, categories }: { product: any; categor
 
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-            Product Image URL
+            Product Image
           </label>
-          <input
-            type="url"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="Image link"
-            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-sky-500"
-          />
+          {/* Upload button */}
+          <div className="space-y-2">
+            <label className="flex items-center justify-center gap-2 px-4 py-3 bg-sky-50 border-2 border-dashed border-sky-300 hover:border-sky-500 rounded-xl text-sm font-semibold text-sky-700 cursor-pointer transition">
+              {uploading ? (
+                <span className="animate-spin">⏳</span>
+              ) : (
+                <span>📤</span>
+              )}
+              {uploading ? 'Uploading...' : 'Click to Upload Image'}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) uploadImage(file)
+                }}
+                disabled={uploading}
+              />
+            </label>
+            <input
+              type="url"
+              value={imageUrl}
+              onChange={(e) => {
+                setImageUrl(e.target.value)
+                setImagePreview(e.target.value)
+              }}
+              placeholder="Or paste image URL"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-sky-500"
+            />
+            {imagePreview && (
+              <div className="w-20 h-20 rounded-xl border border-slate-200 overflow-hidden">
+                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
