@@ -91,7 +91,20 @@ export function ProductCard({
           alt={name}
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
-            ;(e.target as HTMLElement).style.display = 'none'
+            const el = e.target as HTMLImageElement
+            el.onerror = null
+            el.src = ''
+            el.style.display = 'none'
+            const parent = el.parentElement
+            if (parent && !parent.querySelector('.img-placeholder')) {
+              const placeholder = document.createElement('div')
+              placeholder.className = 'img-placeholder absolute inset-0 flex flex-col items-center justify-center text-slate-300 bg-slate-50'
+              placeholder.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                <span class="text-xs font-medium text-slate-400 mt-2">No image</span>
+              `
+              parent.appendChild(placeholder)
+            }
           }}
         />
 

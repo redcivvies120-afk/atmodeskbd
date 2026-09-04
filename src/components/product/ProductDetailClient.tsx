@@ -108,7 +108,21 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             alt={product.name}
             className="w-full h-full object-contain max-h-[480px] hover:scale-105 transition-transform duration-300"
             onError={(e) => {
-              ;(e.target as HTMLElement).style.display = 'none'
+              const el = e.target as HTMLImageElement
+              el.onerror = null
+              el.src = ''
+              el.style.display = 'none'
+              // Show placeholder
+              const parent = el.parentElement
+              if (parent && !parent.querySelector('.img-placeholder')) {
+                const placeholder = document.createElement('div')
+                placeholder.className = 'img-placeholder flex flex-col items-center justify-center text-slate-300 space-y-3'
+                placeholder.innerHTML = `
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  <span class="text-sm font-medium text-slate-400">Image not available</span>
+                `
+                parent.appendChild(placeholder)
+              }
             }}
           />
 
