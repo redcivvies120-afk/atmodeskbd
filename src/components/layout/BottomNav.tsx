@@ -25,7 +25,7 @@ export function BottomNav() {
   ]
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-lg px-2 py-1.5 flex justify-around items-center">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-800/50 shadow-2xl px-2 py-1.5 flex justify-around items-center">
       {navItems.map((item) => {
         const Icon = item.icon
         const isActive = pathname === item.href

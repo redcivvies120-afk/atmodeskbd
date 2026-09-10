@@ -150,18 +150,23 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/wishlist" className="hover:text-white transition">
-                  My Wishlist
-                </Link>
-              </li>
-              <li>
-                <Link href="/checkout" className="hover:text-white transition">
-                  Checkout
+                <Link href="/faq" className="hover:text-white transition">
+                  FAQ / Help Center
                 </Link>
               </li>
               <li>
                 <Link href="/returns" className="hover:text-white transition">
                   Return &amp; Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-white transition">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-white transition">
+                  Contact Us
                 </Link>
               </li>
               <li>

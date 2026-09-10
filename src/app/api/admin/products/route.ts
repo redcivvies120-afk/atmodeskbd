@@ -16,7 +16,9 @@ export async function POST(req: Request) {
       stock,
       description,
       details,
-      imageUrl,
+      imageUrl,      // legacy single image support
+      images,        // new multi-image: [{ url, isPrimary, sortOrder }]
+      variants,      // new variants: [{ name, value, price?, stock? }]
       isFeatured,
       isBestSeller,
       isNewArrival,
@@ -31,6 +33,33 @@ export async function POST(req: Request) {
     const numPrice = parseFloat(price)
     const numOriginal = originalPrice ? parseFloat(originalPrice) : null
     const discount = numOriginal && numOriginal > numPrice ? Math.round(((numOriginal - numPrice) / numOriginal) * 100) : 0
+
+    // Build images create array
+    let imagesCreate: any[] = []
+    if (images && Array.isArray(images) && images.length > 0) {
+      // New multi-image format
+      imagesCreate = images.map((img: any, i: number) => ({
+        url: img.url,
+        isPrimary: Boolean(img.isPrimary),
+        sortOrder: img.sortOrder ?? i,
+      }))
+    } else if (imageUrl) {
+      // Legacy single image
+      imagesCreate = [{ url: imageUrl, isPrimary: true, sortOrder: 0 }]
+    }
+
+    // Build variants create array
+    let variantsCreate: any[] = []
+    if (variants && Array.isArray(variants) && variants.length > 0) {
+      variantsCreate = variants
+        .filter((v: any) => v.value?.trim())
+        .map((v: any) => ({
+          name: v.name || 'Color',
+          value: v.value,
+          price: v.price ? parseFloat(v.price) : null,
+          stock: v.stock ? parseInt(v.stock, 10) : 0,
+        }))
+    }
 
     const product = await prisma.product.create({
       data: {
@@ -48,18 +77,14 @@ export async function POST(req: Request) {
         isBestSeller: Boolean(isBestSeller),
         isNewArrival: Boolean(isNewArrival),
         isActive: isActive !== undefined ? Boolean(isActive) : true,
-        images: imageUrl
-          ? {
-              create: [
-                {
-                  url: imageUrl,
-                  isPrimary: true,
-                  sortOrder: 0,
-                },
-              ],
-            }
+        images: imagesCreate.length > 0
+          ? { create: imagesCreate }
+          : undefined,
+        variants: variantsCreate.length > 0
+          ? { create: variantsCreate }
           : undefined,
       },
+      include: { images: true, variants: true },
     })
 
     return NextResponse.json({ success: true, product })

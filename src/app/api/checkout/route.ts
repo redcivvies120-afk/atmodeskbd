@@ -203,11 +203,26 @@ export async function POST(req: Request) {
       })
     }
 
+    // 9. Generate WhatsApp notification message for admin
+    const itemsList = orderItemsData.map((i: any) => `• ${i.name} x${i.quantity} = ৳${i.total}`).join('\n')
+    const adminWhatsAppMsg = encodeURIComponent(
+      `🛒 NEW ORDER #${orderNumber}\n\n` +
+      `👤 ${fullName}\n📱 ${phone}\n📍 ${line1}, ${city}${district ? ', ' + district : ''}\n\n` +
+      `📦 Items:\n${itemsList}\n\n` +
+      `💰 Subtotal: ৳${subtotal}\n🚚 Shipping: ৳${shippingCost}\n${discountAmount > 0 ? `🎟️ Discount: -৳${discountAmount}\n` : ''}` +
+      `✅ TOTAL: ৳${total}\n💳 Payment: Cash on Delivery\n\n` +
+      `📅 Est. Delivery: ${estimatedDelivery.toLocaleDateString('en-BD')}` +
+      `${notes ? '\n📝 Note: ' + notes : ''}`
+    )
+
     return NextResponse.json({
       success: true,
       orderNumber: order.orderNumber,
       orderId: order.id,
       total: order.total,
+      customerName: fullName,
+      estimatedDelivery: estimatedDelivery.toISOString(),
+      adminNotifyUrl: `https://wa.me/8801318043562?text=${adminWhatsAppMsg}`,
     })
   } catch (error: any) {
     console.error('[Checkout Error]', error)

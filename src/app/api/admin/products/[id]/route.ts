@@ -32,7 +32,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       stock,
       description,
       details,
-      imageUrl,
+      imageUrl,      // legacy single image
+      images,        // new multi-image: [{ url, isPrimary, sortOrder }]
+      variants,      // new variants: [{ name, value, price?, stock? }]
       isFeatured,
       isBestSeller,
       isNewArrival,
@@ -62,11 +64,53 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       },
     })
 
-    if (imageUrl) {
+    // Handle images: if multi-image array provided, replace all
+    if (images && Array.isArray(images) && images.length > 0) {
+      await prisma.productImage.deleteMany({ where: { productId: id } })
+      await prisma.productImage.createMany({
+        data: images.map((img: any, i: number) => ({
+          productId: id,
+          url: img.url,
+          isPrimary: Boolean(img.isPrimary),
+          sortOrder: img.sortOrder ?? i,
+        })),
+      })
+    } else if (imageUrl) {
+      // Legacy single image
       await prisma.productImage.deleteMany({ where: { productId: id } })
       await prisma.productImage.create({
         data: { productId: id, url: imageUrl, isPrimary: true, sortOrder: 0 },
       })
+    }
+
+    // Handle variants: if provided, replace all
+    if (variants && Array.isArray(variants)) {
+      // Delete old cart items referencing old variants first
+      const oldVariantIds = (await prisma.productVariant.findMany({
+        where: { productId: id },
+        select: { id: true },
+      })).map(v => v.id)
+
+      if (oldVariantIds.length > 0) {
+        await prisma.cartItem.deleteMany({
+          where: { variantId: { in: oldVariantIds } },
+        })
+      }
+
+      await prisma.productVariant.deleteMany({ where: { productId: id } })
+
+      const validVariants = variants.filter((v: any) => v.value?.trim())
+      if (validVariants.length > 0) {
+        await prisma.productVariant.createMany({
+          data: validVariants.map((v: any) => ({
+            productId: id,
+            name: v.name || 'Color',
+            value: v.value,
+            price: v.price ? parseFloat(v.price) : null,
+            stock: v.stock ? parseInt(v.stock, 10) : 0,
+          })),
+        })
+      }
     }
 
     return NextResponse.json({ success: true, product: updated })

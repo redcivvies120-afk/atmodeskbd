@@ -19,6 +19,7 @@ import {
   CreditCard,
   Share2,
 } from 'lucide-react'
+import { BackInStockNotify } from '@/components/product/BackInStockNotify'
 
 export interface ProductDetailProps {
   product: {
@@ -327,6 +328,41 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
           >
             <span>💬</span> Order Directly via WhatsApp (+880 1318-043562)
           </a>
+
+          {/* Back in Stock Notification (only when out of stock) */}
+          {isOutOfStock && (
+            <BackInStockNotify productId={product.id} productName={product.name} />
+          )}
+
+          {/* Share Product */}
+          <div className="flex items-center gap-2 pt-1">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Share:</span>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(`Check out "${product.name}" on ATMODESK.bd! https://atmodeskbd-eo1e.vercel.app/product/${product.slug}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 text-[11px] font-bold rounded-full transition"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://atmodeskbd-eo1e.vercel.app/product/${product.slug}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 text-[11px] font-bold rounded-full transition"
+            >
+              Facebook
+            </a>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(`https://atmodeskbd-eo1e.vercel.app/product/${product.slug}`)
+                toast('Link copied! 📋')
+              }}
+              className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[11px] font-bold rounded-full transition"
+            >
+              📋 Copy Link
+            </button>
+          </div>
         </div>
 
         {/* Bangladesh Shipping & Assurance Card */}

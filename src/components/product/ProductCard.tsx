@@ -1,12 +1,13 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { formatBDT } from '@/lib/utils'
 import { useCart } from '@/store/cart'
 import { useWishlist } from '@/store/wishlist'
 import { useToast } from '@/components/shared/Providers'
-import { Heart, ShoppingBag, Star } from 'lucide-react'
+import { Heart, ShoppingBag, Star, Eye } from 'lucide-react'
+import { QuickViewModal } from '@/components/product/QuickViewModal'
 
 export interface ProductCardProps {
   id: string
@@ -43,6 +44,7 @@ export function ProductCard({
   const { addItem } = useCart()
   const { toggleItem, isWishlisted } = useWishlist()
   const { toast } = useToast()
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false)
 
   const primaryImage = images.find((i) => i.isPrimary)?.url || images[0]?.url || '/placeholder-product.jpg'
   const isOutOfStock = stock <= 0
@@ -83,7 +85,7 @@ export function ProductCard({
   }
 
   return (
-    <div className="group relative bg-white border border-slate-200/80 rounded-2xl overflow-hidden hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col h-full">
+    <div className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/80 dark:border-slate-700/60 rounded-2xl overflow-hidden hover:shadow-xl hover:border-sky-400/80 transition-all duration-300 flex flex-col h-full shadow-xs">
       {/* Image Container */}
       <Link href={`/product/${slug}`} className="relative aspect-square w-full bg-slate-100 overflow-hidden block">
         <img
@@ -137,6 +139,21 @@ export function ProductCard({
           title={isSaved ? 'Remove from wishlist' : 'Save to wishlist'}
         >
           <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-500' : ''}`} />
+        </button>
+
+        {/* Quick View Button on Hover */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setIsQuickViewOpen(true)
+          }}
+          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-white/95 hover:bg-white text-slate-800 hover:text-sky-600 text-xs font-bold px-3 py-1.5 rounded-full shadow-md backdrop-blur-xs flex items-center gap-1.5 z-10 whitespace-nowrap"
+          title="Quick View"
+        >
+          <Eye className="w-3.5 h-3.5 text-sky-600" />
+          <span>Quick View</span>
         </button>
 
         {/* Out of Stock Overlay */}
@@ -200,6 +217,23 @@ export function ProductCard({
           </button>
         </div>
       </div>
+
+      {/* Quick View Modal */}
+      {isQuickViewOpen && (
+        <QuickViewModal
+          isOpen={isQuickViewOpen}
+          onClose={() => setIsQuickViewOpen(false)}
+          id={id}
+          name={name}
+          slug={slug}
+          price={price}
+          originalPrice={originalPrice}
+          discount={discount}
+          stock={stock}
+          images={images}
+          category={category}
+        />
+      )}
     </div>
   )
 }

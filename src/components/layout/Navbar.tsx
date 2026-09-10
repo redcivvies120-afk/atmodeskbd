@@ -18,6 +18,7 @@ import {
   Sparkles,
   Camera,
 } from 'lucide-react'
+import { DarkModeToggle } from '@/components/shared/DarkModeToggle'
 
 export function Navbar() {
   const router = useRouter()
@@ -90,8 +91,10 @@ export function Navbar() {
 
       {/* Main Navbar */}
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-200 ${
-          isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200' : 'bg-white border-b border-slate-100'
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+          isScrolled
+            ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md border-b border-slate-200/60 dark:border-slate-800/60'
+            : 'bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/40 dark:border-slate-800/40'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -187,6 +190,9 @@ export function Navbar() {
                 <User className="w-5 h-5" />
                 <span className="text-sm font-medium hidden lg:inline">Account</span>
               </Link>
+
+              {/* Dark Mode Toggle */}
+              <DarkModeToggle />
 
               {/* Cart Button */}
               <button
@@ -288,11 +294,25 @@ export function Navbar() {
                 Track Order
               </Link>
               <Link
-                href="/account"
+                href="/faq"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block px-3 py-2 text-slate-700 font-medium"
               >
-                My Account
+                FAQ / Help Center
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 text-slate-700 font-medium"
+              >
+                About Us
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 text-slate-700 font-medium"
+              >
+                Contact Us
               </Link>
             </div>
           </div>
