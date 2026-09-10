@@ -91,10 +91,10 @@ export function Navbar() {
 
       {/* Main Navbar */}
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white ${
           isScrolled
-            ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md border-b border-slate-200/60 dark:border-slate-800/60'
-            : 'bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/40 dark:border-slate-800/40'
+            ? 'shadow-md border-b border-slate-200'
+            : 'border-b border-slate-100'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
