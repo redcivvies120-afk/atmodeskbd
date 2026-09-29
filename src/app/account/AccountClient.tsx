@@ -478,7 +478,7 @@ export function AccountClient() {
 
             <button
               type="button"
-              onClick={() => window.location.href = '/api/auth/google'}
+              onClick={() => window.location.href = '/api/auth/signin/google?callbackUrl=%2Faccount'}
               className="w-full py-3.5 bg-white border border-slate-200 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-md text-slate-700 font-bold text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -579,7 +579,7 @@ export function AccountClient() {
 
             <button
               type="button"
-              onClick={() => window.location.href = '/api/auth/google'}
+              onClick={() => window.location.href = '/api/auth/signin/google?callbackUrl=%2Faccount'}
               className="w-full py-3.5 bg-white border border-slate-200 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-md text-slate-700 font-bold text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
