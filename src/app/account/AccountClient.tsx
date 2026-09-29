@@ -25,7 +25,7 @@ import {
 export function AccountClient() {
   const router = useRouter()
   const [currentUser, setCurrentUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState<'track' | 'login' | 'register' | 'forgot'>('login')
   
   // Forms state
@@ -37,7 +37,10 @@ export function AccountClient() {
   const [regEmail, setRegEmail] = useState('')
   const [regPassword, setRegPassword] = useState('')
   const [forgotIdentifier, setForgotIdentifier] = useState('')
-  const [forgotWhatsappUrl, setForgotWhatsappUrl] = useState<string | null>(null)
+  const [forgotStep, setForgotStep] = useState<1 | 2>(1)
+  const [forgotUserName, setForgotUserName] = useState('')
+  const [forgotNewPassword, setForgotNewPassword] = useState('')
+  const [forgotConfirmPassword, setForgotConfirmPassword] = useState('')
   
   const [submitting, setSubmitting] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
@@ -129,29 +132,73 @@ export function AccountClient() {
     }
   }
 
-  const handleForgotSubmit = async (e: React.FormEvent) => {
+  const handleForgotCheck = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
     setErrorMsg(null)
     setSuccessMsg(null)
-    setForgotWhatsappUrl(null)
 
     try {
       const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: forgotIdentifier }),
+        body: JSON.stringify({ identifier: forgotIdentifier, action: 'check' }),
       })
       const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit reset request')
+        throw new Error(data.error || 'Account not found')
+      }
+
+      setForgotUserName(data.userName || '')
+      setForgotStep(2)
+      setSuccessMsg(data.message)
+    } catch (err: any) {
+      setErrorMsg(err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleForgotReset = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (forgotNewPassword !== forgotConfirmPassword) {
+      setErrorMsg('Passwords do not match. Please retype carefully.')
+      return
+    }
+    if (forgotNewPassword.length < 6) {
+      setErrorMsg('Password must be at least 6 characters.')
+      return
+    }
+
+    setSubmitting(true)
+    setErrorMsg(null)
+    setSuccessMsg(null)
+
+    try {
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          identifier: forgotIdentifier,
+          newPassword: forgotNewPassword,
+        }),
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update password')
       }
 
       setSuccessMsg(data.message)
-      if (data.whatsappUrl) {
-        setForgotWhatsappUrl(data.whatsappUrl)
-      }
+      setLoginEmail(forgotIdentifier)
+      setLoginPassword('')
+      setTimeout(() => {
+        setActiveTab('login')
+        setForgotStep(1)
+        setForgotNewPassword('')
+        setForgotConfirmPassword('')
+      }, 1500)
     } catch (err: any) {
       setErrorMsg(err.message)
     } finally {
@@ -588,83 +635,117 @@ export function AccountClient() {
           </form>
         )}
 
-        {/* 4. FORGOT PASSWORD TAB */}
+        {/* 4. FORGOT PASSWORD TAB - 2-STEP DIRECT RESET */}
         {activeTab === 'forgot' && (
           <div className="space-y-5 animate-fade-in">
             <div className="text-center space-y-1">
-              <h2 className="text-base font-bold text-slate-900">Reset Your Password</h2>
+              <h2 className="text-base font-bold text-slate-900">
+                {forgotStep === 1 ? 'Find Your Account' : 'Set Your New Password'}
+              </h2>
               <p className="text-xs text-slate-500">
-                Enter your registered phone number or email address to recover your account.
+                {forgotStep === 1
+                  ? 'Enter your registered phone number or email to reset your password directly.'
+                  : `Account verified for ${forgotUserName || 'you'}! Enter your new password below.`}
               </p>
             </div>
 
-            <form onSubmit={handleForgotSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Phone Number or Email
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="e.g. 01318043562 or email@example.com"
-                    value={forgotIdentifier}
-                    onChange={(e) => setForgotIdentifier(e.target.value)}
-                    className="w-full pl-4 pr-10 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"
-                    required
-                  />
-                  <Mail className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
+            {forgotStep === 1 ? (
+              <form onSubmit={handleForgotCheck} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Phone Number or Email
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="e.g. 01318043562 or email@example.com"
+                      value={forgotIdentifier}
+                      onChange={(e) => setForgotIdentifier(e.target.value)}
+                      className="w-full pl-4 pr-10 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"
+                      required
+                    />
+                    <Mail className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                  </div>
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50"
-              >
-                {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Request Password Reset <ArrowRight className="w-4 h-4" /></>}
-              </button>
-
-              {forgotWhatsappUrl ? (
-                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs space-y-2 text-center animate-fade-in">
-                  <strong className="block font-bold text-emerald-800">✅ Reset Request Initiated!</strong>
-                  <p className="text-[11px] text-emerald-700">Click below to message support on WhatsApp for instant 1-minute password reset:</p>
-                  <a
-                    href={forgotWhatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition shadow-xs"
-                  >
-                    💬 Open WhatsApp Support
-                  </a>
-                </div>
-              ) : (
-                <div className="p-3.5 rounded-xl bg-sky-50 border border-sky-100 text-sky-900 text-xs space-y-1">
-                  <strong className="block font-bold">💬 Need instant help?</strong>
-                  <p className="text-[11px] text-sky-700">
-                    Message our WhatsApp support directly at{' '}
-                    <a
-                      href="https://wa.me/8801318043562?text=Hi%20Atmodesk%2C%20I%20need%20help%20resetting%20my%20account%20password."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline font-bold text-sky-800"
-                    >
-                      +880 1318-043562
-                    </a>{' '}
-                    with your registered phone number.
-                  </p>
-                </div>
-              )}
-
-              <div className="text-center pt-2">
                 <button
-                  type="button"
-                  onClick={() => { setActiveTab('login'); setErrorMsg(null); setSuccessMsg(null) }}
-                  className="text-xs text-slate-500 hover:text-slate-900 font-semibold"
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50"
                 >
-                  ← Back to Sign In
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Verify Account &amp; Continue <ArrowRight className="w-4 h-4" /></>}
                 </button>
-              </div>
-            </form>
+
+                <div className="text-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => { setActiveTab('login'); setErrorMsg(null); setSuccessMsg(null) }}
+                    className="text-xs text-slate-500 hover:text-slate-900 font-semibold"
+                  >
+                    ← Back to Sign In
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleForgotReset} className="space-y-4">
+                <div className="p-3 bg-sky-50 border border-sky-100 rounded-xl text-xs text-sky-800 font-medium flex items-center gap-2">
+                  <span>👤</span>
+                  <span>Resetting password for: <strong>{forgotIdentifier}</strong></span>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    New Password *
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      placeholder="At least 6 characters"
+                      value={forgotNewPassword}
+                      onChange={(e) => setForgotNewPassword(e.target.value)}
+                      className="w-full pl-4 pr-10 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"
+                      required
+                    />
+                    <Lock className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Confirm New Password *
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      placeholder="Retype your new password"
+                      value={forgotConfirmPassword}
+                      onChange={(e) => setForgotConfirmPassword(e.target.value)}
+                      className="w-full pl-4 pr-10 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"
+                      required
+                    />
+                    <Lock className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50"
+                >
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Save New Password &amp; Sign In <ArrowRight className="w-4 h-4" /></>}
+                </button>
+
+                <div className="text-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => { setForgotStep(1); setErrorMsg(null); setSuccessMsg(null) }}
+                    className="text-xs text-slate-500 hover:text-slate-900 font-semibold"
+                  >
+                    ← Back to Step 1
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         )}
       </div>

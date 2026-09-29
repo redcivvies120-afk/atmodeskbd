@@ -280,6 +280,14 @@ export function Navbar() {
 
             <div className="border-t border-slate-100 pt-3 space-y-1">
               <Link
+                href="/account"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2.5 mb-2 bg-sky-50 text-sky-800 rounded-xl font-bold text-sm border border-sky-100 shadow-xs"
+              >
+                <User className="w-4 h-4 text-sky-600" />
+                <span>Sign In / Customer Account (Google)</span>
+              </Link>
+              <Link
                 href="/products"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block px-3 py-2 text-slate-700 font-medium"

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCart } from '@/store/cart'
 import { useWishlist } from '@/store/wishlist'
-import { Home, Grid, Search, Heart, ShoppingBag } from 'lucide-react'
+import { Home, Grid, Heart, ShoppingBag, User } from 'lucide-react'
 
 export function BottomNav() {
   const pathname = usePathname()
@@ -19,9 +19,9 @@ export function BottomNav() {
 
   const navItems = [
     { label: 'Home', href: '/', icon: Home },
-    { label: 'Categories', href: '/products', icon: Grid },
-    { label: 'Search', href: '/search', icon: Search },
+    { label: 'Catalog', href: '/products', icon: Grid },
     { label: 'Wishlist', href: '/wishlist', icon: Heart, badge: wishlistItems.length },
+    { label: 'Account', href: '/account', icon: User },
   ]
 
   return (
