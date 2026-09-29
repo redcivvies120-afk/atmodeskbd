@@ -91,10 +91,10 @@ export function Navbar() {
 
       {/* Main Navbar */}
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white ${
+        className={`sticky top-0 z-40 w-full transition-all duration-500 ease-out ${
           isScrolled
-            ? 'shadow-md border-b border-slate-200'
-            : 'border-b border-slate-100'
+            ? 'glass-nav shadow-sm border-b border-slate-200/40'
+            : 'bg-white/95 backdrop-blur-sm border-b border-slate-100'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -249,7 +249,7 @@ export function Navbar() {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200 p-4 space-y-4 shadow-lg animate-fade-in">
+          <div className="md:hidden glass-bright border-b border-slate-200/40 p-4 space-y-4 shadow-lg animate-slide-down">
             <form onSubmit={handleSearch} className="relative">
               <input
                 type="text"

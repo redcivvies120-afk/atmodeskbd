@@ -135,23 +135,39 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <div>
-        <h1 className="text-3xl font-extrabold text-slate-900">Checkout</h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Complete your delivery details. Cash on Delivery is available nationwide.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-sky-50 via-white to-amber-50/40 p-4 sm:p-5 rounded-2xl border border-sky-100/80 shadow-xs">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold uppercase tracking-wider">
+              ⚡ Guest Checkout Active
+            </span>
+            <span className="text-xs text-slate-500 font-medium">No account required</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Checkout &amp; Fast Delivery</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            Fill your delivery address below. Cash on Delivery is available nationwide.
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <Link
+            href="/account"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-sky-600 transition shadow-xs"
+          >
+            <span>Google / Member Sign In →</span>
+          </Link>
+        </div>
       </div>
 
       <form onSubmit={handleSubmitOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* ─── LEFT: ADDRESS & PAYMENT FORM ──────────────────── */}
         <div className="lg:col-span-7 space-y-6">
           {/* Step 1: Customer Info */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-4 animate-fade-in-up">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
                 1
               </span>
-              Contact &amp; Delivery Information
+              Contact &amp; Delivery Information (Guest Order)
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -272,7 +288,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Step 2: Shipping Method */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-4 animate-fade-in-up delay-100">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
                 2
@@ -283,10 +299,10 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label
                 onClick={() => setShippingLocation('inside_dhaka')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-start justify-between ${
+                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300 flex items-start justify-between ${
                   shippingLocation === 'inside_dhaka'
-                    ? 'border-sky-600 bg-sky-50/50 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-sky-600 bg-sky-50/70 shadow-sm scale-[1.01]'
+                    : 'border-slate-200/80 bg-white/50 hover:border-slate-300 hover:bg-white'
                 }`}
               >
                 <div className="space-y-1">
@@ -297,16 +313,16 @@ export default function CheckoutPage() {
                   <p className="text-xs text-slate-500">Delivered within 24–48 hours</p>
                 </div>
                 <span className="text-sm font-extrabold text-slate-900">
-                  {rawSubtotal >= 2000 ? <span className="text-emerald-600">FREE</span> : '৳60'}
+                  {rawSubtotal >= 2000 ? <span className="text-emerald-600 font-black">FREE</span> : '৳60'}
                 </span>
               </label>
 
               <label
                 onClick={() => setShippingLocation('outside_dhaka')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-start justify-between ${
+                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300 flex items-start justify-between ${
                   shippingLocation === 'outside_dhaka'
-                    ? 'border-sky-600 bg-sky-50/50 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-sky-600 bg-sky-50/70 shadow-sm scale-[1.01]'
+                    : 'border-slate-200/80 bg-white/50 hover:border-slate-300 hover:bg-white'
                 }`}
               >
                 <div className="space-y-1">
@@ -322,7 +338,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Step 3: Payment Method - Cash on Delivery Only */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-4 animate-fade-in-up delay-150">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
                 3
@@ -330,7 +346,7 @@ export default function CheckoutPage() {
               Payment Method
             </h2>
 
-            <div className="p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-50/40 shadow-xs space-y-2">
+            <div className="p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 shadow-xs space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
@@ -357,7 +373,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Delivery Note */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-2">
+          <div className="glass-card rounded-3xl p-6 shadow-xs space-y-2 animate-fade-in-up delay-200">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
               Special Delivery Instructions (Optional)
             </label>
@@ -366,13 +382,13 @@ export default function CheckoutPage() {
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               placeholder="e.g. Call before delivery, leave with guard, etc."
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
             />
           </div>
         </div>
 
         {/* ─── RIGHT: ORDER SUMMARY & PLACE ORDER ─────────────── */}
-        <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-6 sticky top-24">
+        <div className="lg:col-span-5 glass-card border border-slate-200/80 rounded-3xl p-6 sm:p-7 shadow-lg space-y-6 sticky top-24 animate-fade-in-up delay-100">
           <h2 className="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">
             Order Review ({items.length} items)
           </h2>

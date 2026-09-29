@@ -85,7 +85,7 @@ export function ProductCard({
   }
 
   return (
-    <div className="group relative bg-white border border-slate-200/80 rounded-2xl overflow-hidden hover:shadow-lg hover:border-sky-300/60 transition-all duration-300 flex flex-col h-full">
+    <div className="group relative glass-card rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-sky-100/50 hover:border-sky-300/50 transition-all duration-500 ease-out flex flex-col h-full">
       {/* Image Container */}
       <Link href={`/product/${slug}`} className="relative aspect-square w-full bg-slate-100 overflow-hidden block">
         <img

@@ -90,7 +90,7 @@ export default async function HomePage() {
                 <span>Next-Gen Desk Aesthetic in Bangladesh</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
                 Smart Clocks. <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-amber-300">
                   Ambient Weather.
@@ -99,20 +99,20 @@ export default async function HomePage() {
                 Your Desk, Alive.
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
                 Upgrade your workspace with mini pixel smart clocks, WiFi weather displays, and ambient LED gadgets. Curated from top global factories with Cash on Delivery nationwide.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
                 <Link
                   href="/products"
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto min-h-[48px] px-8 py-3.5 rounded-xl bg-sky-500 hover:bg-sky-400 active:scale-95 text-slate-950 font-bold text-sm transition-all duration-300 shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2"
                 >
                   Shop Now <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/products?category=smart-clocks"
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-sm transition backdrop-blur-md text-center"
+                  className="w-full sm:w-auto min-h-[48px] px-8 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 active:scale-95 border border-white/20 text-white font-semibold text-sm transition-all duration-300 backdrop-blur-md flex items-center justify-center"
                 >
                   Explore Clocks
                 </Link>
@@ -205,20 +205,20 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {categories.map((c) => (
             <Link
               key={c.id}
               href={`/products?category=${c.slug}`}
-              className="group p-5 bg-white border border-slate-200/80 hover:border-sky-500 rounded-2xl transition-all shadow-xs hover:shadow-md flex flex-col items-center text-center space-y-2"
+              className="group p-4 sm:p-5 glass-card hover:border-sky-400 hover:shadow-lg hover:shadow-sky-100/60 rounded-2xl transition-all duration-300 flex flex-col items-center text-center space-y-2 hover:-translate-y-1"
             >
-              <div className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition duration-300">
-                <Layers className="w-6 h-6" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition duration-300 shadow-xs">
+                <Layers className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <h3 className="font-bold text-sm text-slate-900 group-hover:text-sky-600 transition">
+              <h3 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-sky-600 transition">
                 {c.name}
               </h3>
-              <span className="text-xs text-slate-400">View Products →</span>
+              <span className="text-[11px] sm:text-xs text-slate-400 font-medium">Explore →</span>
             </Link>
           ))}
         </div>
@@ -359,14 +359,14 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+            <div className="glass-card p-6 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400" />
                 ))}
               </div>
               <p className="text-sm text-slate-700 italic">
-                "The Pixel Weather Clock Pro is insane! Connects to my home WiFi easily and shows accurate Dhaka temperature and AQI. Everyone on my Zoom calls asks about it."
+                &ldquo;The Pixel Weather Clock Pro is insane! Connects to my home WiFi easily and shows accurate Dhaka temperature and AQI. Everyone on my Zoom calls asks about it.&rdquo;
               </p>
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-900">Tanvir Hasan</span>
@@ -376,14 +376,14 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+            <div className="glass-card p-6 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400" />
                 ))}
               </div>
               <p className="text-sm text-slate-700 italic">
-                "Ordered via Cash on Delivery to Chittagong. Arrived in 3 days in solid bubble wrap packaging. The Retro Flip Clock looks super aesthetic on my walnut desk."
+                &ldquo;Ordered via Cash on Delivery to Chittagong. Arrived in 3 days in solid bubble wrap packaging. The Retro Flip Clock looks super aesthetic on my walnut desk.&rdquo;
               </p>
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-900">Mahmudul Karim</span>
@@ -393,14 +393,14 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+            <div className="glass-card p-6 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400" />
                 ))}
               </div>
               <p className="text-sm text-slate-700 italic">
-                "Great customer support on WhatsApp. They guided me through the 2.4GHz WiFi setup in 2 minutes. 10/10 store!"
+                &ldquo;Great customer support on WhatsApp. They guided me through the 2.4GHz WiFi setup in 2 minutes. 10/10 store!&rdquo;
               </p>
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-900">Farzana Rahman</span>
