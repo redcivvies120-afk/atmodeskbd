@@ -91,7 +91,7 @@ export default function AboutPage() {
 
   return (
     <div className="space-y-16 sm:space-y-20 pb-20">
-      {/* ─── 1. HERO SECTION ───────────────────────────────────── */}
+      {/* --- 1. HERO SECTION ------------------------------------- */}
       <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white pt-14 pb-20 md:py-24">
         {/* Ambient Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -158,7 +158,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── 2. OUR MISSION SECTION ────────────────────────────── */}
+      {/* --- 2. OUR MISSION SECTION ------------------------------ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-xs space-y-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -234,7 +234,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── 3. WHY CHOOSE US SECTION ──────────────────────────── */}
+      {/* --- 3. WHY CHOOSE US SECTION ---------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto">
           <span className="px-3 py-1 bg-sky-50 text-sky-700 font-bold text-xs rounded-full uppercase tracking-wider">
@@ -285,7 +285,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── 4. FOUNDER / TEAM SECTION ─────────────────────────── */}
+      {/* --- 4. FOUNDER / TEAM SECTION --------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-3xl p-8 sm:p-12 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -330,7 +330,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── 5. CONTACT CTA AT BOTTOM ──────────────────────────── */}
+      {/* --- 5. CONTACT CTA AT BOTTOM ---------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-r from-sky-600 via-sky-700 to-blue-800 text-white rounded-3xl p-8 sm:p-12 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

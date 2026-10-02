@@ -134,16 +134,16 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-sky-50 via-white to-amber-50/40 p-4 sm:p-5 rounded-2xl border border-sky-100/80 shadow-xs">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-10 space-y-5 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 glass-bright p-3.5 sm:p-5 rounded-2xl border border-white/80 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
               ⚡ Guest Checkout Active
             </span>
-            <span className="text-xs text-slate-500 font-medium">No account required</span>
+            <span className="text-[11px] sm:text-xs text-slate-500 font-medium">No account required</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Checkout &amp; Fast Delivery</h1>
+          <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 mt-1">Checkout &amp; Fast Delivery</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
             Fill your delivery address below. Cash on Delivery is available nationwide.
           </p>
@@ -151,15 +151,15 @@ export default function CheckoutPage() {
         <div className="flex-shrink-0">
           <Link
             href="/account"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-sky-600 transition shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-sky-600 transition shadow-xs active:scale-95"
           >
-            <span>Google / Member Sign In →</span>
+            <span>Have an Account? Sign In →</span>
           </Link>
         </div>
       </div>
 
       <form onSubmit={handleSubmitOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* ─── LEFT: ADDRESS & PAYMENT FORM ──────────────────── */}
+        {/* --- LEFT: ADDRESS & PAYMENT FORM -------------------- */}
         <div className="lg:col-span-7 space-y-6">
           {/* Step 1: Customer Info */}
           <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-4 animate-fade-in-up">
@@ -387,7 +387,7 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* ─── RIGHT: ORDER SUMMARY & PLACE ORDER ─────────────── */}
+        {/* --- RIGHT: ORDER SUMMARY & PLACE ORDER --------------- */}
         <div className="lg:col-span-5 glass-card border border-slate-200/80 rounded-3xl p-6 sm:p-7 shadow-lg space-y-6 sticky top-24 animate-fade-in-up delay-100">
           <h2 className="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">
             Order Review ({items.length} items)

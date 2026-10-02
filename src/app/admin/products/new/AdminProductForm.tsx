@@ -276,7 +276,7 @@ export function AdminProductForm({ categories }: { categories: { id: string; nam
         </div>
       </div>
 
-      {/* ── Multiple Product Images ── */}
+      {/* -- Multiple Product Images -- */}
       <div className="space-y-3">
         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
           Product Photos (Multiple)
@@ -405,7 +405,7 @@ export function AdminProductForm({ categories }: { categories: { id: string; nam
         </p>
       </div>
 
-      {/* ── Color / Model Variants ── */}
+      {/* -- Color / Model Variants -- */}
       <div className="space-y-3 border-t border-slate-100 pt-5">
         <div className="flex items-center justify-between">
           <div>

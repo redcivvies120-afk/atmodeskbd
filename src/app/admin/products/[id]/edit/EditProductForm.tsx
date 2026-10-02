@@ -168,7 +168,7 @@ export function EditProductForm({ product, categories }: { product: any; categor
         <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} className="w-full max-w-[200px] px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-sky-500" />
       </div>
 
-      {/* ── Multiple Product Images ── */}
+      {/* -- Multiple Product Images -- */}
       <div className="space-y-3 border-t border-slate-100 pt-5">
         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">Product Photos (Multiple)</label>
         <div className="flex gap-2">
@@ -215,7 +215,7 @@ export function EditProductForm({ product, categories }: { product: any; categor
         </div>
       </div>
 
-      {/* ── Color / Model Variants ── */}
+      {/* -- Color / Model Variants -- */}
       <div className="space-y-3 border-t border-slate-100 pt-5">
         <div className="flex items-center justify-between">
           <div>

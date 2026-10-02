@@ -74,23 +74,23 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-16 pb-16">
-      {/* ─── 1. HERO SECTION ───────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white pt-12 pb-20 md:py-24">
+    <div className="space-y-10 sm:space-y-16 pb-12 sm:pb-16">
+      {/* --- 1. HERO SECTION ------------------------------------- */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white pt-8 pb-14 sm:pt-12 sm:pb-20 md:py-24">
         {/* Glow ambient backdrops */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-500/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-sky-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-60 sm:w-80 h-60 sm:h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Copy */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-sky-400 text-xs font-semibold backdrop-blur-md">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/10 border border-white/15 text-sky-400 text-[11px] sm:text-xs font-semibold backdrop-blur-md">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Next-Gen Desk Aesthetic in Bangladesh</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15]">
                 Smart Clocks. <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-amber-300">
                   Ambient Weather.
@@ -99,37 +99,37 @@ export default async function HomePage() {
                 Your Desk, Alive.
               </h1>
 
-              <p className="text-sm sm:text-base md:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              <p className="text-xs sm:text-base md:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
                 Upgrade your workspace with mini pixel smart clocks, WiFi weather displays, and ambient LED gadgets. Curated from top global factories with Cash on Delivery nationwide.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-4 pt-1 sm:pt-2">
                 <Link
                   href="/products"
-                  className="w-full sm:w-auto min-h-[48px] px-8 py-3.5 rounded-xl bg-sky-500 hover:bg-sky-400 active:scale-95 text-slate-950 font-bold text-sm transition-all duration-300 shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto min-h-[46px] sm:min-h-[48px] px-8 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 active:scale-95 text-slate-950 font-extrabold text-sm transition-all duration-300 shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2"
                 >
                   Shop Now <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/products?category=smart-clocks"
-                  className="w-full sm:w-auto min-h-[48px] px-8 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 active:scale-95 border border-white/20 text-white font-semibold text-sm transition-all duration-300 backdrop-blur-md flex items-center justify-center"
+                  className="w-full sm:w-auto min-h-[46px] sm:min-h-[48px] px-8 py-3 rounded-xl bg-white/10 hover:bg-white/15 active:scale-95 border border-white/20 text-white font-semibold text-sm transition-all duration-300 backdrop-blur-md flex items-center justify-center"
                 >
                   Explore Clocks
                 </Link>
               </div>
 
               {/* Trust Badges in Hero */}
-              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 text-xs text-slate-300">
-                <div className="flex items-center gap-2 justify-center lg:justify-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4 sm:pt-6 border-t border-white/10 text-[11px] sm:text-xs text-slate-300">
+                <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 justify-center lg:justify-start text-center sm:text-left">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                   <span>Cash on Delivery</span>
                 </div>
-                <div className="flex items-center gap-2 justify-center lg:justify-start">
-                  <Truck className="w-4 h-4 text-sky-400" />
-                  <span>24-48h Dhaka Delivery</span>
+                <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 justify-center lg:justify-start text-center sm:text-left">
+                  <Truck className="w-4 h-4 text-sky-400 flex-shrink-0" />
+                  <span>24-48h Dhaka</span>
                 </div>
-                <div className="flex items-center gap-2 justify-center lg:justify-start">
-                  <ShieldCheck className="w-4 h-4 text-amber-400" />
+                <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 justify-center lg:justify-start text-center sm:text-left">
+                  <ShieldCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
                   <span>Official Warranty</span>
                 </div>
               </div>
@@ -137,50 +137,50 @@ export default async function HomePage() {
 
             {/* Right Interactive Mockup Card */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md bg-slate-800/80 border border-slate-700/80 rounded-3xl p-6 shadow-2xl backdrop-blur-xl space-y-6">
-                <div className="flex items-center justify-between border-b border-slate-700 pb-4">
+              <div className="relative w-full max-w-xs sm:max-w-md bg-slate-800/80 border border-slate-700/80 rounded-3xl p-4 sm:p-6 shadow-2xl backdrop-blur-xl space-y-4 sm:space-y-6">
+                <div className="flex items-center justify-between border-b border-slate-700 pb-3 sm:pb-4">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-rose-500" />
-                    <span className="w-3 h-3 rounded-full bg-amber-500" />
-                    <span className="w-3 h-3 rounded-full bg-emerald-500" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
                   </div>
-                  <span className="text-xs font-mono text-slate-400">ATMODESK CLOCK OS</span>
+                  <span className="text-[10px] sm:text-xs font-mono text-slate-400">ATMODESK CLOCK OS</span>
                 </div>
 
                 {/* Clock Face Mockup */}
-                <div className="bg-slate-950 rounded-2xl p-6 text-center border border-slate-800 space-y-3 relative overflow-hidden">
-                  <div className="absolute top-2 right-3 flex items-center gap-1 text-[10px] text-emerald-400">
+                <div className="bg-slate-950 rounded-2xl p-4 sm:p-6 text-center border border-slate-800 space-y-2 sm:space-y-3 relative overflow-hidden">
+                  <div className="absolute top-2 right-3 flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     WiFi Connected
                   </div>
-                  <div className="text-5xl sm:text-6xl font-mono font-bold tracking-widest text-sky-400">
+                  <div className="text-4xl sm:text-6xl font-mono font-bold tracking-widest text-sky-400">
                     12:45
                   </div>
-                  <div className="text-xs font-medium text-slate-400 uppercase tracking-widest">
+                  <div className="text-[11px] sm:text-xs font-medium text-slate-400 uppercase tracking-widest">
                     Wednesday · Dhaka, BD
                   </div>
-                  <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-800 text-xs">
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-2.5 sm:pt-3 border-t border-slate-800 text-xs">
                     <div>
-                      <span className="text-slate-500 block text-[10px]">TEMP</span>
-                      <strong className="text-amber-400 text-sm">28°C</strong>
+                      <span className="text-slate-500 block text-[9px] sm:text-[10px]">TEMP</span>
+                      <strong className="text-amber-400 text-xs sm:text-sm">28°C</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-[10px]">HUMIDITY</span>
-                      <strong className="text-teal-400 text-sm">65%</strong>
+                      <span className="text-slate-500 block text-[9px] sm:text-[10px]">HUMIDITY</span>
+                      <strong className="text-teal-400 text-xs sm:text-sm">65%</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-[10px]">AIR (AQI)</span>
-                      <strong className="text-emerald-400 text-sm">48 Good</strong>
+                      <span className="text-slate-500 block text-[9px] sm:text-[10px]">AIR (AQI)</span>
+                      <strong className="text-emerald-400 text-xs sm:text-sm">48 Good</strong>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-slate-300 bg-white/5 p-3 rounded-xl">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-sky-400" />
-                    <span>Featured: <strong>Pixel Weather Clock Pro</strong></span>
+                <div className="flex items-center justify-between text-xs text-slate-300 bg-white/5 p-2.5 sm:p-3 rounded-xl">
+                  <div className="flex items-center gap-2 truncate">
+                    <Clock className="w-4 h-4 text-sky-400 flex-shrink-0" />
+                    <span className="truncate">Featured: <strong>Pixel Weather Clock Pro</strong></span>
                   </div>
-                  <span className="text-emerald-400 font-bold">{formatBDT(2999)}</span>
+                  <span className="text-emerald-400 font-bold ml-2 flex-shrink-0">{formatBDT(2999)}</span>
                 </div>
               </div>
             </div>
@@ -188,61 +188,62 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── 2. CATEGORIES GRID ─────────────────────────────────── */}
+      {/* --- 2. CATEGORIES GRID ----------------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between mb-8">
+        <div className="flex items-end justify-between mb-4 sm:mb-8">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Explore Collections</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+            <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-sky-600">Explore Collections</span>
+            <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 sm:mt-1">
               Shop by Category
             </h2>
           </div>
           <Link
             href="/products"
-            className="text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
+            className="text-xs sm:text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
           >
-            All Categories <ArrowRight className="w-4 h-4" />
+            All Categories <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+        {/* Swipeable on mobile, grid on desktop */}
+        <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
           {categories.map((c) => (
             <Link
               key={c.id}
               href={`/products?category=${c.slug}`}
-              className="group p-4 sm:p-5 glass-card hover:border-sky-400 hover:shadow-lg hover:shadow-sky-100/60 rounded-2xl transition-all duration-300 flex flex-col items-center text-center space-y-2 hover:-translate-y-1"
+              className="group min-w-[130px] sm:min-w-0 snap-start p-3 sm:p-5 glass-card hover:border-sky-400 hover:shadow-xl hover:shadow-sky-100/60 rounded-2xl transition-all duration-300 flex flex-col items-center text-center space-y-1.5 sm:space-y-2 hover:-translate-y-1 flex-shrink-0 sm:flex-shrink active:scale-95"
             >
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition duration-300 shadow-xs">
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl sm:text-2xl group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition duration-300 shadow-xs">
                 <Layers className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <h3 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-sky-600 transition">
+              <h3 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-sky-600 transition truncate max-w-full">
                 {c.name}
               </h3>
-              <span className="text-[11px] sm:text-xs text-slate-400 font-medium">Explore →</span>
+              <span className="text-[10px] sm:text-xs text-slate-400 font-semibold">Explore →</span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ─── 3. FEATURED PRODUCTS ──────────────────────────────── */}
+      {/* --- 3. FEATURED PRODUCTS -------------------------------- */}
       {featuredProducts.length > 0 ? (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-8">
+          <div className="flex items-end justify-between mb-4 sm:mb-8">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Handpicked Quality</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+              <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-sky-600">Handpicked Quality</span>
+              <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 sm:mt-1">
                 Featured Desk Gadgets
               </h2>
             </div>
             <Link
               href="/products"
-              className="text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
+              className="text-xs sm:text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
             >
-              View All <ArrowRight className="w-4 h-4" />
+              View All <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {featuredProducts.map((p) => (
               <ProductCard key={p.id} {...p} />
             ))}
@@ -270,7 +271,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ─── 4. PROMOTIONAL BANNER ─────────────────────────────── */}
+      {/* --- 4. PROMOTIONAL BANNER ------------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-700 p-8 sm:p-12 text-white shadow-xl">
           <div className="max-w-2xl space-y-4">
@@ -295,27 +296,27 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── 5. BEST SELLERS (if products exist) ───────────────── */}
+      {/* --- 5. BEST SELLERS (if products exist) ----------------- */}
       {bestSellers.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-8">
+          <div className="flex items-end justify-between mb-4 sm:mb-8">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-600 flex items-center gap-1">
+              <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-amber-600 flex items-center gap-1">
                 <TrendingUp className="w-3.5 h-3.5" /> Customer Favorites
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+              <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 sm:mt-1">
                 Best Selling Tech
               </h2>
             </div>
             <Link
               href="/products"
-              className="text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
+              className="text-xs sm:text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
             >
-              See More <ArrowRight className="w-4 h-4" />
+              See More <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {bestSellers.map((p) => (
               <ProductCard key={p.id} {...p} />
             ))}
@@ -323,25 +324,25 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ─── 6. NEW ARRIVALS (if products exist) ───────────────── */}
+      {/* --- 6. NEW ARRIVALS (if products exist) ----------------- */}
       {newArrivals.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-8">
+          <div className="flex items-end justify-between mb-4 sm:mb-8">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Fresh Drops</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+              <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-sky-600">Fresh Drops</span>
+              <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 sm:mt-1">
                 New Arrivals This Week
               </h2>
             </div>
             <Link
               href="/products"
-              className="text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
+              className="text-xs sm:text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1"
             >
-              Browse All <ArrowRight className="w-4 h-4" />
+              Browse All <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {newArrivals.map((p) => (
               <ProductCard key={p.id} {...p} />
             ))}
@@ -349,26 +350,26 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ─── 7. CUSTOMER REVIEWS ───────────────────────────────── */}
-      <section className="bg-slate-100 py-16">
+      {/* --- 7. CUSTOMER REVIEWS --------------------------------- */}
+      <section className="bg-slate-100/70 backdrop-blur-md py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-sky-600">What Bangladesh is Saying</span>
-            <h2 className="text-3xl font-extrabold text-slate-900">Loved by Tech Enthusiasts</h2>
-            <p className="text-slate-600 text-sm">Real reviews from our verified customers in Dhaka, Chittagong, and Sylhet.</p>
+          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12 space-y-1.5 sm:space-y-2">
+            <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-sky-600">What Bangladesh is Saying</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">Loved by Tech Enthusiasts</h2>
+            <p className="text-slate-600 text-xs sm:text-sm">Real reviews from our verified customers in Dhaka, Chittagong, and Sylhet.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass-card p-6 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
+          <div className="flex md:grid md:grid-cols-3 gap-3.5 sm:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar pb-3 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="min-w-[280px] sm:min-w-[320px] md:min-w-0 snap-start flex-shrink-0 md:flex-shrink glass-card p-5 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400" />
                 ))}
               </div>
-              <p className="text-sm text-slate-700 italic">
+              <p className="text-xs sm:text-sm text-slate-700 italic">
                 &ldquo;The Pixel Weather Clock Pro is insane! Connects to my home WiFi easily and shows accurate Dhaka temperature and AQI. Everyone on my Zoom calls asks about it.&rdquo;
               </p>
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] sm:text-xs">
                 <span className="font-bold text-slate-900">Tanvir Hasan</span>
                 <span className="text-emerald-600 font-semibold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Verified (Gulshan, Dhaka)
@@ -376,16 +377,16 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="glass-card p-6 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
+            <div className="min-w-[280px] sm:min-w-[320px] md:min-w-0 snap-start flex-shrink-0 md:flex-shrink glass-card p-5 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400" />
                 ))}
               </div>
-              <p className="text-sm text-slate-700 italic">
+              <p className="text-xs sm:text-sm text-slate-700 italic">
                 &ldquo;Ordered via Cash on Delivery to Chittagong. Arrived in 3 days in solid bubble wrap packaging. The Retro Flip Clock looks super aesthetic on my walnut desk.&rdquo;
               </p>
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] sm:text-xs">
                 <span className="font-bold text-slate-900">Mahmudul Karim</span>
                 <span className="text-emerald-600 font-semibold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Verified (Chittagong)
@@ -393,16 +394,16 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="glass-card p-6 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
+            <div className="min-w-[280px] sm:min-w-[320px] md:min-w-0 snap-start flex-shrink-0 md:flex-shrink glass-card p-5 sm:p-7 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 space-y-3">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400" />
                 ))}
               </div>
-              <p className="text-sm text-slate-700 italic">
+              <p className="text-xs sm:text-sm text-slate-700 italic">
                 &ldquo;Great customer support on WhatsApp. They guided me through the 2.4GHz WiFi setup in 2 minutes. 10/10 store!&rdquo;
               </p>
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] sm:text-xs">
                 <span className="font-bold text-slate-900">Farzana Rahman</span>
                 <span className="text-emerald-600 font-semibold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Verified (Uttara, Dhaka)
@@ -413,7 +414,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── 8. NEWSLETTER ─────────────────────────────────────── */}
+      {/* --- 8. NEWSLETTER --------------------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto space-y-4 border border-slate-800">
           <span className="text-xs font-bold uppercase tracking-wider text-sky-400">Join the Community</span>

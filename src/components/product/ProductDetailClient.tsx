@@ -1,11 +1,13 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { formatBDT } from '@/lib/utils'
 import { useCart } from '@/store/cart'
 import { useWishlist } from '@/store/wishlist'
 import { useToast } from '@/components/shared/Providers'
+import { useRecentlyViewed } from '@/store/recently-viewed'
+import { RecentlyViewed } from '@/components/product/RecentlyViewed'
 import {
   ShoppingBag,
   Heart,
@@ -54,12 +56,27 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState<'desc' | 'specs' | 'shipping'>('desc')
 
+  const { addProduct } = useRecentlyViewed()
   const isSaved = isWishlisted(product.id)
   const isOutOfStock = product.stock <= 0
 
   const currentPrice = selectedVariant?.price || product.price
   const images = product.images.length > 0 ? product.images : [{ id: '1', url: '/placeholder-product.jpg', isPrimary: true }]
   const activeImage = images[activeImageIndex]?.url || images[0]?.url
+
+  useEffect(() => {
+    if (product.id) {
+      addProduct({
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: currentPrice,
+        originalPrice: product.originalPrice || undefined,
+        image: activeImage,
+        categoryName: product.category?.name,
+      })
+    }
+  }, [product.id, currentPrice, activeImage])
 
   const handleAddToCart = () => {
     if (isOutOfStock) return
@@ -100,7 +117,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-      {/* ─── LEFT: IMAGE GALLERY ─────────────────────────────── */}
+      {/* --- LEFT: IMAGE GALLERY ------------------------------- */}
       <div className="lg:col-span-6 space-y-4">
         {/* Main Display Image with Zoom preview */}
         <div className="relative aspect-square w-full bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs flex items-center justify-center p-4">
@@ -162,7 +179,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
         )}
       </div>
 
-      {/* ─── RIGHT: PRODUCT DETAILS & BUY ACTIONS ────────────── */}
+      {/* --- RIGHT: PRODUCT DETAILS & BUY ACTIONS -------------- */}
       <div className="lg:col-span-6 space-y-6">
         <div>
           {product.category && (
@@ -471,6 +488,11 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Recently Viewed Products Component */}
+      <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200/80">
+        <RecentlyViewed />
       </div>
     </div>
   )

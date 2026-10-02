@@ -132,7 +132,7 @@ export function ContactClient() {
 
       {/* Main Grid: Left Form & Right Contact Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* ─── LEFT COLUMN: CONTACT FORM ───────────────────────── */}
+        {/* --- LEFT COLUMN: CONTACT FORM ------------------------- */}
         <div className="lg:col-span-7">
           <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xs relative">
             <div className="space-y-2 mb-8">
@@ -329,7 +329,7 @@ export function ContactClient() {
           </div>
         </div>
 
-        {/* ─── RIGHT COLUMN: CONTACT INFO CARDS ────────────────── */}
+        {/* --- RIGHT COLUMN: CONTACT INFO CARDS ------------------ */}
         <div className="lg:col-span-5 space-y-4">
           {/* Quick Direct Chat Cards */}
           <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-md">
@@ -459,7 +459,7 @@ export function ContactClient() {
         </div>
       </div>
 
-      {/* ─── BOTTOM SECTION: GOOGLE MAPS EMBED / LOCATION ─────── */}
+      {/* --- BOTTOM SECTION: GOOGLE MAPS EMBED / LOCATION ------- */}
       <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xs">
         <div className="p-6 sm:p-8 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">

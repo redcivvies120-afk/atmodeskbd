@@ -132,9 +132,36 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
       </div>
 
+      {/* Mobile Horizontal Category Pills */}
+      <div className="lg:hidden flex items-center gap-2 overflow-x-auto snap-x no-scrollbar pb-1 -mx-4 px-4">
+        <Link
+          href="/products"
+          className={`flex-shrink-0 snap-start px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+            !categorySlug
+              ? 'bg-sky-600 text-white shadow-xs'
+              : 'bg-white/80 border border-slate-200 text-slate-700 hover:bg-slate-100'
+          }`}
+        >
+          All
+        </Link>
+        {categories.map((c) => (
+          <Link
+            key={c.id}
+            href={`/products?category=${c.slug}`}
+            className={`flex-shrink-0 snap-start px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+              categorySlug === c.slug
+                ? 'bg-sky-600 text-white shadow-xs'
+                : 'bg-white/80 border border-slate-200 text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            {c.name}
+          </Link>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Sidebar Filters */}
-        <aside className="space-y-6 lg:border-r lg:border-slate-200 lg:pr-6">
+        {/* Sidebar Filters - Desktop only */}
+        <aside className="hidden lg:block space-y-6 lg:border-r lg:border-slate-200 lg:pr-6">
           {/* Category Filter */}
           <div className="space-y-3">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
@@ -239,7 +266,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {products.map((p) => (
                 <ProductCard key={p.id} {...p} />
               ))}

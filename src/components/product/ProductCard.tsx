@@ -167,37 +167,37 @@ export function ProductCard({
       </Link>
 
       {/* Product Info */}
-      <div className="p-4 flex flex-col flex-1">
+      <div className="p-3 sm:p-4 flex flex-col flex-1">
         {category && (
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-sky-600 mb-1">
+          <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-sky-600 mb-1 truncate">
             {category.name}
           </span>
         )}
 
         <Link href={`/product/${slug}`} className="group-hover:text-sky-600 transition">
-          <h3 className="font-semibold text-sm text-slate-900 line-clamp-2 leading-snug mb-1.5">
+          <h3 className="font-semibold text-xs sm:text-sm text-slate-900 line-clamp-2 leading-tight sm:leading-snug mb-1.5 min-h-[2rem] sm:min-h-[2.5rem]">
             {name}
           </h3>
         </Link>
 
         {/* Ratings */}
-        <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3">
+        <div className="flex items-center gap-1 text-[11px] sm:text-xs text-slate-500 mb-2.5">
           <div className="flex items-center text-amber-400">
-            <Star className="w-3.5 h-3.5 fill-amber-400" />
-            <span className="font-bold text-slate-800 ml-1 text-xs">{rating.toFixed(1)}</span>
+            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400" />
+            <span className="font-bold text-slate-800 ml-1">{rating.toFixed(1)}</span>
           </div>
           <span>·</span>
-          <span>{reviewCount} reviews</span>
+          <span className="truncate">{reviewCount} reviews</span>
         </div>
 
         {/* Pricing & Cart Action */}
-        <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between">
+        <div className="mt-auto pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1">
           <div>
-            <div className="text-base font-extrabold text-slate-900">
+            <div className="text-sm sm:text-base font-black text-slate-900">
               {formatBDT(price)}
             </div>
             {originalPrice && originalPrice > price ? (
-              <div className="text-xs text-slate-400 line-through">
+              <div className="text-[10px] sm:text-xs text-slate-400 line-through">
                 {formatBDT(originalPrice)}
               </div>
             ) : null}
@@ -206,14 +206,15 @@ export function ProductCard({
           <button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className={`flex items-center justify-center w-9 h-9 rounded-xl transition ${
+            className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-xl transition-all duration-200 ${
               isOutOfStock
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                : 'bg-sky-600 hover:bg-sky-700 text-white shadow-sm shadow-sky-600/20 active:scale-95'
+                : 'bg-sky-600 hover:bg-sky-700 active:scale-90 text-white shadow-sm shadow-sky-600/30'
             }`}
             title="Add to cart"
+            aria-label="Add to cart"
           >
-            <ShoppingBag className="w-4 h-4" />
+            <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
       </div>

@@ -251,7 +251,7 @@ export default function FAQPage() {
 
   return (
     <div className="space-y-12 sm:space-y-16 pb-20">
-      {/* ─── 1. HERO SECTION ───────────────────────────────────── */}
+      {/* --- 1. HERO SECTION ------------------------------------- */}
       <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white pt-14 pb-20 md:py-24">
         {/* Ambient Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -302,7 +302,7 @@ export default function FAQPage() {
         </div>
       </section>
 
-      {/* ─── 2. MAIN ACCORDION CONTENT ─────────────────────────── */}
+      {/* --- 2. MAIN ACCORDION CONTENT --------------------------- */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Category Tabs & Expand Controls */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
@@ -501,7 +501,7 @@ export default function FAQPage() {
         </div>
       </section>
 
-      {/* ─── 3. STILL NEED HELP CTA BANNER ─────────────────────── */}
+      {/* --- 3. STILL NEED HELP CTA BANNER ----------------------- */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-800 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />

@@ -11,6 +11,7 @@ export interface RecentlyViewedProduct {
   image: string
   price: number
   originalPrice?: number | null
+  categoryName?: string | null
 }
 
 interface RecentlyViewedStore {
