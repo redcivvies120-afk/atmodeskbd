@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { generateOrderNumber, isValidBDPhone } from '@/lib/utils'
 import { ensureDatabaseTables } from '@/lib/init-db'
-import { sendOrderConfirmationSMS } from '@/lib/sms'
 
 export async function POST(req: Request) {
   try {
@@ -204,20 +203,7 @@ export async function POST(req: Request) {
       })
     }
 
-    // 9. Send Automated Order Confirmation SMS
-    try {
-      await sendOrderConfirmationSMS({
-        phone,
-        customerName: fullName,
-        orderNumber: order.orderNumber,
-        total: order.total,
-        orderId: order.id,
-      })
-    } catch (smsErr) {
-      console.warn('[Checkout SMS Notification Warning]', smsErr)
-    }
-
-    // 10. Generate WhatsApp notification message for admin
+    // 9. Generate WhatsApp notification message for admin
     const itemsList = orderItemsData.map((i: any) => `• ${i.name} x${i.quantity} = ৳${i.total}`).join('\n')
     const adminWhatsAppMsg = encodeURIComponent(
       `🛒 NEW ORDER #${orderNumber}\n\n` +

@@ -86,7 +86,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
                 <th className="py-3.5 px-4">Items</th>
                 <th className="py-3.5 px-4">Total (BDT)</th>
                 <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4">Logistics & Actions</th>
+                <th className="py-3.5 px-4">Invoice & Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">

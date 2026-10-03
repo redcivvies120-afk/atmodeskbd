@@ -11,24 +11,15 @@ import {
   Package,
   MessageCircle,
   Printer,
-  Truck,
-  Send,
   ExternalLink,
-  Loader2,
-  CheckCircle2,
 } from 'lucide-react'
 
 export function OrderRowClient({ order }: { order: any }) {
   const { toast } = useToast()
   const [status, setStatus] = useState(order.status)
   const [trackingNumber, setTrackingNumber] = useState(order.trackingNumber || '')
-  const [shippingMethod, setShippingMethod] = useState(order.shippingMethod || '')
   const [isUpdating, setIsUpdating] = useState(false)
-  const [isDispatching, setIsDispatching] = useState<string | null>(null) // 'steadfast' | 'pathao' | null
-  const [isSendingSMS, setIsSendingSMS] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
-  const [smsType, setSmsType] = useState<'CONFIRM' | 'SHIPPED' | 'DELIVERED' | 'CUSTOM'>('CONFIRM')
-  const [customSms, setCustomSms] = useState('')
 
   const handleStatusChange = async (newStatus: string) => {
     setStatus(newStatus)
@@ -65,61 +56,6 @@ export function OrderRowClient({ order }: { order: any }) {
     }
   }
 
-  // 1-Click Courier Dispatch
-  const handleCourierDispatch = async (courier: 'steadfast' | 'pathao') => {
-    setIsDispatching(courier)
-    try {
-      const res = await fetch(`/api/admin/orders/${order.id}/courier`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courier }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Failed to dispatch to courier')
-
-      setTrackingNumber(data.trackingCode)
-      setStatus('SHIPPED')
-      setShippingMethod(data.courierName)
-      toast(
-        `Dispatched via ${data.courierName}! Consignment: ${data.trackingCode} ${
-          data.simulated ? '(Simulation Mode)' : ''
-        }`
-      )
-    } catch (err: any) {
-      toast(err.message || 'Courier dispatch failed', 'error')
-    } finally {
-      setIsDispatching(null)
-    }
-  }
-
-  // Send Automated or Custom SMS
-  const handleSendSMS = async (type: 'CONFIRM' | 'SHIPPED' | 'DELIVERED' | 'CUSTOM') => {
-    setIsSendingSMS(true)
-    try {
-      const res = await fetch(`/api/admin/orders/${order.id}/sms`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type,
-          customMessage: type === 'CUSTOM' ? customSms : undefined,
-        }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Failed to send SMS')
-
-      toast(
-        `SMS sent to customer! (${data.provider || 'Gateway'}) ${
-          data.simulated ? '[Simulated]' : ''
-        }`
-      )
-      if (type === 'CUSTOM') setCustomSms('')
-    } catch (err: any) {
-      toast(err.message || 'Failed to send SMS', 'error')
-    } finally {
-      setIsSendingSMS(false)
-    }
-  }
-
   const addr = order.address
   const phone = addr?.phone || ''
   const waPhone = phone.startsWith('0') ? '88' + phone : phone.replace('+', '')
@@ -135,16 +71,6 @@ export function OrderRowClient({ order }: { order: any }) {
   ]
     .filter(Boolean)
     .join(', ')
-
-  // Compute courier tracking URL
-  let courierTrackUrl = ''
-  if (trackingNumber) {
-    if (shippingMethod?.toLowerCase().includes('pathao') || trackingNumber.startsWith('PTH')) {
-      courierTrackUrl = `https://merchant.pathao.com/tracking?consignment_id=${trackingNumber}`
-    } else {
-      courierTrackUrl = `https://steadfast.com.bd/tracking/${trackingNumber}`
-    }
-  }
 
   return (
     <>
@@ -184,7 +110,7 @@ export function OrderRowClient({ order }: { order: any }) {
           </span>
           <span className="text-[11px] text-sky-600 flex items-center gap-0.5 mt-0.5 font-medium">
             {showDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-            {showDetails ? 'Hide details' : 'View & Dispatch'}
+            {showDetails ? 'Hide details' : 'View details'}
           </span>
         </td>
 
@@ -216,58 +142,34 @@ export function OrderRowClient({ order }: { order: any }) {
           </select>
         </td>
 
-        {/* Logistics & Actions */}
+        {/* Printable Invoice & Tracking Actions */}
         <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-          <div className="flex flex-col gap-1.5 min-w-[170px]">
-            {/* Quick Actions Bar */}
-            <div className="flex items-center gap-1.5">
-              <a
-                href={`/admin/orders/${order.id}/invoice`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Print Invoice & Packing Slip (A4)"
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold shadow-xs transition"
-              >
-                <Printer className="w-3 h-3" />
-                Invoice
-              </a>
+          <div className="flex items-center gap-2">
+            {/* Direct Printable Invoice Button */}
+            <a
+              href={`/admin/orders/${order.id}/invoice`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open Printable A4 Invoice & Packing Slip"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition"
+            >
+              <Printer className="w-3.5 h-3.5 text-sky-400" />
+              Invoice
+            </a>
 
-              {trackingNumber ? (
-                <a
-                  href={courierTrackUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Track consignment with courier"
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 text-[11px] font-mono font-bold transition"
-                >
-                  <Truck className="w-3 h-3" />
-                  {trackingNumber}
-                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
-                </a>
-              ) : (
-                <button
-                  onClick={() => setShowDetails(true)}
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-[10px] font-bold transition"
-                >
-                  <Truck className="w-3 h-3" />
-                  Dispatch
-                </button>
-              )}
-            </div>
-
-            {/* Manual Tracking Save Field */}
+            {/* Manual Tracking Save */}
             <div className="flex items-center gap-1">
               <input
                 type="text"
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value)}
-                placeholder="Tracking code..."
-                className="w-28 px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-[10px] outline-none font-mono"
+                placeholder="Tracking ID..."
+                className="w-24 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-[10px] outline-none font-mono"
               />
               <button
                 onClick={handleSaveTracking}
                 disabled={isUpdating}
-                className="px-1.5 py-0.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-[10px] font-semibold rounded"
+                className="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-slate-800 text-[10px] font-bold rounded-lg transition"
               >
                 Save
               </button>
@@ -359,147 +261,32 @@ export function OrderRowClient({ order }: { order: any }) {
                 </div>
               </div>
 
-              {/* Bangladesh Operations & Automation Bar */}
-              <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* 1. Courier 1-Click Dispatch */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h5 className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
-                        <Truck className="w-4 h-4 text-sky-600" />
-                        1-Click Courier Dispatch
-                      </h5>
-                      {trackingNumber && (
-                        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full font-mono text-[10px] font-bold">
-                          Dispatched
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[11px] text-slate-500">
-                      Create consignment with API and auto-notify customer via SMS.
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      <button
-                        onClick={() => handleCourierDispatch('steadfast')}
-                        disabled={isDispatching !== null}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition disabled:opacity-50 cursor-pointer"
-                      >
-                        {isDispatching === 'steadfast' ? (
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        ) : (
-                          <Truck className="w-3.5 h-3.5" />
-                        )}
-                        Steadfast Courier
-                      </button>
-
-                      <button
-                        onClick={() => handleCourierDispatch('pathao')}
-                        disabled={isDispatching !== null}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs transition disabled:opacity-50 cursor-pointer"
-                      >
-                        {isDispatching === 'pathao' ? (
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        ) : (
-                          <Truck className="w-3.5 h-3.5" />
-                        )}
-                        Pathao Courier
-                      </button>
-                    </div>
-
-                    {trackingNumber && (
-                      <div className="mt-2 p-2 bg-slate-50 border border-slate-200 rounded-xl text-[11px] flex items-center justify-between">
-                        <span className="font-mono text-slate-700">Code: <strong>{trackingNumber}</strong></span>
-                        <a
-                          href={courierTrackUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sky-600 hover:underline font-bold inline-flex items-center gap-0.5"
-                        >
-                          Live Tracking <ExternalLink className="w-2.5 h-2.5" />
-                        </a>
-                      </div>
-                    )}
+              {/* Printable Invoice & Packing Slip Section */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-sky-400 flex-shrink-0">
+                    <Printer className="w-5 h-5" />
                   </div>
-
-                  {/* 2. Customer SMS Notifications */}
-                  <div className="space-y-2">
-                    <h5 className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
-                      <Send className="w-4 h-4 text-emerald-600" />
-                      Instant SMS Dispatch
+                  <div>
+                    <h5 className="font-bold text-slate-900 text-sm">
+                      Printable Tax Invoice & Packing Slip (A4)
                     </h5>
-                    <p className="text-[11px] text-slate-500">
-                      Send order updates straight to {phone || 'customer'}.
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Includes ATMODESK branding, customer address, barcode, COD breakdown, and 7-day warranty stamp.
                     </p>
-
-                    <div className="grid grid-cols-3 gap-1.5 pt-1">
-                      <button
-                        onClick={() => handleSendSMS('CONFIRM')}
-                        disabled={isSendingSMS}
-                        className="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-[10px] font-bold transition text-center"
-                      >
-                        Confirmed
-                      </button>
-                      <button
-                        onClick={() => handleSendSMS('SHIPPED')}
-                        disabled={isSendingSMS}
-                        className="px-2 py-1.5 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold transition text-center"
-                      >
-                        Dispatched
-                      </button>
-                      <button
-                        onClick={() => handleSendSMS('DELIVERED')}
-                        disabled={isSendingSMS}
-                        className="px-2 py-1.5 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[10px] font-bold transition text-center"
-                      >
-                        Delivered
-                      </button>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 pt-1">
-                      <input
-                        type="text"
-                        value={customSms}
-                        onChange={(e) => setCustomSms(e.target.value)}
-                        placeholder="Custom SMS text..."
-                        className="flex-1 px-2.5 py-1 text-[11px] bg-slate-50 border border-slate-200 rounded-lg outline-none"
-                      />
-                      <button
-                        onClick={() => handleSendSMS('CUSTOM')}
-                        disabled={isSendingSMS || !customSms.trim()}
-                        className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold rounded-lg disabled:opacity-50"
-                      >
-                        Send
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* 3. Printable Invoice & Packing Slip */}
-                  <div className="space-y-2 flex flex-col justify-between">
-                    <div>
-                      <h5 className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
-                        <Printer className="w-4 h-4 text-slate-700" />
-                        Printable Invoice & Packing Slip
-                      </h5>
-                      <p className="text-[11px] text-slate-500">
-                        Official A4 tax invoice with customer address, COD stamp & barcode for courier pickup.
-                      </p>
-                    </div>
-
-                    <div className="pt-2">
-                      <a
-                        href={`/admin/orders/${order.id}/invoice`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm"
-                      >
-                        <Printer className="w-4 h-4 text-sky-400" />
-                        Open Printable A4 Invoice
-                        <ExternalLink className="w-3 h-3 opacity-60" />
-                      </a>
-                    </div>
                   </div>
                 </div>
+
+                <a
+                  href={`/admin/orders/${order.id}/invoice`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition whitespace-nowrap"
+                >
+                  <Printer className="w-4 h-4 text-sky-400" />
+                  Open & Print Invoice
+                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                </a>
               </div>
             </div>
           </td>
