@@ -56,7 +56,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0] || null)
   const [quantity, setQuantity] = useState(1)
-  const [activeTab, setActiveTab] = useState<'desc' | 'specs' | 'shipping' | 'reviews'>('desc')
+  const [activeTab, setActiveTab] = useState<'desc' | 'specs' | 'shipping'>('desc')
   const [rating, setRating] = useState(product.rating || 4.9)
   const [reviewCount, setReviewCount] = useState(product.reviewCount || product.reviews?.length || 0)
 
@@ -120,9 +120,11 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-      {/* --- LEFT: IMAGE GALLERY ------------------------------- */}
-      <div className="lg:col-span-6 space-y-4">
+    <div className="space-y-12 sm:space-y-16">
+      {/* --- TOP: PRODUCT HERO (Gallery + Buy Box) -------------- */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* --- LEFT: IMAGE GALLERY ------------------------------- */}
+        <div className="lg:col-span-6 space-y-4 lg:sticky lg:top-24">
         {/* Main Display Image with Zoom preview */}
         <div className="relative aspect-square w-full bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs flex items-center justify-center p-4">
           <img
@@ -226,8 +228,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             <button
               type="button"
               onClick={() => {
-                setActiveTab('reviews')
-                const el = document.getElementById('customer-reviews-tab') || document.getElementById('product-tabs')
+                const el = document.getElementById('customer-reviews-section')
                 el?.scrollIntoView({ behavior: 'smooth' })
               }}
               className="text-xs text-sky-600 hover:text-sky-700 font-semibold hover:underline cursor-pointer flex items-center gap-1"
@@ -423,151 +424,136 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             </div>
           </div>
         </div>
+      </div>
+    </div>
 
-        {/* Information Tabs */}
-        <div id="product-tabs" className="border-t border-slate-200 pt-6 space-y-4">
-          <div className="flex border-b border-slate-200 gap-4 sm:gap-6 text-sm font-bold overflow-x-auto no-scrollbar">
-            <button
-              onClick={() => setActiveTab('desc')}
-              className={`pb-3 border-b-2 transition whitespace-nowrap ${
-                activeTab === 'desc'
-                  ? 'border-sky-600 text-sky-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Description &amp; Features
-            </button>
-            <button
-              onClick={() => setActiveTab('specs')}
-              className={`pb-3 border-b-2 transition whitespace-nowrap ${
-                activeTab === 'specs'
-                  ? 'border-sky-600 text-sky-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Specifications
-            </button>
-            <button
-              onClick={() => setActiveTab('shipping')}
-              className={`pb-3 border-b-2 transition whitespace-nowrap ${
-                activeTab === 'shipping'
-                  ? 'border-sky-600 text-sky-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Shipping &amp; Warranty
-            </button>
-            <button
-              id="customer-reviews-tab"
-              onClick={() => setActiveTab('reviews')}
-              className={`pb-3 border-b-2 transition whitespace-nowrap flex items-center gap-1.5 ${
-                activeTab === 'reviews'
-                  ? 'border-sky-600 text-sky-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              <span>Customer Reviews</span>
-              <span className="px-2 py-0.5 rounded-full text-xs bg-sky-100 text-sky-700 font-bold">
-                {reviewCount}
-              </span>
-            </button>
-          </div>
+      {/* --- INFORMATION TABS (Description, Specs, Delivery) ---- */}
+      <div id="product-tabs" className="border-t border-slate-200/80 pt-8 sm:pt-12 space-y-6">
+        <div className="flex border-b border-slate-200 gap-6 sm:gap-8 text-sm sm:text-base font-bold overflow-x-auto no-scrollbar">
+          <button
+            onClick={() => setActiveTab('desc')}
+            className={`pb-3 border-b-2 transition whitespace-nowrap cursor-pointer ${
+              activeTab === 'desc'
+                ? 'border-sky-600 text-sky-600'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            Description &amp; Features
+          </button>
+          <button
+            onClick={() => setActiveTab('specs')}
+            className={`pb-3 border-b-2 transition whitespace-nowrap cursor-pointer ${
+              activeTab === 'specs'
+                ? 'border-sky-600 text-sky-600'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            Technical Specifications
+          </button>
+          <button
+            onClick={() => setActiveTab('shipping')}
+            className={`pb-3 border-b-2 transition whitespace-nowrap cursor-pointer ${
+              activeTab === 'shipping'
+                ? 'border-sky-600 text-sky-600'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            Delivery &amp; Warranty
+          </button>
+        </div>
 
-          {/* Tab Content */}
-          <div className="text-sm text-slate-600 leading-relaxed">
-            {activeTab === 'desc' && (
-              <div className="space-y-3">
-                <p>{product.description}</p>
-                {product.details && (
-                  <div className="whitespace-pre-line bg-slate-50 p-4 rounded-xl font-mono text-xs text-slate-800 border border-slate-200/80">
-                    {product.details}
-                  </div>
-                )}
+        {/* Tab Content */}
+        <div className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-4xl">
+          {activeTab === 'desc' && (
+            <div className="space-y-4">
+              <p className="text-slate-700 leading-relaxed text-base">{product.description}</p>
+              {product.details && (
+                <div className="whitespace-pre-line bg-slate-50 p-5 rounded-2xl font-mono text-xs sm:text-sm text-slate-800 border border-slate-200/80 leading-relaxed">
+                  {product.details}
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'specs' && (
+            <div className="space-y-3">
+              {product.specs.length > 0 ? (
+                <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-xs divide-y divide-slate-100">
+                  {product.specs.map((s, idx) => (
+                    <div
+                      key={s.id}
+                      className={`grid grid-cols-1 sm:grid-cols-3 p-3.5 sm:p-4 text-xs sm:text-sm ${
+                        idx % 2 === 0 ? 'bg-slate-50/70' : 'bg-white'
+                      }`}
+                    >
+                      <span className="font-bold text-slate-700 sm:col-span-1">{s.key}</span>
+                      <span className="text-slate-900 sm:col-span-2 mt-0.5 sm:mt-0 font-medium">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-400 italic">No technical specifications listed for this product.</p>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'shipping' && (
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 space-y-4 text-slate-700 text-sm">
+              <div className="flex items-start gap-3">
+                <Truck className="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-slate-900 font-bold block">Courier &amp; Delivery Coverage:</strong>
+                  <span>Fast doorstep delivery across all 64 districts in Bangladesh via Pathao Courier and Steadfast. Inside Dhaka: 24–48 hours (৳60). Outside Dhaka: 3–5 days (৳120).</span>
+                </div>
               </div>
-            )}
-
-            {activeTab === 'specs' && (
-              <div className="space-y-2">
-                {product.specs.length > 0 ? (
-                  <div className="border border-slate-200 rounded-xl overflow-hidden">
-                    {product.specs.map((s, idx) => (
-                      <div
-                        key={s.id}
-                        className={`grid grid-cols-2 p-3 text-xs ${
-                          idx % 2 === 0 ? 'bg-slate-50' : 'bg-white'
-                        }`}
-                      >
-                        <span className="font-bold text-slate-700">{s.key}</span>
-                        <span className="text-slate-900">{s.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-slate-400 italic">No technical specifications listed for this product.</p>
-                )}
+              <div className="flex items-start gap-3 pt-3 border-t border-slate-100">
+                <ShieldCheck className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-slate-900 font-bold block">Service Warranty:</strong>
+                  <span>6 Months Official Service Warranty on smart clock displays, sensors, and microcontrollers.</span>
+                </div>
               </div>
-            )}
-
-            {activeTab === 'shipping' && (
-              <div className="space-y-2">
-                <p><strong>Courier:</strong> Pathao Courier, Steadfast, RedX</p>
-                <p><strong>Warranty:</strong> 6 Months Official Service Warranty on smart clock displays.</p>
-                <p><strong>Packaging:</strong> Custom cushioned bubble wrap &amp; sealed unboxing package.</p>
+              <div className="flex items-start gap-3 pt-3 border-t border-slate-100">
+                <RotateCcw className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-slate-900 font-bold block">Unboxing &amp; Return Policy:</strong>
+                  <span>Every unit is packaged with custom shock-absorbent bubble wrap. 7-day hassle-free replacement guarantee for defective items.</span>
+                </div>
               </div>
-            )}
-
-            {activeTab === 'reviews' && (
-              <div className="pt-2">
-                <ProductReviews
-                  productId={product.id}
-                  productName={product.name}
-                  initialRating={rating}
-                  initialReviewCount={reviewCount}
-                  initialReviews={product.reviews || []}
-                  onReviewAdded={(_newR, newRating, newCount) => {
-                    setRating(newRating)
-                    setReviewCount(newCount)
-                  }}
-                />
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Full-width Dedicated Reviews Showcase (visible when other tabs are active) */}
-      {activeTab !== 'reviews' && (
-        <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200/80 space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-              Customer Ratings &amp; Reviews ({reviewCount})
+      {/* --- DEDICATED CUSTOMER REVIEWS SHOWCASE (Full width) --- */}
+      <div id="customer-reviews-section" className="border-t border-slate-200/80 pt-10 sm:pt-14 space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+          <div>
+            <span className="text-xs font-extrabold uppercase tracking-wider text-sky-600">Verified Feedback</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+              Customer Ratings &amp; Reviews
             </h2>
-            <button
-              onClick={() => {
-                setActiveTab('reviews')
-                document.getElementById('product-tabs')?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="text-xs font-bold text-sky-600 hover:text-sky-700 cursor-pointer"
-            >
-              Focus in Tab ↑
-            </button>
           </div>
-          <ProductReviews
-            productId={product.id}
-            productName={product.name}
-            initialRating={rating}
-            initialReviewCount={reviewCount}
-            initialReviews={product.reviews || []}
-            onReviewAdded={(_newR, newRating, newCount) => {
-              setRating(newRating)
-              setReviewCount(newCount)
-            }}
-          />
+          <span className="text-xs font-semibold text-slate-500">
+            {reviewCount} verified reviews for {product.name}
+          </span>
         </div>
-      )}
 
-      {/* Recently Viewed Products Component */}
-      <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200/80">
+        <ProductReviews
+          productId={product.id}
+          productName={product.name}
+          initialRating={rating}
+          initialReviewCount={reviewCount}
+          initialReviews={product.reviews || []}
+          onReviewAdded={(_newR, newRating, newCount) => {
+            setRating(newRating)
+            setReviewCount(newCount)
+          }}
+        />
+      </div>
+
+      {/* --- RECENTLY VIEWED PRODUCTS (Full width) ------------- */}
+      <div className="border-t border-slate-200/80 pt-10 sm:pt-14">
         <RecentlyViewed />
       </div>
     </div>
