@@ -50,6 +50,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
         brand: true,
         variants: true,
         specs: true,
+        reviews: {
+          where: { isApproved: true },
+          orderBy: { createdAt: 'desc' },
+          include: {
+            user: {
+              select: { id: true, name: true, image: true },
+            },
+          },
+        },
       },
     })
 

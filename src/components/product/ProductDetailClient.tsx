@@ -22,6 +22,7 @@ import {
   Share2,
 } from 'lucide-react'
 import { BackInStockNotify } from '@/components/product/BackInStockNotify'
+import { ProductReviews, ReviewItem } from '@/components/product/ProductReviews'
 
 export interface ProductDetailProps {
   product: {
@@ -42,6 +43,7 @@ export interface ProductDetailProps {
     brand?: { id: string; name: string } | null
     variants: { id: string; name: string; value: string; price?: number | null; stock: number }[]
     specs: { id: string; key: string; value: string }[]
+    reviews?: ReviewItem[]
   }
 }
 
@@ -54,7 +56,9 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0] || null)
   const [quantity, setQuantity] = useState(1)
-  const [activeTab, setActiveTab] = useState<'desc' | 'specs' | 'shipping'>('desc')
+  const [activeTab, setActiveTab] = useState<'desc' | 'specs' | 'shipping' | 'reviews'>('desc')
+  const [rating, setRating] = useState(product.rating || 4.9)
+  const [reviewCount, setReviewCount] = useState(product.reviewCount || product.reviews?.length || 0)
 
   const { addProduct } = useRecentlyViewed()
   const isSaved = isWishlisted(product.id)
@@ -209,17 +213,28 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
                 <Star
                   key={i}
                   className={`w-4 h-4 ${
-                    i < Math.floor(product.rating)
+                    i < Math.floor(rating)
                       ? 'fill-amber-400'
-                      : i < product.rating
+                      : i < rating
                       ? 'fill-amber-300'
                       : 'text-slate-200'
                   }`}
                 />
               ))}
-              <span className="font-bold text-slate-900 ml-1.5 text-sm">{product.rating.toFixed(1)}</span>
+              <span className="font-bold text-slate-900 ml-1.5 text-sm">{rating.toFixed(1)}</span>
             </div>
-            <span className="text-xs text-slate-400">({product.reviewCount} customer reviews)</span>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab('reviews')
+                const el = document.getElementById('customer-reviews-tab') || document.getElementById('product-tabs')
+                el?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="text-xs text-sky-600 hover:text-sky-700 font-semibold hover:underline cursor-pointer flex items-center gap-1"
+            >
+              <span>({reviewCount} customer reviews)</span>
+              <span>· Write a Review</span>
+            </button>
           </div>
         </div>
 
@@ -410,11 +425,11 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
         </div>
 
         {/* Information Tabs */}
-        <div className="border-t border-slate-200 pt-6 space-y-4">
-          <div className="flex border-b border-slate-200 gap-6 text-sm font-bold">
+        <div id="product-tabs" className="border-t border-slate-200 pt-6 space-y-4">
+          <div className="flex border-b border-slate-200 gap-4 sm:gap-6 text-sm font-bold overflow-x-auto no-scrollbar">
             <button
               onClick={() => setActiveTab('desc')}
-              className={`pb-3 border-b-2 transition ${
+              className={`pb-3 border-b-2 transition whitespace-nowrap ${
                 activeTab === 'desc'
                   ? 'border-sky-600 text-sky-600'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -424,7 +439,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             </button>
             <button
               onClick={() => setActiveTab('specs')}
-              className={`pb-3 border-b-2 transition ${
+              className={`pb-3 border-b-2 transition whitespace-nowrap ${
                 activeTab === 'specs'
                   ? 'border-sky-600 text-sky-600'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -434,13 +449,27 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             </button>
             <button
               onClick={() => setActiveTab('shipping')}
-              className={`pb-3 border-b-2 transition ${
+              className={`pb-3 border-b-2 transition whitespace-nowrap ${
                 activeTab === 'shipping'
                   ? 'border-sky-600 text-sky-600'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
               Shipping &amp; Warranty
+            </button>
+            <button
+              id="customer-reviews-tab"
+              onClick={() => setActiveTab('reviews')}
+              className={`pb-3 border-b-2 transition whitespace-nowrap flex items-center gap-1.5 ${
+                activeTab === 'reviews'
+                  ? 'border-sky-600 text-sky-600'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <span>Customer Reviews</span>
+              <span className="px-2 py-0.5 rounded-full text-xs bg-sky-100 text-sky-700 font-bold">
+                {reviewCount}
+              </span>
             </button>
           </div>
 
@@ -486,9 +515,56 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
                 <p><strong>Packaging:</strong> Custom cushioned bubble wrap &amp; sealed unboxing package.</p>
               </div>
             )}
+
+            {activeTab === 'reviews' && (
+              <div className="pt-2">
+                <ProductReviews
+                  productId={product.id}
+                  productName={product.name}
+                  initialRating={rating}
+                  initialReviewCount={reviewCount}
+                  initialReviews={product.reviews || []}
+                  onReviewAdded={(_newR, newRating, newCount) => {
+                    setRating(newRating)
+                    setReviewCount(newCount)
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Full-width Dedicated Reviews Showcase (visible when other tabs are active) */}
+      {activeTab !== 'reviews' && (
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200/80 space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+              Customer Ratings &amp; Reviews ({reviewCount})
+            </h2>
+            <button
+              onClick={() => {
+                setActiveTab('reviews')
+                document.getElementById('product-tabs')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="text-xs font-bold text-sky-600 hover:text-sky-700 cursor-pointer"
+            >
+              Focus in Tab ↑
+            </button>
+          </div>
+          <ProductReviews
+            productId={product.id}
+            productName={product.name}
+            initialRating={rating}
+            initialReviewCount={reviewCount}
+            initialReviews={product.reviews || []}
+            onReviewAdded={(_newR, newRating, newCount) => {
+              setRating(newRating)
+              setReviewCount(newCount)
+            }}
+          />
+        </div>
+      )}
 
       {/* Recently Viewed Products Component */}
       <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200/80">
