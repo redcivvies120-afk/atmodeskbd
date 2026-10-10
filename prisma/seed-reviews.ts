@@ -112,27 +112,7 @@ const REVIEWS_BY_TYPE = {
 async function main() {
   console.log('🚀 Starting review seeding for all active products...')
 
-  // 1. Ensure Reviewer Users Exist in Database
-  console.log(`👤 Upserting ${REVIEWERS.length} verified customer accounts...`)
-  const userMap: { [email: string]: string } = {}
-
-  for (const r of REVIEWERS) {
-    const user = await prisma.user.upsert({
-      where: { email: r.email },
-      update: { name: r.name },
-      create: {
-        name: r.name,
-        email: r.email,
-        role: 'CUSTOMER',
-        isActive: true,
-      },
-    })
-    userMap[r.email] = user.id
-  }
-  const userIds = Object.values(userMap)
-  console.log(`✅ ${userIds.length} user accounts ready.`)
-
-  // 2. Fetch all products
+  // 1. Fetch all products
   const products = await prisma.product.findMany({
     select: { id: true, name: true, slug: true, isActive: true },
   })
@@ -162,11 +142,11 @@ async function main() {
     const reviewsToCreate: any[] = []
     let totalScore = 0
 
-    // Pick unique users up to targetCount
-    const selectedUsers = [...userIds].sort(() => 0.5 - Math.random()).slice(0, targetCount)
+    // Pick reviewers up to targetCount
+    const selectedReviewers = [...REVIEWERS].sort(() => 0.5 - Math.random()).slice(0, targetCount)
 
-    for (let i = 0; i < selectedUsers.length; i++) {
-      const uId = selectedUsers[i]
+    for (let i = 0; i < selectedReviewers.length; i++) {
+      const reviewer = selectedReviewers[i]
       const template = templatePool[i % templatePool.length]
 
       // Rating: predominantly 5 (85%), occasionally 4 (15%), strictly >= 4
@@ -179,7 +159,7 @@ async function main() {
 
       reviewsToCreate.push({
         productId: product.id,
-        userId: uId,
+        authorName: reviewer.name,
         rating,
         title: template.title,
         body: template.body,

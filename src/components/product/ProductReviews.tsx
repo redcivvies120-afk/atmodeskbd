@@ -10,6 +10,7 @@ export interface ReviewItem {
   rating: number
   title?: string | null
   body?: string | null
+  authorName?: string | null
   isVerified: boolean
   createdAt: string | Date
   user?: {
@@ -391,7 +392,7 @@ export function ProductReviews({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {visibleReviews.map((r) => {
-            const reviewerName = r.user?.name || 'Verified Customer'
+            const reviewerName = r.authorName || r.user?.name || 'Verified Buyer'
             const initial = reviewerName.charAt(0).toUpperCase()
 
             return (

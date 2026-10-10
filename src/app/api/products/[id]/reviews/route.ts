@@ -37,70 +37,31 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       return NextResponse.json({ error: 'Product not found.' }, { status: 404 })
     }
 
-    // Find or create customer account for the review
-    const reviewerEmail = email && typeof email === 'string' && email.includes('@')
-      ? email.trim().toLowerCase()
-      : `guest_rev_${Date.now()}_${Math.random().toString(36).substring(2, 7)}@atmodesk.local`
-
-    let user = await prisma.user.findFirst({
-      where: { email: reviewerEmail },
-    })
-
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
-          name: name.trim(),
-          email: reviewerEmail,
-          role: 'CUSTOMER',
-        },
+    // If email provided, find existing registered user (optional)
+    let user = null
+    if (email && typeof email === 'string' && email.includes('@')) {
+      user = await prisma.user.findFirst({
+        where: { email: email.trim().toLowerCase() },
       })
     }
 
-    // Check if user already reviewed this product
-    const existing = await prisma.review.findUnique({
-      where: {
-        productId_userId: {
-          productId: id,
-          userId: user.id,
+    const review = await prisma.review.create({
+      data: {
+        productId: id,
+        userId: user ? user.id : null,
+        authorName: name.trim(),
+        rating: Math.round(numRating),
+        title: title ? title.trim() : null,
+        body: reviewBody.trim(),
+        isApproved: true,
+        isVerified: true,
+      },
+      include: {
+        user: {
+          select: { id: true, name: true, image: true },
         },
       },
     })
-
-    let review
-    if (existing) {
-      review = await prisma.review.update({
-        where: { id: existing.id },
-        data: {
-          rating: Math.round(numRating),
-          title: title ? title.trim() : null,
-          body: reviewBody.trim(),
-          isApproved: true,
-          isVerified: true,
-        },
-        include: {
-          user: {
-            select: { id: true, name: true, image: true },
-          },
-        },
-      })
-    } else {
-      review = await prisma.review.create({
-        data: {
-          productId: id,
-          userId: user.id,
-          rating: Math.round(numRating),
-          title: title ? title.trim() : null,
-          body: reviewBody.trim(),
-          isApproved: true,
-          isVerified: true,
-        },
-        include: {
-          user: {
-            select: { id: true, name: true, image: true },
-          },
-        },
-      })
-    }
 
     // Recalculate product rating and review count
     const allReviews = await prisma.review.findMany({

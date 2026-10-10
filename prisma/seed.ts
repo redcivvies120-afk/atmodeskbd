@@ -22,22 +22,6 @@ async function main() {
   })
   console.log('✅ Admin user:', admin.email)
 
-  // ── Demo customer ────────────────────────────────────────────
-  const customerPassword = await bcrypt.hash('Customer@123', 12)
-  const customer = await prisma.user.upsert({
-    where: { email: 'customer@atmodeskbd.com' },
-    update: {},
-    create: {
-      name: 'Rahim Ahmed',
-      email: 'customer@atmodeskbd.com',
-      phone: '01712345678',
-      password: customerPassword,
-      role: 'CUSTOMER',
-      emailVerified: new Date(),
-    },
-  })
-  console.log('✅ Customer user:', customer.email)
-
   // ── Cleanup previous relational records in correct dependency order ──
   await prisma.notification.deleteMany().catch(() => {})
   await prisma.payment.deleteMany().catch(() => {})
