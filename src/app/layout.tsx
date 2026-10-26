@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'ATMODESK Bangladesh' }],
   metadataBase: new URL('https://atmodeskbd-eo1e.vercel.app'),
+  alternates: {
+    canonical: 'https://atmodeskbd-eo1e.vercel.app',
+  },
   verification: {
     google: '76Msg-lcct6zmLIiUm1S21WLUuqHr-xDLdpnrg9f1tg',
   },
@@ -40,9 +43,23 @@ export const metadata: Metadata = {
     title: 'ATMODESK.bd — Smart Clocks & Ambient Desk Tech',
     description: 'Transform your desk with mini smart weather clocks and ambient gadgets. Fast delivery in Bangladesh.',
     url: 'https://atmodeskbd-eo1e.vercel.app',
-    siteName: 'ATMODESK BD',
+    siteName: 'ATMODESK Bangladesh',
     locale: 'en_BD',
     type: 'website',
+    images: [
+      {
+        url: 'https://atmodeskbd-eo1e.vercel.app/logo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ATMODESK Bangladesh — Smart Clocks & Desk Tech',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ATMODESK.bd — Smart Clocks & Ambient Desk Tech',
+    description: 'Transform your desk with mini smart weather clocks and ambient gadgets. Fast delivery in Bangladesh.',
+    images: ['https://atmodeskbd-eo1e.vercel.app/logo.jpg'],
   },
 }
 

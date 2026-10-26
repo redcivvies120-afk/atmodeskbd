@@ -45,11 +45,11 @@ export function Navbar() {
   }
 
   const categories = [
-    { name: 'Smart Clocks', slug: 'smart-clocks', icon: '⏰' },
-    { name: 'Weather Stations', slug: 'weather-stations', icon: '⛅' },
-    { name: 'Ambient Lights', slug: 'ambient-lights', icon: '💡' },
-    { name: 'Desk Tech', slug: 'desk-tech', icon: '⚡' },
-    { name: 'Electronics', slug: 'electronics', icon: '🔌' },
+    { name: 'Smart Clocks', slug: 'smart-clocks', icon: '⏰', available: true },
+    { name: 'Weather Stations', slug: 'weather-stations', icon: '⛅', available: true },
+    { name: 'Ambient Lights', slug: 'ambient-lights', icon: '💡', available: false },
+    { name: 'Desk Tech', slug: 'desk-tech', icon: '⚡', available: false },
+    { name: 'Power & Chargers', slug: 'power-chargers', icon: '🔋', available: false },
   ]
 
   return (
@@ -223,29 +223,44 @@ export function Navbar() {
               >
                 All Categories <ChevronDown className="w-4 h-4" />
               </button>
-              <div className="absolute top-full left-0 mt-1 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 hidden group-hover:block z-50 animate-fade-in">
+              <div className="absolute top-full left-0 mt-1 w-60 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 hidden group-hover:block z-50 animate-fade-in">
                 {categories.map((c) => (
                   <Link
                     key={c.slug}
-                    href={`/products?category=${c.slug}`}
-                    className="flex items-center gap-2.5 px-3 py-2 text-slate-700 hover:bg-sky-50 hover:text-sky-600 rounded-xl text-sm transition"
+                    href={c.available ? `/products?category=${c.slug}` : `/products`}
+                    className="flex items-center justify-between px-3 py-2 text-slate-700 hover:bg-sky-50 hover:text-sky-600 rounded-xl text-sm transition"
                   >
-                    <span>{c.icon}</span>
-                    <span>{c.name}</span>
+                    <div className="flex items-center gap-2.5">
+                      <span>{c.icon}</span>
+                      <span>{c.name}</span>
+                    </div>
+                    {c.available ? (
+                      <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">In Stock</span>
+                    ) : (
+                      <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Soon</span>
+                    )}
                   </Link>
                 ))}
               </div>
             </div>
 
-            {categories.map((c) => (
+            {categories.filter((c) => c.available).map((c) => (
               <Link
                 key={c.slug}
                 href={`/products?category=${c.slug}`}
-                className="hover:text-sky-600 transition"
+                className="hover:text-sky-600 transition font-medium"
               >
                 {c.name}
               </Link>
             ))}
+
+            <Link href="/products" className="hover:text-sky-600 transition font-medium">
+              All Products
+            </Link>
+
+            <Link href="/track-order" className="hover:text-sky-600 transition font-medium text-slate-500">
+              Track Order
+            </Link>
 
             <Link href="/products" className="text-amber-600 hover:text-amber-700 font-semibold flex items-center gap-1 ml-auto">
               🔥 Hot Deals
@@ -275,12 +290,19 @@ export function Navbar() {
                 {categories.map((c) => (
                   <Link
                     key={c.slug}
-                    href={`/products?category=${c.slug}`}
+                    href={c.available ? `/products?category=${c.slug}` : `/products`}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 p-2.5 bg-white/70 hover:bg-white rounded-xl text-xs font-semibold text-slate-700 hover:text-sky-600 border border-slate-200/60 shadow-2xs active:scale-95 transition"
+                    className="flex items-center justify-between p-2.5 bg-white/70 hover:bg-white rounded-xl text-xs font-semibold text-slate-700 hover:text-sky-600 border border-slate-200/60 shadow-2xs active:scale-95 transition"
                   >
-                    <span className="text-base">{c.icon}</span>
-                    <span className="truncate">{c.name}</span>
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="text-base">{c.icon}</span>
+                      <span className="truncate">{c.name}</span>
+                    </div>
+                    {c.available ? (
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" title="In Stock" />
+                    ) : (
+                      <span className="text-[9px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded">Soon</span>
+                    )}
                   </Link>
                 ))}
               </div>

@@ -24,15 +24,37 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     return { title: 'Product Not Found — ATMODESK' }
   }
 
-  const primaryImage = product.images[0]?.url
+  const primaryImg = product.images.find((i) => i.isPrimary)?.url || product.images[0]?.url || '/logo.jpg'
+  const fullImageUrl = primaryImg.startsWith('http')
+    ? primaryImg
+    : `https://atmodeskbd-eo1e.vercel.app${primaryImg}`
 
   return {
     title: `${product.name} — ATMODESK Bangladesh`,
     description: product.description || `Buy ${product.name} in Bangladesh with Cash on Delivery at ATMODESK.`,
+    alternates: {
+      canonical: `https://atmodeskbd-eo1e.vercel.app/product/${product.slug}`,
+    },
     openGraph: {
-      title: product.name,
-      description: product.description || '',
-      images: primaryImage ? [primaryImage] : [],
+      title: `${product.name} — ৳${product.price} | ATMODESK Bangladesh`,
+      description: product.description || `Order ${product.name} at best price in Bangladesh. Fast Dhaka delivery.`,
+      url: `https://atmodeskbd-eo1e.vercel.app/product/${product.slug}`,
+      siteName: 'ATMODESK Bangladesh',
+      type: 'website',
+      images: [
+        {
+          url: fullImageUrl,
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} — ৳${product.price} | ATMODESK`,
+      description: product.description || `Order ${product.name} at best price in Bangladesh.`,
+      images: [fullImageUrl],
     },
   }
 }
@@ -73,6 +95,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
         include: { images: true, category: true },
         take: 4,
       })
+
+      if (relatedProducts.length === 0) {
+        relatedProducts = await prisma.product.findMany({
+          where: {
+            id: { not: product.id },
+            isActive: true,
+          },
+          include: { images: true, category: true },
+          take: 4,
+        })
+      }
     }
   } catch (err) {
     console.error('Product page lookup error:', err)
@@ -115,17 +148,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <section className="border-t border-slate-200 pt-12 space-y-6">
+        <section className="space-y-6 pt-10 border-t border-slate-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-extrabold text-slate-900">
-              You May Also Like
+            <h2 className="text-2xl font-black text-slate-900">
+              You Might Also Like
             </h2>
             <span className="text-xs font-bold text-sky-600 uppercase tracking-wider">
-              More in {product.category?.name}
+              Explore More Gear
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {relatedProducts.map((p) => (
               <ProductCard key={p.id} {...p} />
             ))}

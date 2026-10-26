@@ -30,7 +30,6 @@ export default function CheckoutPage() {
   const [district, setDistrict] = useState('Dhaka')
   const [postalCode, setPostalCode] = useState('')
   const [shippingLocation, setShippingLocation] = useState<'inside_dhaka' | 'outside_dhaka'>('inside_dhaka')
-  const [paymentMethod] = useState<'COD'>('COD')
   const [couponCode, setCouponCode] = useState('')
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -134,166 +133,135 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-10 space-y-5 sm:space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 glass-bright p-3.5 sm:p-5 rounded-2xl border border-white/80 shadow-xs">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
-              ⚡ Guest Checkout Active
-            </span>
-            <span className="text-[11px] sm:text-xs text-slate-500 font-medium">No account required</span>
-          </div>
-          <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 mt-1">Checkout &amp; Fast Delivery</h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Fill your delivery address below. Cash on Delivery is available nationwide.
-          </p>
-        </div>
-        <div className="flex-shrink-0">
-          <Link
-            href="/account"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-sky-600 transition shadow-xs active:scale-95"
-          >
-            <span>Have an Account? Sign In →</span>
-          </Link>
-        </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="mb-8">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Express Checkout</h1>
+        <p className="text-sm text-slate-500 mt-1">Complete your order with 100% Cash on Delivery.</p>
       </div>
 
       <form onSubmit={handleSubmitOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* --- LEFT: ADDRESS & PAYMENT FORM -------------------- */}
+        {/* --- LEFT: SHIPPING & PAYMENT DETAILS --------------- */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Step 1: Customer Info */}
-          <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-4 animate-fade-in-up">
+          {/* Step 1: Delivery Information */}
+          <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-5 animate-fade-in-up">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
                 1
               </span>
-              Contact &amp; Delivery Information (Guest Order)
+              Delivery Details
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                  Full Name *
+                  Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
+                  required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Tanvir Hasan"
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
-                  required
+                  placeholder="e.g. Tanvir Ahmed"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                  Mobile Number * (01XXXXXXXXX)
-                </label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="e.g. 01712345678"
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
-                  required
-                />
-              </div>
-            </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="01712345678"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-1">Courier will call this number prior to delivery.</p>
+                </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Email Address (Optional)
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="For order receipts and tracking updates"
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Full Street Address / House / Road / Sector *
-              </label>
-              <textarea
-                value={line1}
-                onChange={(e) => setLine1(e.target.value)}
-                rows={2}
-                placeholder="e.g. House 45, Road 12, Block D, Banani"
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
-                required
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                  City / District *
-                </label>
-                <select
-                  value={city}
-                  onChange={(e) => {
-                    setCity(e.target.value)
-                    setDistrict(e.target.value)
-                    if (e.target.value !== 'Dhaka') {
-                      setShippingLocation('outside_dhaka')
-                    } else {
-                      setShippingLocation('inside_dhaka')
-                    }
-                  }}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
-                >
-                  <option value="Dhaka">Dhaka</option>
-                  <option value="Chittagong">Chittagong</option>
-                  <option value="Sylhet">Sylhet</option>
-                  <option value="Rajshahi">Rajshahi</option>
-                  <option value="Khulna">Khulna</option>
-                  <option value="Barisal">Barisal</option>
-                  <option value="Rangpur">Rangpur</option>
-                  <option value="Mymensingh">Mymensingh</option>
-                  <option value="Comilla">Comilla</option>
-                  <option value="Gazipur">Gazipur</option>
-                  <option value="Narayanganj">Narayanganj</option>
-                </select>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Email Address <span className="text-slate-400 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="tanvir@gmail.com"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-1">For order confirmation &amp; digital invoice.</p>
+                </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                  Area / Thana
+                  Full Delivery Address <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  value={area}
-                  onChange={(e) => setArea(e.target.value)}
-                  placeholder="e.g. Gulshan / Dhanmondi"
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
+                  required
+                  value={line1}
+                  onChange={(e) => setLine1(e.target.value)}
+                  placeholder="House #, Road #, Sector/Block, Flat #"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                  Postal Code
-                </label>
-                <input
-                  type="text"
-                  value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value)}
-                  placeholder="e.g. 1212"
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-xl text-sm text-slate-900 outline-none"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Area / Thana
+                  </label>
+                  <input
+                    type="text"
+                    value={area}
+                    onChange={(e) => setArea(e.target.value)}
+                    placeholder="e.g. Dhanmondi, Uttara"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    City <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="e.g. Dhaka, Chittagong"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    District
+                  </label>
+                  <input
+                    type="text"
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    placeholder="e.g. Dhaka, Sylhet"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Step 2: Shipping Method */}
+          {/* Step 2: Shipping Destination */}
           <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-4 animate-fade-in-up delay-100">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
                 2
               </span>
-              Select Delivery Area
+              Shipping Destination
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -339,25 +307,31 @@ export default function CheckoutPage() {
 
           {/* Step 3: Payment Method - Cash on Delivery Only */}
           <div className="glass-card rounded-3xl p-6 sm:p-7 shadow-xs space-y-4 animate-fade-in-up delay-150">
-            <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-              <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
-                3
+            <h2 className="text-lg font-bold text-slate-900 flex items-center justify-between border-b border-slate-100 pb-3">
+              <span className="flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-sky-600 text-white text-xs flex items-center justify-center font-extrabold">
+                  3
+                </span>
+                Payment Method
               </span>
-              Payment Method
+              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                100% Risk-Free
+              </span>
             </h2>
 
-            <div className="p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 shadow-xs space-y-2">
+            {/* COD Focused Banner */}
+            <div className="p-5 rounded-2xl border-2 border-emerald-500 bg-gradient-to-br from-emerald-50/70 to-white shadow-xs space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold shadow-xs">
                     <Banknote className="w-6 h-6" />
                   </div>
                   <div>
-                    <strong className="text-base text-slate-900 block flex items-center gap-2">
+                    <strong className="text-base text-slate-900 flex items-center gap-2">
                       Cash on Delivery (COD)
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 inline" />
                     </strong>
-                    <span className="text-xs text-slate-600">
+                    <span className="text-xs text-slate-600 block mt-0.5">
                       Pay with cash when your parcel is delivered at your doorstep.
                     </span>
                   </div>
@@ -366,9 +340,21 @@ export default function CheckoutPage() {
                   100% Safe
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 pl-14 pt-1">
-                ✓ No advance payment required · Inspect your parcel upon delivery
-              </p>
+
+              <div className="pt-2 border-t border-emerald-100 text-xs text-slate-600 space-y-1.5 pl-1">
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                  <span><strong>Zero Advance Payment:</strong> No prepayment or card required.</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                  <span><strong>Doorstep Inspection:</strong> Check the parcel seal before making payment.</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                  <span><strong>7-Day Warranty:</strong> Guaranteed replacement for any defects.</span>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -418,45 +404,54 @@ export default function CheckoutPage() {
                 type="text"
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
-                placeholder="Voucher code (e.g. WELCOME10)"
-                className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs uppercase font-mono outline-none"
+                placeholder="Promo Code (e.g. WELCOME10)"
+                className="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-xs text-slate-900 outline-none uppercase font-mono"
               />
               <button
                 type="button"
                 onClick={() => {
-                  if (couponCode.toUpperCase() === 'WELCOME10') {
-                    toast('WELCOME10 applied: 10% discount!')
-                  } else if (couponCode.toUpperCase() === 'FLAT200') {
-                    toast('FLAT200 applied: ৳200 discount!')
+                  if (couponCode.trim().toUpperCase() === 'WELCOME10') {
+                    toast('Coupon WELCOME10 applied! 10% discount added.', 'success')
+                  } else if (couponCode.trim().toUpperCase() === 'FLAT200') {
+                    if (rawSubtotal >= 2000) {
+                      toast('Coupon FLAT200 applied! ৳200 discount added.', 'success')
+                    } else {
+                      toast('Coupon FLAT200 requires a minimum order of ৳2,000.', 'error')
+                    }
                   } else {
-                    toast('Invalid coupon code', 'error')
+                    toast('Invalid coupon code.', 'error')
                   }
                 }}
-                className="px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl"
+                className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition"
               >
                 Apply
               </button>
             </div>
+            {discountAmount > 0 && (
+              <p className="text-xs font-bold text-emerald-600 mt-2">
+                ✓ Coupon Applied: -{formatBDT(discountAmount)}
+              </p>
+            )}
           </div>
 
-          {/* Cost Breakdown */}
-          <div className="space-y-2 text-sm pt-2 border-t border-slate-100">
-            <div className="flex justify-between text-slate-600">
-              <span>Items Subtotal</span>
+          {/* Price Breakdown */}
+          <div className="border-t border-slate-100 pt-4 space-y-2 text-sm text-slate-600">
+            <div className="flex justify-between">
+              <span>Subtotal</span>
               <span className="font-semibold text-slate-900">{formatBDT(rawSubtotal)}</span>
             </div>
 
             {discountAmount > 0 && (
-              <div className="flex justify-between text-emerald-600 font-semibold">
-                <span>Voucher Discount</span>
-                <span>-{formatBDT(discountAmount)}</span>
+              <div className="flex justify-between text-emerald-600">
+                <span>Discount</span>
+                <span className="font-semibold">-{formatBDT(discountAmount)}</span>
               </div>
             )}
 
-            <div className="flex justify-between text-slate-600">
-              <span>Delivery Charge ({shippingLocation === 'inside_dhaka' ? 'Inside Dhaka' : 'Outside Dhaka'})</span>
+            <div className="flex justify-between">
+              <span>Shipping ({shippingLocation === 'outside_dhaka' ? 'Outside Dhaka' : 'Inside Dhaka'})</span>
               <span className="font-semibold text-slate-900">
-                {shippingCost === 0 ? <strong className="text-emerald-600">FREE</strong> : formatBDT(shippingCost)}
+                {shippingCost === 0 ? <span className="text-emerald-600 font-bold">FREE</span> : formatBDT(shippingCost)}
               </span>
             </div>
 

@@ -223,9 +223,10 @@ export function OrderRowClient({ order }: { order: any }) {
                       <span>{fullAddress || 'No address provided'}</span>
                     </p>
                     {order.notes && (
-                      <p className="text-amber-700 bg-amber-50 p-2 rounded-lg text-[11px]">
-                        <strong>Note:</strong> {order.notes}
-                      </p>
+                      <div className="bg-amber-50 border border-amber-200 p-2 rounded-lg text-[11px] space-y-1">
+                        <strong className="text-amber-900 block font-bold">Payment &amp; Instructions:</strong>
+                        <p className="text-amber-800 font-mono whitespace-pre-line">{order.notes}</p>
+                      </div>
                     )}
                     <span className="inline-block px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold">
                       Zone: {order.shippingMethod || 'Inside Dhaka'}
@@ -254,7 +255,7 @@ export function OrderRowClient({ order }: { order: any }) {
                       </div>
                     ))}
                     <div className="flex justify-between pt-2 border-t border-slate-100 font-bold text-slate-900">
-                      <span>Total COD Amount:</span>
+                      <span>Total ({order.paymentMethod === 'COD' ? 'Cash on Delivery' : order.paymentMethod}):</span>
                       <span className="font-mono text-sm">{formatBDT(order.total)}</span>
                     </div>
                   </div>

@@ -19,6 +19,14 @@ interface ProductsPageProps {
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+export const metadata = {
+  title: 'All Products & Desk Tech Gadgets — ATMODESK Bangladesh',
+  description: 'Explore smart WiFi weather stations, LED matrix clocks, and ambient tech gadgets with fast shipping in Bangladesh.',
+  alternates: {
+    canonical: 'https://atmodeskbd-eo1e.vercel.app/products',
+  },
+}
+
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams
   const categorySlug = params.category
@@ -74,7 +82,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         take: pageSize,
       }),
       prisma.product.count({ where }),
-      prisma.category.findMany({ where: { isActive: true } }),
+      prisma.category.findMany({
+        where: { isActive: true },
+        include: {
+          _count: { select: { products: { where: { isActive: true } } } },
+        },
+        orderBy: { sortOrder: 'asc' },
+      }),
     ])
     products = p
     totalCount = count
@@ -144,19 +158,33 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         >
           All
         </Link>
-        {categories.map((c) => (
-          <Link
-            key={c.id}
-            href={`/products?category=${c.slug}`}
-            className={`flex-shrink-0 snap-start px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              categorySlug === c.slug
-                ? 'bg-sky-600 text-white shadow-xs'
-                : 'bg-white/80 border border-slate-200 text-slate-700 hover:bg-slate-100'
-            }`}
-          >
-            {c.name}
-          </Link>
-        ))}
+        {categories.map((c) => {
+          const count = c._count?.products ?? 0
+          return (
+            <Link
+              key={c.id}
+              href={`/products?category=${c.slug}`}
+              className={`flex-shrink-0 snap-start px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${
+                categorySlug === c.slug
+                  ? 'bg-sky-600 text-white shadow-xs'
+                  : 'bg-white/80 border border-slate-200 text-slate-700 hover:bg-slate-100'
+              }`}
+            >
+              <span>{c.name}</span>
+              {count > 0 ? (
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                  categorySlug === c.slug ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                }`}>
+                  {count}
+                </span>
+              ) : (
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-50 text-amber-700 font-bold">
+                  Soon
+                </span>
+              )}
+            </Link>
+          )
+        })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -176,19 +204,27 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               >
                 All Categories
               </Link>
-              {categories.map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/products?category=${c.slug}`}
-                  className={`block px-3 py-2 rounded-xl text-sm font-medium transition ${
-                    categorySlug === c.slug
-                      ? 'bg-sky-50 text-sky-700 font-bold'
-                      : 'text-slate-600 hover:bg-slate-100'
-                  }`}
-                >
-                  {c.name}
-                </Link>
-              ))}
+              {categories.map((c) => {
+                const count = c._count?.products ?? 0
+                return (
+                  <Link
+                    key={c.id}
+                    href={`/products?category=${c.slug}`}
+                    className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition ${
+                      categorySlug === c.slug
+                        ? 'bg-sky-50 text-sky-700 font-bold'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <span>{c.name}</span>
+                    {count > 0 ? (
+                      <span className="text-xs text-slate-400 font-bold">{count}</span>
+                    ) : (
+                      <span className="text-[10px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-full">Soon</span>
+                    )}
+                  </Link>
+                )
+              })}
             </div>
           </div>
 
@@ -250,20 +286,34 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         {/* Product Grid */}
         <div className="lg:col-span-3 space-y-8">
           {products.length === 0 ? (
-            <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center space-y-4">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-2xl">
-                🔍
+            <div className="bg-white border border-slate-200 rounded-3xl p-10 sm:p-14 text-center space-y-4">
+              <div className="w-16 h-16 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold">
+                📦
               </div>
-              <h3 className="text-lg font-bold text-slate-900">No products match your filters</h3>
-              <p className="text-sm text-slate-500 max-w-sm mx-auto">
-                Try resetting your filters or browsing another category to find what you need.
+              <h3 className="text-xl font-extrabold text-slate-900">
+                {categorySlug ? `Restocking ${categories.find((c) => c.slug === categorySlug)?.name || 'Category'} Soon` : 'No products found'}
+              </h3>
+              <p className="text-sm text-slate-500 max-w-md mx-auto">
+                {categorySlug
+                  ? 'We are currently preparing fresh shipments for this collection. In the meantime, explore our top-selling Smart Clocks and Weather Stations!'
+                  : 'Try adjusting your filters or price ranges to find what you are looking for.'}
               </p>
-              <Link
-                href="/products"
-                className="inline-block px-5 py-2.5 bg-sky-600 text-white text-sm font-semibold rounded-xl hover:bg-sky-700 transition"
-              >
-                Reset All Filters
-              </Link>
+              <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  href="/products"
+                  className="px-5 py-2.5 bg-sky-600 text-white text-sm font-semibold rounded-xl hover:bg-sky-700 transition shadow-xs"
+                >
+                  View All Available Products
+                </Link>
+                {categorySlug && (
+                  <Link
+                    href="/products?category=smart-clocks"
+                    className="px-5 py-2.5 bg-slate-100 text-slate-800 text-sm font-semibold rounded-xl hover:bg-slate-200 transition"
+                  >
+                    Explore Smart Clocks
+                  </Link>
+                )}
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">

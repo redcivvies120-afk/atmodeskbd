@@ -130,6 +130,15 @@ export default async function OrderConfirmedPage({ params }: OrderConfirmedProps
               </span>
             </div>
 
+            {order.notes && (
+              <div className="pt-2 border-t border-slate-100 text-xs">
+                <span className="text-slate-400 block mb-1">Payment &amp; Order Notes:</span>
+                <p className="text-slate-700 bg-slate-50 p-2.5 rounded-xl font-mono text-[11px] whitespace-pre-line border border-slate-200">
+                  {order.notes}
+                </p>
+              </div>
+            )}
+
             <div className="pt-3 border-t border-slate-100 flex justify-between items-baseline">
               <span className="font-bold text-slate-900">Total Payable:</span>
               <span className="text-xl font-extrabold text-sky-600">{formatBDT(order.total)}</span>

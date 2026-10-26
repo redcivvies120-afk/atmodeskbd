@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const district = sanitizeString(body?.district, 100)
     const postalCode = sanitizeString(body?.postalCode, 20)
     const shippingLocation = body?.shippingLocation === 'outside_dhaka' ? 'outside_dhaka' : 'inside_dhaka'
-    const paymentMethod = ['COD', 'BKASH', 'NAGAD', 'CARD'].includes(body?.paymentMethod) ? body.paymentMethod : 'COD'
+    const paymentMethod = 'COD'
     const couponCode = sanitizeString(body?.couponCode, 30).toUpperCase()
     const notes = sanitizeMultiline(body?.notes, 500)
     const items = body?.items
@@ -257,7 +257,7 @@ export async function POST(req: Request) {
       `👤 ${fullName}\n📱 ${phone}\n📍 ${line1}, ${city}${district ? ', ' + district : ''}\n\n` +
       `📦 Items:\n${itemsList}\n\n` +
       `💰 Subtotal: ৳${subtotal}\n🚚 Shipping: ৳${shippingCost}\n${discountAmount > 0 ? `🎟️ Discount: -৳${discountAmount}\n` : ''}` +
-      `✅ TOTAL: ৳${total}\n💳 Payment: Cash on Delivery\n\n` +
+      `✅ TOTAL: ৳${total}\n💳 Payment: Cash on Delivery (COD)\n\n` +
       `📅 Est. Delivery: ${estimatedDelivery.toLocaleDateString('en-BD')}` +
       `${notes ? '\n📝 Note: ' + notes : ''}`
     )
