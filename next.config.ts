@@ -6,7 +6,7 @@ const cspHeader = `
   script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com data:;
-  img-src 'self' data: blob: https://images.unsplash.com https://via.placeholder.com https://res.cloudinary.com https://i.ibb.co https://*.imgbb.com;
+  img-src 'self' data: blob: https://cdn.jsdelivr.net https://raw.githubusercontent.com https://images.unsplash.com https://via.placeholder.com https://res.cloudinary.com https://i.ibb.co https://*.imgbb.com;
   connect-src 'self' https://*.neon.tech https://connect.facebook.net https://api.imgbb.com https://wa.me;
   frame-ancestors 'none';
   object-src 'none';
@@ -21,6 +21,8 @@ const nextConfig: NextConfig = {
 
   images: {
     remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
+      { protocol: 'https', hostname: 'raw.githubusercontent.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'via.placeholder.com' },
       { protocol: 'https', hostname: 'res.cloudinary.com' },

@@ -104,7 +104,10 @@ export default function CartPage() {
                       alt={item.name}
                       className="w-full h-full object-cover rounded-xl"
                       onError={(e) => {
-                        ;(e.target as HTMLElement).style.display = 'none'
+                        const el = e.target as HTMLImageElement
+                        if (!el.src.includes('placeholder-product.jpg')) {
+                          el.src = '/placeholder-product.jpg'
+                        }
                       }}
                     />
                   </div>

@@ -67,7 +67,10 @@ export function CartDrawer() {
                       alt={item.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        ;(e.target as HTMLElement).style.display = 'none'
+                        const el = e.target as HTMLImageElement
+                        if (!el.src.includes('placeholder-product.jpg')) {
+                          el.src = '/placeholder-product.jpg'
+                        }
                       }}
                     />
                   </div>
