@@ -8,6 +8,8 @@ import { BottomNav } from '@/components/layout/BottomNav'
 import { CartDrawer } from '@/components/cart/CartDrawer'
 import { WhatsAppFloat } from '@/components/shared/WhatsAppFloat'
 
+import { safeJsonLd } from '@/lib/security'
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
@@ -95,7 +97,7 @@ export default function RootLayout({
         <meta name="google-site-verification" content="76Msg-lcct6zmLIiUm1S21WLUuqHr-xDLdpnrg9f1tg" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
         />
       </head>
       <body className="min-h-screen flex flex-col antialiased bg-slate-50/90 text-slate-900 font-sans selection:bg-sky-500 selection:text-white relative overflow-x-hidden">

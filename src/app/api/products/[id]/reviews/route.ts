@@ -1,33 +1,49 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { ensureDatabaseTables } from '@/lib/init-db'
+import { getClientIp, checkRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit'
+import { sanitizeString, sanitizeMultiline, sanitizeEmail } from '@/lib/security'
+import { getServerUserSession } from '@/lib/user-auth'
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // 1. Rate limiting: max 5 reviews per 10 minutes per IP
+    const clientIp = getClientIp(req)
+    const rateCheck = checkRateLimit(`review:${clientIp}`, 5, 600)
+    if (!rateCheck.success) {
+      return rateLimitExceededResponse(rateCheck)
+    }
+
     await ensureDatabaseTables()
-    const { id } = await params
+    const { id: rawId } = await params
+    const id = sanitizeString(rawId, 100)
     const body = await req.json()
-    const { name, email, rating, title, comment } = body
 
     if (!id) {
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 })
     }
 
-    if (!name || typeof name !== 'string' || !name.trim()) {
+    // 2. Input sanitization
+    const name = sanitizeString(body?.name, 100)
+    const rawEmail = sanitizeEmail(body?.email)
+    const title = body?.title ? sanitizeString(body.title, 150) : null
+    const reviewBody = sanitizeMultiline(body?.comment || body?.body, 2000)
+    const rawRating = body?.rating
+
+    if (!name) {
       return NextResponse.json({ error: 'Please enter your name.' }, { status: 400 })
     }
 
-    const reviewBody = comment || body.body
-    if (!reviewBody || typeof reviewBody !== 'string' || !reviewBody.trim()) {
-      return NextResponse.json({ error: 'Please write your review comment.' }, { status: 400 })
+    if (!reviewBody || reviewBody.length < 5) {
+      return NextResponse.json({ error: 'Please write a review comment (minimum 5 characters).' }, { status: 400 })
     }
 
-    const numRating = Number(rating)
+    const numRating = Number(rawRating)
     if (!numRating || numRating < 1 || numRating > 5) {
       return NextResponse.json({ error: 'Please select a valid rating between 1 and 5 stars.' }, { status: 400 })
     }
 
-    // Verify product exists
+    // 3. Verify product exists
     const product = await prisma.product.findUnique({
       where: { id },
       select: { id: true, name: true },
@@ -37,22 +53,27 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       return NextResponse.json({ error: 'Product not found.' }, { status: 404 })
     }
 
-    // If email provided, find existing registered user (optional)
-    let user = null
-    if (email && typeof email === 'string' && email.includes('@')) {
-      user = await prisma.user.findFirst({
-        where: { email: email.trim().toLowerCase() },
+    // 4. Link to authenticated user if session exists
+    let userId = null
+    const session = await getServerUserSession()
+    if (session?.id) {
+      userId = session.id
+    } else if (rawEmail) {
+      const existingUser = await prisma.user.findFirst({
+        where: { email: rawEmail },
+        select: { id: true },
       })
+      if (existingUser) userId = existingUser.id
     }
 
     const review = await prisma.review.create({
       data: {
         productId: id,
-        userId: user ? user.id : null,
-        authorName: name.trim(),
+        userId,
+        authorName: name,
         rating: Math.round(numRating),
-        title: title ? title.trim() : null,
-        body: reviewBody.trim(),
+        title: title || null,
+        body: reviewBody,
         isApproved: true,
         isVerified: true,
       },
@@ -63,7 +84,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       },
     })
 
-    // Recalculate product rating and review count
+    // 5. Recalculate product rating and review count
     const allReviews = await prisma.review.findMany({
       where: { productId: id, isApproved: true },
       select: { rating: true },
@@ -91,7 +112,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   } catch (error: any) {
     console.error('[Product Review Submission Error]', error)
     return NextResponse.json(
-      { error: error?.message || 'Failed to submit review' },
+      { error: 'Failed to submit review. Please try again.' },
       { status: 500 }
     )
   }

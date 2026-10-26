@@ -2,35 +2,55 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
-import { normalizeBDPhone } from '@/lib/utils'
+import { normalizeBDPhone, isValidBDPhone } from '@/lib/utils'
 import { ensureDatabaseTables } from '@/lib/init-db'
+import { getClientIp, checkRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit'
+import { sanitizeString, sanitizeEmail, sanitizePhone } from '@/lib/security'
+import { generateUserSessionToken, getUserCookieOptions } from '@/lib/user-auth'
 
 export async function POST(req: Request) {
   try {
+    // 1. Rate limiting: max 5 account creations per hour per IP
+    const clientIp = getClientIp(req)
+    const rateCheck = checkRateLimit(`user_register:${clientIp}`, 5, 3600)
+    if (!rateCheck.success) {
+      return rateLimitExceededResponse(rateCheck)
+    }
+
     await ensureDatabaseTables()
     const body = await req.json()
-    const { name, phone, email, password } = body
+    const name = sanitizeString(body?.name, 100)
+    const rawPhone = sanitizePhone(body?.phone)
+    const rawEmail = sanitizeEmail(body?.email)
+    const password = body?.password
 
-    if (!phone || !password) {
+    if (!rawPhone || !password || typeof password !== 'string') {
       return NextResponse.json(
-        { error: 'Phone number and password are required' },
+        { error: 'Phone number and password are required.' },
         { status: 400 }
       )
     }
 
-    if (password.length < 6) {
+    if (!isValidBDPhone(rawPhone)) {
       return NextResponse.json(
-        { error: 'Password must be at least 6 characters long' },
+        { error: 'Please enter a valid 11-digit Bangladesh phone number (e.g. 01712345678).' },
         { status: 400 }
       )
     }
 
-    const cleanPhone = normalizeBDPhone(phone)
-    const userEmail = email && email.trim().length > 0 
-      ? email.trim().toLowerCase() 
+    if (password.length < 8) {
+      return NextResponse.json(
+        { error: 'Password must be at least 8 characters long for security.' },
+        { status: 400 }
+      )
+    }
+
+    const cleanPhone = normalizeBDPhone(rawPhone)
+    const userEmail = rawEmail && rawEmail.length > 0
+      ? rawEmail
       : `${cleanPhone}@customer.atmodeskbd.com`
 
-    // Check if user already exists by phone or email
+    // Check if user already exists
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
@@ -38,61 +58,57 @@ export async function POST(req: Request) {
           { phone: cleanPhone },
         ],
       },
+      select: { id: true },
     })
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'An account with this phone number or email already exists. Please sign in instead.' },
-        { status: 400 }
+        { error: 'An account with this phone number or email already exists. Please sign in.' },
+        { status: 409 }
       )
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10)
+    // Hash password with 12 salt rounds
+    const hashedPassword = await bcrypt.hash(password, 12)
 
-    // Create user in database
+    // Create user in database (role is strictly enforced to CUSTOMER)
     const newUser = await prisma.user.create({
       data: {
-        name: name?.trim() || 'Valued Customer',
+        name: name || 'Valued Customer',
         phone: cleanPhone,
         email: userEmail,
         password: hashedPassword,
         role: 'CUSTOMER',
+        isActive: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        email: true,
+        role: true,
       },
     })
 
-    // Set session cookie
-    const cookieStore = await cookies()
-    const sessionData = JSON.stringify({
+    // Set signed HTTP-only session cookie
+    const token = await generateUserSessionToken({
       id: newUser.id,
-      name: newUser.name,
-      phone: newUser.phone,
-      email: newUser.email,
       role: newUser.role,
+      email: newUser.email,
     })
 
-    cookieStore.set('atmodesk_user', Buffer.from(sessionData).toString('base64'), {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      path: '/',
-    })
+    const cookieStore = await cookies()
+    cookieStore.set('atmodesk_user', token, getUserCookieOptions())
 
     return NextResponse.json({
       success: true,
       message: 'Account registered successfully!',
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        phone: newUser.phone,
-        email: newUser.email,
-      },
+      user: newUser,
     })
   } catch (error: any) {
-    console.error('Registration error:', error)
+    console.error('[Registration Error]', error)
     return NextResponse.json(
-      { error: error?.message || 'Failed to create account. Please try again.' },
+      { error: 'Failed to create account. Please try again.' },
       { status: 500 }
     )
   }

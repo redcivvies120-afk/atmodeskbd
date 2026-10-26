@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { prisma } from '@/lib/prisma'
 import { ProductDetailClient } from '@/components/product/ProductDetailClient'
+import { safeJsonLd } from '@/lib/security'
 import { ProductCard } from '@/components/product/ProductCard'
 
 export const dynamic = 'force-dynamic'
@@ -106,7 +107,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }}
       />
 
       {/* Product Detail Component */}

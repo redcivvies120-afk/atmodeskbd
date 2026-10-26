@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { formatBDT, formatDate, getOrderStatusLabel, getOrderStatusColor } from '@/lib/utils'
+import { maskPhone, maskAddress } from '@/lib/security'
 import {
   Search,
   Package,
@@ -168,10 +169,10 @@ export default async function TrackOrderPage({ searchParams }: TrackOrderProps) 
               <h4 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-sky-600" /> Destination
               </h4>
-              <p><strong>Recipient:</strong> {order.address?.fullName}</p>
-              <p><strong>Phone:</strong> {order.address?.phone}</p>
+              <p><strong>Recipient:</strong> {order.address?.fullName ? `${order.address.fullName.slice(0, 1)}*** ${order.address.fullName.split(' ').slice(-1)[0]}` : 'Customer'}</p>
+              <p><strong>Phone:</strong> {maskPhone(order.address?.phone)}</p>
               <p>
-                <strong>Address:</strong> {order.address?.line1}, {order.address?.city}
+                <strong>Delivery Area:</strong> {maskAddress(order.address?.line1, order.address?.city)}
               </p>
               {order.estimatedDelivery && (
                 <p className="text-emerald-700 font-bold pt-1">

@@ -4,16 +4,27 @@ import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 import { normalizeBDPhone } from '@/lib/utils'
 import { ensureDatabaseTables } from '@/lib/init-db'
+import { getClientIp, checkRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit'
+import { sanitizeString } from '@/lib/security'
+import { generateUserSessionToken, getUserCookieOptions } from '@/lib/user-auth'
 
 export async function POST(req: Request) {
   try {
+    // 1. Rate limiting: max 10 attempts per 15 mins per IP
+    const clientIp = getClientIp(req)
+    const rateCheck = checkRateLimit(`user_login:${clientIp}`, 10, 900)
+    if (!rateCheck.success) {
+      return rateLimitExceededResponse(rateCheck)
+    }
+
     await ensureDatabaseTables()
     const body = await req.json()
-    const { identifier, password } = body
+    const identifier = sanitizeString(body?.identifier, 100)
+    const password = body?.password
 
-    if (!identifier || !password) {
+    if (!identifier || !password || typeof password !== 'string') {
       return NextResponse.json(
-        { error: 'Please provide your phone number/email and password' },
+        { error: 'Please provide your phone number/email and password.' },
         { status: 400 }
       )
     }
@@ -27,44 +38,46 @@ export async function POST(req: Request) {
         OR: [
           { email: cleanInput.toLowerCase() },
           { phone: cleanInput },
-          { phone: normalizedPhone },
-          { email: `${normalizedPhone}@customer.atmodeskbd.com` },
+          ...(normalizedPhone ? [
+            { phone: normalizedPhone },
+            { email: `${normalizedPhone}@customer.atmodeskbd.com` }
+          ] : []),
         ],
       },
     })
 
     if (!user || !user.password) {
       return NextResponse.json(
-        { error: 'No active customer account found with these credentials. Please check your phone number/password or register a new account.' },
+        { error: 'Invalid credentials. Please check your phone/email and password.' },
         { status: 401 }
+      )
+    }
+
+    if (!user.isActive) {
+      return NextResponse.json(
+        { error: 'This account has been deactivated. Please contact support.' },
+        { status: 403 }
       )
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
       return NextResponse.json(
-        { error: 'Incorrect password. Please try again.' },
+        { error: 'Invalid credentials. Please check your phone/email and password.' },
         { status: 401 }
       )
     }
 
-    // Set session cookie
-    const cookieStore = await cookies()
-    const sessionData = JSON.stringify({
+    // Generate cryptographically signed token
+    const token = await generateUserSessionToken({
       id: user.id,
-      name: user.name,
-      phone: user.phone,
-      email: user.email,
       role: user.role,
+      email: user.email,
     })
 
-    cookieStore.set('atmodesk_user', Buffer.from(sessionData).toString('base64'), {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      path: '/',
-    })
+    // Set secure HTTP-only session cookie
+    const cookieStore = await cookies()
+    cookieStore.set('atmodesk_user', token, getUserCookieOptions())
 
     return NextResponse.json({
       success: true,
@@ -78,7 +91,7 @@ export async function POST(req: Request) {
       },
     })
   } catch (error: any) {
-    console.error('Login error:', error)
+    console.error('[User Login Error]', error)
     return NextResponse.json(
       { error: 'Failed to sign in. Please try again.' },
       { status: 500 }

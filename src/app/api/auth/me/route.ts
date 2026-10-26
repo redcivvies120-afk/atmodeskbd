@@ -1,25 +1,23 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { cookies } from 'next/headers'
 import { ensureDatabaseTables } from '@/lib/init-db'
+import { getServerUserSession } from '@/lib/user-auth'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
     await ensureDatabaseTables()
-    const cookieStore = await cookies()
-    const sessionCookie = cookieStore.get('atmodesk_user')
 
-    if (!sessionCookie?.value) {
+    // Cryptographically verified user session
+    const session = await getServerUserSession()
+    if (!session || !session.id) {
       return NextResponse.json({ user: null })
     }
 
-    const decoded = JSON.parse(Buffer.from(sessionCookie.value, 'base64').toString('utf-8'))
-    
-    // Fetch full user from database with orders
+    // Fetch user from database matching ONLY the verified session ID
     const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
+      where: { id: session.id },
       select: {
         id: true,
         name: true,
@@ -41,6 +39,7 @@ export async function GET() {
 
     return NextResponse.json({ user })
   } catch (error) {
+    console.error('[Auth Me Error]', error)
     return NextResponse.json({ user: null })
   }
 }

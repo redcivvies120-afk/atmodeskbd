@@ -1,50 +1,62 @@
 // src/lib/admin-auth.ts
 import { cookies } from 'next/headers'
+import { createSignedToken, verifySignedToken, timingSafeStringCompare } from '@/lib/security'
 
-// Accepted admin passwords (can also be set via ADMIN_PASSWORD env var)
-const VALID_PASSWORDS = [
-  process.env.ADMIN_PASSWORD,
-  'atmodesk2026',
-  'atmodesk@2026',
-  'atmodeskbd',
-  '01318043562',
-  'admin1234',
-].filter(Boolean) as string[]
+// Admin password configured via environment variable
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123'
 
-const ADMIN_SECRET_SALT = process.env.ADMIN_SECRET || 'atmodeskbd_admin_secret_key_2026'
-
-// Simple deterministic signature for session token
-export function generateAdminSessionToken(pass: string): string {
-  const payload = `atmodesk_admin:${pass}:${ADMIN_SECRET_SALT}`
-  return Buffer.from(payload).toString('base64')
+export interface AdminSessionPayload {
+  role: 'ADMIN'
 }
 
+/**
+ * Validates the admin passcode using constant-time comparison to prevent timing attacks.
+ */
 export function verifyAdminPassword(pass: string): boolean {
-  if (!pass) return false
+  if (!pass || typeof pass !== 'string') return false
   const trimmed = pass.trim()
-  return VALID_PASSWORDS.some((valid) => valid === trimmed)
+  return timingSafeStringCompare(trimmed, ADMIN_PASSWORD)
 }
 
-export function isValidAdminToken(token: string | undefined): boolean {
+/**
+ * Generates a cryptographically signed HMAC-SHA256 session token for the admin.
+ * Valid for 7 days.
+ */
+export async function generateAdminSessionToken(): Promise<string> {
+  return createSignedToken<AdminSessionPayload>({ role: 'ADMIN' }, 60 * 60 * 24 * 7)
+}
+
+/**
+ * Verifies whether an admin session token has a valid cryptographic signature and is unexpired.
+ */
+export async function isValidAdminToken(token: string | undefined | null): Promise<boolean> {
   if (!token) return false
-  try {
-    const decoded = Buffer.from(token, 'base64').toString('utf-8')
-    const parts = decoded.split(':')
-    if (parts.length >= 3 && parts[0] === 'atmodesk_admin') {
-      const pass = parts[1]
-      return verifyAdminPassword(pass)
-    }
-  } catch {
-    return false
-  }
-  return false
+  const payload = await verifySignedToken<AdminSessionPayload>(token)
+  return payload !== null && payload.role === 'ADMIN'
 }
 
+/**
+ * Server-side check for Next.js layout and server components.
+ */
 export async function isServerAdminAuthenticated(): Promise<boolean> {
   try {
     const cookieStore = await cookies()
     const sessionCookie = cookieStore.get('atmodesk_admin_session')?.value
     return isValidAdminToken(sessionCookie)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Verifies admin authentication directly from a Request object.
+ */
+export async function verifyAdminRequest(req: Request): Promise<boolean> {
+  try {
+    const cookieHeader = req.headers.get('cookie') || ''
+    const match = cookieHeader.match(/atmodesk_admin_session=([^;]+)/)
+    const token = match ? match[1] : null
+    return isValidAdminToken(token)
   } catch {
     return false
   }

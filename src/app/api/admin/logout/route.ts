@@ -6,13 +6,13 @@ export async function POST() {
     message: 'Admin signed out',
   })
 
-  // Clear cookie
+  // Clear cookie securely
   response.cookies.set({
     name: 'atmodesk_admin_session',
     value: '',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'strict',
     path: '/',
     maxAge: 0,
   })

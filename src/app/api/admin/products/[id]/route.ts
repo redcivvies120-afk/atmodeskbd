@@ -2,81 +2,96 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { slugify } from '@/lib/utils'
 import { ensureDatabaseTables } from '@/lib/init-db'
+import { isServerAdminAuthenticated } from '@/lib/admin-auth'
+import { sanitizeString, sanitizeMultiline } from '@/lib/security'
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const isAuth = await isServerAdminAuthenticated()
+    if (!isAuth) {
+      return NextResponse.json({ error: 'Unauthorized: Admin privileges required.' }, { status: 401 })
+    }
+
     await ensureDatabaseTables()
     const { id } = await params
     const product = await prisma.product.findUnique({
-      where: { id },
+      where: { id: sanitizeString(id, 100) },
       include: { images: true, category: true, specs: true, variants: true },
     })
     if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     return NextResponse.json({ product })
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed' }, { status: 500 })
+    console.error('[Admin Get Product Error]', error)
+    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 })
   }
 }
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    await ensureDatabaseTables()
-    const { id } = await params
-    const body = await req.json()
-    const {
-      name,
-      sku,
-      categoryId,
-      price,
-      originalPrice,
-      stock,
-      description,
-      details,
-      imageUrl,      // legacy single image
-      images,        // new multi-image: [{ url, isPrimary, sortOrder }]
-      variants,      // new variants: [{ name, value, price?, stock? }]
-      isFeatured,
-      isBestSeller,
-      isNewArrival,
-      isActive,
-    } = body
+    const isAuth = await isServerAdminAuthenticated()
+    if (!isAuth) {
+      return NextResponse.json({ error: 'Unauthorized: Admin privileges required.' }, { status: 401 })
+    }
 
-    const numPrice = parseFloat(price)
-    const numOriginal = originalPrice ? parseFloat(originalPrice) : null
-    const discount = numOriginal && numOriginal > numPrice ? Math.round(((numOriginal - numPrice) / numOriginal) * 100) : 0
+    await ensureDatabaseTables()
+    const { id: rawId } = await params
+    const id = sanitizeString(rawId, 100)
+    const body = await req.json()
+    const rawName = body?.name ? sanitizeString(body.name, 200) : undefined
+    const rawSku = body?.sku ? sanitizeString(body.sku, 50) : undefined
+    const categoryId = body?.categoryId ? sanitizeString(body.categoryId, 50) : null
+    const price = body?.price !== undefined ? parseFloat(String(body.price)) : undefined
+    const originalPrice = body?.originalPrice ? parseFloat(String(body.originalPrice)) : null
+    const stock = body?.stock !== undefined ? parseInt(String(body.stock), 10) : undefined
+    const description = body?.description !== undefined ? sanitizeMultiline(body.description, 5000) : undefined
+    const details = body?.details !== undefined ? sanitizeMultiline(body.details, 5000) : undefined
+    const imageUrl = body?.imageUrl ? sanitizeString(body.imageUrl, 1000) : undefined
+    const images = body?.images
+    const variants = body?.variants
+    const isFeatured = body?.isFeatured !== undefined ? Boolean(body.isFeatured) : undefined
+    const isBestSeller = body?.isBestSeller !== undefined ? Boolean(body.isBestSeller) : undefined
+    const isNewArrival = body?.isNewArrival !== undefined ? Boolean(body.isNewArrival) : undefined
+    const isActive = body?.isActive !== undefined ? Boolean(body.isActive) : undefined
+
+    const discount = price !== undefined && originalPrice && originalPrice > price
+      ? Math.round(((originalPrice - price) / originalPrice) * 100)
+      : 0
 
     const updated = await prisma.product.update({
       where: { id },
       data: {
-        ...(name ? { name, slug: slugify(name) + '-' + id.slice(-4) } : {}),
-        ...(sku ? { sku } : {}),
+        ...(rawName ? { name: rawName, slug: slugify(rawName) + '-' + id.slice(-4) } : {}),
+        ...(rawSku ? { sku: rawSku } : {}),
         categoryId: categoryId || null,
-        price: numPrice,
-        originalPrice: numOriginal,
+        ...(price !== undefined && !isNaN(price) ? { price } : {}),
+        originalPrice: originalPrice,
         discount,
-        stock: parseInt(stock || '0', 10),
-        description: description || null,
-        details: details || null,
-        isFeatured: Boolean(isFeatured),
-        isBestSeller: Boolean(isBestSeller),
-        isNewArrival: Boolean(isNewArrival),
-        isActive: isActive !== undefined ? Boolean(isActive) : true,
+        ...(stock !== undefined && !isNaN(stock) ? { stock: Math.max(0, stock) } : {}),
+        ...(description !== undefined ? { description: description || null } : {}),
+        ...(details !== undefined ? { details: details || null } : {}),
+        ...(isFeatured !== undefined ? { isFeatured } : {}),
+        ...(isBestSeller !== undefined ? { isBestSeller } : {}),
+        ...(isNewArrival !== undefined ? { isNewArrival } : {}),
+        ...(isActive !== undefined ? { isActive } : {}),
       },
     })
 
     // Handle images: if multi-image array provided, replace all
     if (images && Array.isArray(images) && images.length > 0) {
       await prisma.productImage.deleteMany({ where: { productId: id } })
-      await prisma.productImage.createMany({
-        data: images.map((img: any, i: number) => ({
+      const sanitizedImages = images
+        .map((img: any, i: number) => ({
           productId: id,
-          url: img.url,
-          isPrimary: Boolean(img.isPrimary),
-          sortOrder: img.sortOrder ?? i,
-        })),
-      })
+          url: sanitizeString(img?.url, 1000),
+          isPrimary: Boolean(img?.isPrimary),
+          sortOrder: typeof img?.sortOrder === 'number' ? img.sortOrder : i,
+        }))
+        .filter((img) => img.url.length > 0)
+
+      if (sanitizedImages.length > 0) {
+        await prisma.productImage.createMany({ data: sanitizedImages })
+      }
     } else if (imageUrl) {
-      // Legacy single image
       await prisma.productImage.deleteMany({ where: { productId: id } })
       await prisma.productImage.create({
         data: { productId: id, url: imageUrl, isPrimary: true, sortOrder: 0 },
@@ -85,11 +100,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
     // Handle variants: if provided, replace all
     if (variants && Array.isArray(variants)) {
-      // Delete old cart items referencing old variants first
-      const oldVariantIds = (await prisma.productVariant.findMany({
-        where: { productId: id },
-        select: { id: true },
-      })).map(v => v.id)
+      const oldVariantIds = (
+        await prisma.productVariant.findMany({
+          where: { productId: id },
+          select: { id: true },
+        })
+      ).map((v) => v.id)
 
       if (oldVariantIds.length > 0) {
         await prisma.cartItem.deleteMany({
@@ -99,62 +115,51 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
       await prisma.productVariant.deleteMany({ where: { productId: id } })
 
-      const validVariants = variants.filter((v: any) => v.value?.trim())
-      if (validVariants.length > 0) {
-        await prisma.productVariant.createMany({
-          data: validVariants.map((v: any) => ({
-            productId: id,
-            name: v.name || 'Color',
-            value: v.value,
-            price: v.price ? parseFloat(v.price) : null,
-            stock: v.stock ? parseInt(v.stock, 10) : 0,
-          })),
-        })
+      const sanitizedVariants = variants
+        .filter((v: any) => v && typeof v.value === 'string' && v.value.trim().length > 0)
+        .map((v: any) => ({
+          productId: id,
+          name: sanitizeString(v.name || 'Color', 50),
+          value: sanitizeString(v.value, 100),
+          price: v.price ? parseFloat(String(v.price)) : null,
+          stock: v.stock ? parseInt(String(v.stock), 10) : 0,
+        }))
+
+      if (sanitizedVariants.length > 0) {
+        await prisma.productVariant.createMany({ data: sanitizedVariants })
       }
     }
 
     return NextResponse.json({ success: true, product: updated })
   } catch (error: any) {
-    console.error('[Admin Edit Product Error]', error)
-    return NextResponse.json({ error: error.message || 'Failed to update product' }, { status: 500 })
+    console.error('[Admin Update Product Error]', error)
+    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
   }
 }
 
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const isAuth = await isServerAdminAuthenticated()
+    if (!isAuth) {
+      return NextResponse.json({ error: 'Unauthorized: Admin privileges required.' }, { status: 401 })
+    }
+
     await ensureDatabaseTables()
-    const { id } = await params
+    const { id: rawId } = await params
+    const id = sanitizeString(rawId, 100)
 
-    // Delete all related records before deleting product
-    // (must delete in correct order to avoid FK constraint errors)
-    await prisma.productImage.deleteMany({ where: { productId: id } })
-    await prisma.productSpec.deleteMany({ where: { productId: id } })
-
-    // Delete cart items first, then variants
+    // Delete related child rows in safe order
     await prisma.cartItem.deleteMany({ where: { productId: id } })
     await prisma.wishlistItem.deleteMany({ where: { productId: id } })
-
-    // Nullify order items referencing this product (keep order history but remove product link)
-    await prisma.orderItem.updateMany({
-      where: { productId: id },
-      data: { productId: id }, // keep as-is but we need to handle FK
-    })
-
-    // Delete variants (after cart items referencing variants are gone)
+    await prisma.productSpec.deleteMany({ where: { productId: id } })
+    await prisma.productImage.deleteMany({ where: { productId: id } })
     await prisma.productVariant.deleteMany({ where: { productId: id } })
+    await prisma.review.deleteMany({ where: { productId: id } })
 
-    // Delete reviews
-    await prisma.review.deleteMany({ where: { productId: id } }).catch(() => {})
-
-    // Soft delete instead of hard delete to preserve order history
-    await prisma.product.update({
-      where: { id },
-      data: { isActive: false, name: `[Deleted] ${id}`, slug: `deleted-${id}-${Date.now()}` },
-    })
-
-    return NextResponse.json({ success: true, message: 'Product removed successfully' })
+    await prisma.product.delete({ where: { id } })
+    return NextResponse.json({ success: true, message: 'Product deleted' })
   } catch (error: any) {
     console.error('[Admin Delete Product Error]', error)
-    return NextResponse.json({ error: error.message || 'Failed to delete product' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 })
   }
 }
