@@ -16,8 +16,7 @@ interface ProductsPageProps {
   }>
 }
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const revalidate = 60
 
 export const metadata = {
   title: 'All Products & Desk Tech Gadgets — ATMODESK Bangladesh',

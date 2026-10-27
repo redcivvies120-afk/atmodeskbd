@@ -20,7 +20,7 @@ export interface CartItem {
 interface CartStore {
   items: CartItem[]
   isOpen: boolean
-  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void
+  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number; openDrawer?: boolean }) => void
   removeItem: (productId: string, variantId?: string) => void
   updateQty: (productId: string, qty: number, variantId?: string) => void
   clearCart: () => void
@@ -51,12 +51,12 @@ export const useCart = create<CartStore>()(
                 ? { ...i, quantity: newQty }
                 : i
             ),
-            isOpen: true,
+            isOpen: incoming.openDrawer !== false,
           })
         } else {
           set({
             items: [...items, { ...incoming, quantity: incoming.quantity || 1 }],
-            isOpen: true,
+            isOpen: incoming.openDrawer !== false,
           })
         }
       },

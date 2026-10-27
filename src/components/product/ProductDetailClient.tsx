@@ -102,7 +102,20 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
 
   const handleBuyNow = () => {
     if (isOutOfStock) return
-    handleAddToCart()
+    addItem({
+      id: product.id,
+      productId: product.id,
+      name: product.name,
+      slug: product.slug,
+      image: activeImage,
+      price: currentPrice,
+      originalPrice: product.originalPrice || undefined,
+      stock: product.stock,
+      quantity,
+      variantId: selectedVariant?.id,
+      variantName: selectedVariant ? `${selectedVariant.name}: ${selectedVariant.value}` : undefined,
+      openDrawer: false,
+    })
     router.push('/checkout')
   }
 

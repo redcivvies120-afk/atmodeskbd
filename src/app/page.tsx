@@ -17,9 +17,8 @@ import {
   CheckCircle2,
 } from 'lucide-react'
 
-// Force dynamic rendering on every request so admin updates appear instantly
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// Edge ISR caching: revalidates every 60s without blocking users
+export const revalidate = 60
 
 export default async function HomePage() {
   let categories: any[] = []

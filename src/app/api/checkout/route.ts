@@ -238,17 +238,19 @@ export async function POST(req: Request) {
       },
     })
 
-    // 10. Deduct product stock in database
-    for (const item of items) {
-      const qty = parseInt(String(item.quantity || 1), 10)
-      await prisma.product.update({
-        where: { id: item.productId },
-        data: {
-          stock: { decrement: qty },
-          soldCount: { increment: qty },
-        },
+    // 10. Deduct product stock in parallel
+    await Promise.all(
+      items.map((item: any) => {
+        const qty = parseInt(String(item.quantity || 1), 10)
+        return prisma.product.update({
+          where: { id: item.productId },
+          data: {
+            stock: { decrement: qty },
+            soldCount: { increment: qty },
+          },
+        })
       })
-    }
+    )
 
     // 11. WhatsApp notification message for store administration
     const itemsList = orderItemsData.map((i: any) => `• ${i.name} x${i.quantity} = ৳${i.total}`).join('\n')

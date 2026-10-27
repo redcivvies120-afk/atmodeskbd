@@ -6,8 +6,20 @@ import { ProductDetailClient } from '@/components/product/ProductDetailClient'
 import { safeJsonLd } from '@/lib/security'
 import { ProductCard } from '@/components/product/ProductCard'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// Edge ISR caching: revalidates every 60s
+export const revalidate = 60
+
+export async function generateStaticParams() {
+  try {
+    const products = await prisma.product.findMany({
+      where: { isActive: true },
+      select: { slug: true },
+    })
+    return products.map((p) => ({ slug: p.slug }))
+  } catch {
+    return []
+  }
+}
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>
