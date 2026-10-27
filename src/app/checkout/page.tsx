@@ -106,7 +106,7 @@ export default function CheckoutPage() {
 
       toast('Order placed successfully! 🎉', 'success')
       clearCart()
-      router.push(`/order-confirmed/${data.orderNumber}`)
+      router.push(`/order-confirmed/${data.orderNumber}?t=${encodeURIComponent(data.accessToken)}`)
     } catch (err: any) {
       toast(err.message || 'Something went wrong. Please try again.', 'error')
     } finally {

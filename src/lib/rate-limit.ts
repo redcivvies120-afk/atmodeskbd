@@ -1,46 +1,30 @@
 // src/lib/rate-limit.ts
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
 
-interface RateLimitRecord {
+let redis: Redis | null = null
+if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  try {
+    redis = Redis.fromEnv()
+  } catch (e) {
+    console.warn('[RateLimit] Failed to initialize Upstash Redis from env, using in-memory fallback.')
+  }
+}
+
+const upstashLimiters = new Map<string, Ratelimit>()
+
+// In-memory sliding window fallback for environments without Upstash configured
+interface MemoryWindowEntry {
   timestamps: number[]
 }
+const memoryStore = new Map<string, MemoryWindowEntry>()
 
-// In-memory sliding window store
-const rateLimitStore = new Map<string, RateLimitRecord>()
-
-// Periodic garbage collection every 5 minutes to prevent memory leaks
-let lastCleanup = Date.now()
-function cleanupExpiredEntries(windowMs: number) {
-  const now = Date.now()
-  if (now - lastCleanup < 60_000) return // throttle cleanup calls to once a minute
-  lastCleanup = now
-
-  for (const [key, record] of rateLimitStore.entries()) {
-    const validTimestamps = record.timestamps.filter((ts) => now - ts < windowMs)
-    if (validTimestamps.length === 0) {
-      rateLimitStore.delete(key)
-    } else {
-      record.timestamps = validTimestamps
-    }
-  }
-}
-
-/**
- * Extracts client IP from Request headers.
- */
 export function getClientIp(req: Request): string {
-  const forwardedFor = req.headers.get('x-forwarded-for')
-  if (forwardedFor) {
-    const firstIp = forwardedFor.split(',')[0].trim()
-    if (firstIp) return firstIp
-  }
-
-  const realIp = req.headers.get('x-real-ip')
-  if (realIp) return realIp.trim()
-
-  const cfConnectingIp = req.headers.get('cf-connecting-ip')
-  if (cfConnectingIp) return cfConnectingIp.trim()
-
-  return '127.0.0.1'
+  return (
+    req.headers.get('x-real-ip')?.trim() ||
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    'unknown'
+  )
 }
 
 export interface RateLimitResult {
@@ -50,46 +34,66 @@ export interface RateLimitResult {
   reset: number
 }
 
-/**
- * Evaluates rate limit using sliding window algorithm.
- */
-export function checkRateLimit(
+/** NOTE: async. Always `await checkRateLimit(...)`. */
+export async function checkRateLimit(
   identifier: string,
   limit: number,
   windowSeconds: number
-): RateLimitResult {
+): Promise<RateLimitResult> {
+  if (redis) {
+    const k = `${limit}:${windowSeconds}`
+    let rl = upstashLimiters.get(k)
+    if (!rl) {
+      rl = new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(limit, `${windowSeconds} s`),
+        prefix: `rl:${k}`,
+      })
+      upstashLimiters.set(k, rl)
+    }
+    const r = await rl.limit(identifier)
+    return {
+      success: r.success,
+      limit: r.limit,
+      remaining: r.remaining,
+      reset: Math.max(1, Math.ceil((r.reset - Date.now()) / 1000)),
+    }
+  }
+
+  // Fallback in-memory rate limiter
   const now = Date.now()
   const windowMs = windowSeconds * 1000
-  cleanupExpiredEntries(windowMs)
+  const key = `${limit}:${windowSeconds}:${identifier}`
+  
+  let entry = memoryStore.get(key)
+  if (!entry) {
+    entry = { timestamps: [] }
+    memoryStore.set(key, entry)
+  }
 
-  const record = rateLimitStore.get(identifier) || { timestamps: [] }
-  const validTimestamps = record.timestamps.filter((ts) => now - ts < windowMs)
+  // Filter out timestamps outside the sliding window
+  entry.timestamps = entry.timestamps.filter((t) => now - t < windowMs)
 
-  if (validTimestamps.length >= limit) {
-    const oldestTimestamp = validTimestamps[0]
-    const resetTime = Math.ceil((oldestTimestamp + windowMs - now) / 1000)
+  if (entry.timestamps.length >= limit) {
+    const oldest = entry.timestamps[0]
+    const resetSeconds = Math.max(1, Math.ceil((oldest + windowMs - now) / 1000))
     return {
       success: false,
       limit,
       remaining: 0,
-      reset: Math.max(1, resetTime),
+      reset: resetSeconds,
     }
   }
 
-  validTimestamps.push(now)
-  rateLimitStore.set(identifier, { timestamps: validTimestamps })
-
+  entry.timestamps.push(now)
   return {
     success: true,
     limit,
-    remaining: Math.max(0, limit - validTimestamps.length),
+    remaining: limit - entry.timestamps.length,
     reset: windowSeconds,
   }
 }
 
-/**
- * Convenience helper to return standard 429 Too Many Requests response using standard Web API.
- */
 export function rateLimitExceededResponse(result: RateLimitResult): Response {
   return Response.json(
     {

@@ -2,6 +2,8 @@ import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
+import { verifySignedToken } from '@/lib/security'
+import { getServerUserSession } from '@/lib/user-auth'
 import { formatBDT, formatDate, getOrderStatusLabel, getOrderStatusColor } from '@/lib/utils'
 import {
   CheckCircle2,
@@ -14,24 +16,34 @@ import {
   ShoppingBag,
 } from 'lucide-react'
 
+export const metadata = { robots: { index: false, follow: false } }
+
 interface OrderConfirmedProps {
   params: Promise<{ orderNumber: string }>
+  searchParams: Promise<{ t?: string }>
 }
 
-export default async function OrderConfirmedPage({ params }: OrderConfirmedProps) {
+export default async function OrderConfirmedPage({ params, searchParams }: OrderConfirmedProps) {
   const { orderNumber } = await params
+  const { t } = await searchParams
+
   const order = await prisma.order.findUnique({
     where: { orderNumber },
     include: {
       items: true,
       address: true,
-      user: true,
+      user: { select: { name: true } }, // never `user: true` (that loads the password hash)
     },
   })
 
-  if (!order) {
-    notFound()
-  }
+  if (!order) notFound()
+
+  // Proof of ownership: the logged-in owner, OR the signed link issued at checkout.
+  const session = await getServerUserSession()
+  const tok = typeof t === 'string' && t ? await verifySignedToken<{ o: string }>(t, 'order') : null
+  const isOwner = !!session?.id && session.id === order.userId
+  const hasValidLink = !!tok && tok.o === order.orderNumber
+  if (!isOwner && !hasValidLink) notFound()
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">

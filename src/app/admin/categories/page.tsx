@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin-guard'
 import React from 'react'
 import { prisma } from '@/lib/prisma'
 import { CategoryManagerClient } from './CategoryManagerClient'
@@ -7,6 +8,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function AdminCategoriesPage() {
+  await requireAdmin()
   let categories: any[] = []
   try {
     await ensureDatabaseTables()

@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin-guard'
 import React from 'react'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
@@ -9,6 +10,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function NewProductPage() {
+  await requireAdmin()
   let categories: any[] = []
   try {
     await ensureDatabaseTables()

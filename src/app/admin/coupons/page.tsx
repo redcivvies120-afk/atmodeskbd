@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin-guard'
 import React from 'react'
 import { prisma } from '@/lib/prisma'
 import { CouponManagerClient } from './CouponManagerClient'
@@ -7,6 +8,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function AdminCouponsPage() {
+  await requireAdmin()
   let coupons: any[] = []
   try {
     await ensureDatabaseTables()

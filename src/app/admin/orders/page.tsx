@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin-guard'
 import React from 'react'
 import { prisma } from '@/lib/prisma'
 import { OrderRowClient } from './OrderRowClient'
@@ -12,6 +13,7 @@ interface OrdersPageProps {
 }
 
 export default async function AdminOrdersPage({ searchParams }: OrdersPageProps) {
+  await requireAdmin()
   const { status } = await searchParams
 
   let orders: any[] = []

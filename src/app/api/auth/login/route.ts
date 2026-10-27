@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   try {
     // 1. Rate limiting: max 10 attempts per 15 mins per IP
     const clientIp = getClientIp(req)
-    const rateCheck = checkRateLimit(`user_login:${clientIp}`, 10, 900)
+    const rateCheck = await checkRateLimit(`user_login:${clientIp}`, 10, 900)
     if (!rateCheck.success) {
       return rateLimitExceededResponse(rateCheck)
     }
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const identifier = sanitizeString(body?.identifier, 100)
     const password = body?.password
 
-    if (!identifier || !password || typeof password !== 'string') {
+    if (!identifier || !password || typeof password !== 'string' || password.length > 72) {
       return NextResponse.json(
         { error: 'Please provide your phone number/email and password.' },
         { status: 400 }
@@ -30,6 +30,10 @@ export async function POST(req: Request) {
     }
 
     const cleanInput = identifier.trim()
+
+    // Per-account limit (in addition to per-IP) to stop slow distributed guessing
+    const acctCheck = await checkRateLimit(`user_login_acct:${cleanInput.toLowerCase()}`, 10, 900)
+    if (!acctCheck.success) return rateLimitExceededResponse(acctCheck)
     const normalizedPhone = normalizeBDPhone(cleanInput)
 
     // Find user by email or phone (check both raw input and normalized phone)
@@ -73,6 +77,7 @@ export async function POST(req: Request) {
       id: user.id,
       role: user.role,
       email: user.email,
+      tokenVersion: user.tokenVersion,
     })
 
     // Set secure HTTP-only session cookie

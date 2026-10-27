@@ -1,119 +1,96 @@
+// src/app/api/products/[id]/reviews/route.ts
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { ensureDatabaseTables } from '@/lib/init-db'
 import { getClientIp, checkRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit'
-import { sanitizeString, sanitizeMultiline, sanitizeEmail } from '@/lib/security'
+import { sanitizeString, sanitizeMultiline } from '@/lib/security'
 import { getServerUserSession } from '@/lib/user-auth'
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    // 1. Rate limiting: max 5 reviews per 10 minutes per IP
-    const clientIp = getClientIp(req)
-    const rateCheck = checkRateLimit(`review:${clientIp}`, 5, 600)
-    if (!rateCheck.success) {
-      return rateLimitExceededResponse(rateCheck)
+    // 1. Login required (stops anonymous spam and email-based impersonation)
+    const session = await getServerUserSession()
+    if (!session?.id) {
+      return NextResponse.json({ error: 'Please sign in to write a review.' }, { status: 401 })
     }
 
-    await ensureDatabaseTables()
+    // 2. Rate limit (shared store): per IP and per user
+    const clientIp = getClientIp(req)
+    const ipCheck = await checkRateLimit(`review_ip:${clientIp}`, 5, 600)
+    if (!ipCheck.success) return rateLimitExceededResponse(ipCheck)
+    const userCheck = await checkRateLimit(`review_user:${session.id}`, 10, 86400)
+    if (!userCheck.success) return rateLimitExceededResponse(userCheck)
+
     const { id: rawId } = await params
     const id = sanitizeString(rawId, 100)
+    if (!id) return NextResponse.json({ error: 'Product ID is required' }, { status: 400 })
+
     const body = await req.json()
-
-    if (!id) {
-      return NextResponse.json({ error: 'Product ID is required' }, { status: 400 })
-    }
-
-    // 2. Input sanitization
     const name = sanitizeString(body?.name, 100)
-    const rawEmail = sanitizeEmail(body?.email)
     const title = body?.title ? sanitizeString(body.title, 150) : null
     const reviewBody = sanitizeMultiline(body?.comment || body?.body, 2000)
-    const rawRating = body?.rating
+    const numRating = Number(body?.rating)
 
-    if (!name) {
-      return NextResponse.json({ error: 'Please enter your name.' }, { status: 400 })
-    }
-
+    if (!name) return NextResponse.json({ error: 'Please enter your name.' }, { status: 400 })
     if (!reviewBody || reviewBody.length < 5) {
       return NextResponse.json({ error: 'Please write a review comment (minimum 5 characters).' }, { status: 400 })
     }
-
-    const numRating = Number(rawRating)
-    if (!numRating || numRating < 1 || numRating > 5) {
+    if (!Number.isFinite(numRating) || numRating < 1 || numRating > 5) {
       return NextResponse.json({ error: 'Please select a valid rating between 1 and 5 stars.' }, { status: 400 })
     }
 
-    // 3. Verify product exists
-    const product = await prisma.product.findUnique({
-      where: { id },
-      select: { id: true, name: true },
+    const product = await prisma.product.findUnique({ where: { id }, select: { id: true } })
+    if (!product) return NextResponse.json({ error: 'Product not found.' }, { status: 404 })
+
+    // 3. One review per user per product
+    const already = await prisma.review.findFirst({
+      where: { productId: id, userId: session.id },
+      select: { id: true },
     })
-
-    if (!product) {
-      return NextResponse.json({ error: 'Product not found.' }, { status: 404 })
+    if (already) {
+      return NextResponse.json({ error: 'You have already reviewed this product.' }, { status: 409 })
     }
 
-    // 4. Link to authenticated user if session exists
-    let userId = null
-    const session = await getServerUserSession()
-    if (session?.id) {
-      userId = session.id
-    } else if (rawEmail) {
-      const existingUser = await prisma.user.findFirst({
-        where: { email: rawEmail },
-        select: { id: true },
-      })
-      if (existingUser) userId = existingUser.id
-    }
+    // 4. "Verified" is derived from a real DELIVERED order, never self-declared
+    const bought = await prisma.orderItem.findFirst({
+      where: { productId: id, order: { userId: session.id, status: 'DELIVERED' } },
+      select: { id: true },
+    })
 
     const review = await prisma.review.create({
       data: {
         productId: id,
-        userId,
+        userId: session.id,
         authorName: name,
         rating: Math.round(numRating),
         title: title || null,
         body: reviewBody,
-        isApproved: true,
-        isVerified: true,
+        isVerified: !!bought,
+        isApproved: !!bought, // unverified reviews wait for admin approval
       },
-      include: {
-        user: {
-          select: { id: true, name: true, image: true },
-        },
-      },
+      include: { user: { select: { id: true, name: true, image: true } } },
     })
 
-    // 5. Recalculate product rating and review count
-    const allReviews = await prisma.review.findMany({
+    // 5. Recompute rating with an aggregate (no loading every review)
+    const agg = await prisma.review.aggregate({
       where: { productId: id, isApproved: true },
-      select: { rating: true },
+      _avg: { rating: true },
+      _count: { _all: true },
     })
-
-    const newCount = allReviews.length
-    const totalScore = allReviews.reduce((sum, r) => sum + r.rating, 0)
-    const newRating = Math.round((totalScore / newCount) * 10) / 10
-
-    await prisma.product.update({
-      where: { id },
-      data: {
-        rating: newRating,
-        reviewCount: newCount,
-      },
-    })
+    const newRating = Math.round((agg._avg.rating ?? 0) * 10) / 10
+    const newCount = agg._count._all
+    await prisma.product.update({ where: { id }, data: { rating: newRating, reviewCount: newCount } })
 
     return NextResponse.json({
       success: true,
       review,
       newRating,
       newCount,
-      message: 'Review submitted successfully!',
+      message: bought
+        ? 'Review submitted successfully!'
+        : 'Thanks! Your review will appear after moderation.',
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[Product Review Submission Error]', error)
-    return NextResponse.json(
-      { error: 'Failed to submit review. Please try again.' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to submit review. Please try again.' }, { status: 500 })
   }
 }

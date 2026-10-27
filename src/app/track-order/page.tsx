@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
-import { formatBDT, formatDate, getOrderStatusLabel, getOrderStatusColor } from '@/lib/utils'
+import { formatBDT, formatDate, getOrderStatusLabel, getOrderStatusColor, normalizeBDPhone } from '@/lib/utils'
 import { maskPhone, maskAddress } from '@/lib/security'
 import {
   Search,
@@ -24,21 +24,18 @@ export default async function TrackOrderPage({ searchParams }: TrackOrderProps) 
   let order: any = null
   let searched = false
 
+  // Both values must match: a phone number alone (or an order number alone) never returns anything.
   if (orderNumber || phone) {
     searched = true
-    order = await prisma.order.findFirst({
-      where: {
-        OR: [
-          ...(orderNumber ? [{ orderNumber: orderNumber.trim() }] : []),
-          ...(phone ? [{ address: { phone: phone.trim() } }] : []),
-        ],
-      },
-      include: {
-        items: true,
-        address: true,
-      },
-      orderBy: { createdAt: 'desc' },
-    })
+    if (orderNumber && phone) {
+      order = await prisma.order.findFirst({
+        where: {
+          orderNumber: orderNumber.trim().toUpperCase(),
+          address: { phone: normalizeBDPhone(phone) },
+        },
+        include: { items: true, address: true },
+      })
+    }
   }
 
   // Pipeline order steps
@@ -69,7 +66,7 @@ export default async function TrackOrderPage({ searchParams }: TrackOrderProps) 
           Track Your Order
         </h1>
         <p className="text-sm text-slate-500 max-w-md mx-auto">
-          Enter your Order Number (e.g. ATD-XXXX-XXXX) or registered 11-digit phone number to track live delivery status.
+          Enter your Order Number and the phone number used for the order to track live delivery status.
         </p>
 
         <form action="/track-order" method="GET" className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto pt-2">
@@ -79,6 +76,13 @@ export default async function TrackOrderPage({ searchParams }: TrackOrderProps) 
             defaultValue={orderNumber || ''}
             placeholder="Order Number (e.g. ATD-...)"
             className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-sky-500 uppercase font-mono"
+          />
+          <input
+            type="tel"
+            name="phone"
+            defaultValue={phone || ''}
+            placeholder="Phone (01XXXXXXXXX)"
+            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-sky-500 font-mono"
           />
           <button
             type="submit"
@@ -198,7 +202,7 @@ export default async function TrackOrderPage({ searchParams }: TrackOrderProps) 
           <AlertCircle className="w-10 h-10 text-amber-500 mx-auto" />
           <h3 className="text-lg font-bold text-slate-900">No order found</h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto">
-            Please verify the order number (e.g. ATD-XXXX-XXXX) or phone number you entered and try again.
+            Please check that the order number and phone number are both correct and try again.
           </p>
         </div>
       ) : null}

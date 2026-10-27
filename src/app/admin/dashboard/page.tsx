@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin-guard'
 import React from 'react'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
@@ -18,6 +19,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function AdminDashboardPage() {
+  await requireAdmin()
   let totalProducts = 0
   let totalOrders = 0
   let orders: any[] = []

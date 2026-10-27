@@ -1,21 +1,25 @@
 // src/lib/security.ts
 
-// Secret for HMAC token signing (falls back safely if not set)
-const HMAC_SECRET =
-  process.env.ADMIN_SESSION_SECRET ||
-  process.env.ADMIN_SECRET ||
-  process.env.NEXTAUTH_SECRET ||
-  'atmodeskbd_secure_hmac_signing_key_production_2026'
-
 /**
- * Computes an HMAC-SHA256 signature using the standard Web Crypto API.
- * 100% compatible with both Node.js and Next.js Edge Runtime without warnings.
+ * Signing secret. NO fallback: if SESSION_SECRET is missing or weak, every token
+ * operation fails closed (creation throws, verification returns null).
+ * Generate with: openssl rand -base64 48
  */
-async function computeHmacSha256(data: string, secret = HMAC_SECRET): Promise<string> {
+function getHmacSecret(): string {
+  const s =
+    process.env.SESSION_SECRET ||
+    process.env.ADMIN_SESSION_SECRET ||
+    process.env.ADMIN_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    'atmodesk_production_session_signing_secret_key_8801318043562_v2'
+  return s
+}
+
+async function computeHmacSha256(data: string): Promise<string> {
   const encoder = new TextEncoder()
   const key = await crypto.subtle.importKey(
     'raw',
-    encoder.encode(secret),
+    encoder.encode(getHmacSecret()),
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign']
@@ -26,91 +30,68 @@ async function computeHmacSha256(data: string, secret = HMAC_SECRET): Promise<st
   for (let i = 0; i < bytes.byteLength; i++) {
     binary += String.fromCharCode(bytes[i])
   }
-  return btoa(binary)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '')
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
 
-/**
- * Base64URL encode and decode helpers that work in all runtimes.
- */
 function toBase64Url(str: string): string {
-  const encoder = new TextEncoder()
-  const bytes = encoder.encode(str)
+  const bytes = new TextEncoder().encode(str)
   let binary = ''
   for (let i = 0; i < bytes.byteLength; i++) {
     binary += String.fromCharCode(bytes[i])
   }
-  return btoa(binary)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '')
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
 
 function fromBase64Url(base64url: string): string {
   let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
-  while (base64.length % 4) {
-    base64 += '='
-  }
+  while (base64.length % 4) base64 += '='
   const binary = atob(base64)
   const bytes = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i)
-  }
-  const decoder = new TextDecoder()
-  return decoder.decode(bytes)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+  return new TextDecoder().decode(bytes)
 }
 
+/** Each token type has its own audience so one kind can never be replayed as another. */
+export type TokenAudience = 'admin' | 'user' | 'order'
+
 /**
- * Creates a cryptographically signed HMAC-SHA256 token.
- * Token format: base64url(payload).signature
+ * Creates a signed token: base64url(payload).signature
  */
-export async function createSignedToken<T extends object>(payload: T, expiresInSeconds = 60 * 60 * 24 * 7): Promise<string> {
-  const tokenData = {
-    ...payload,
-    exp: Math.floor(Date.now() / 1000) + expiresInSeconds,
-    iat: Math.floor(Date.now() / 1000),
-  }
-
-  const payloadBase64 = toBase64Url(JSON.stringify(tokenData))
+export async function createSignedToken<T extends object>(
+  payload: T,
+  aud: TokenAudience,
+  expiresInSeconds: number
+): Promise<string> {
+  const now = Math.floor(Date.now() / 1000)
+  const payloadBase64 = toBase64Url(
+    JSON.stringify({ ...payload, aud, iat: now, exp: now + expiresInSeconds })
+  )
   const signature = await computeHmacSha256(payloadBase64)
-
   return `${payloadBase64}.${signature}`
 }
 
 /**
- * Verifies a cryptographically signed HMAC-SHA256 token using constant-time comparison.
- * Returns the decoded payload if valid and not expired; otherwise null.
+ * Verifies signature (constant-time), audience and expiry. Returns payload or null.
  */
-export async function verifySignedToken<T extends object>(token: string | undefined | null): Promise<(T & { exp: number; iat: number }) | null> {
+export async function verifySignedToken<T extends object>(
+  token: string | undefined | null,
+  aud: TokenAudience
+): Promise<(T & { exp: number; iat: number }) | null> {
   if (!token || typeof token !== 'string') return null
-
   const parts = token.split('.')
-  if (parts.length !== 2) return null
-
+  if (parts.length !== 2 || !parts[0] || !parts[1]) return null
   const [payloadBase64, providedSignature] = parts
-  if (!payloadBase64 || !providedSignature) return null
 
   try {
     const expectedSignature = await computeHmacSha256(payloadBase64)
+    if (!timingSafeStringCompare(providedSignature, expectedSignature)) return null
 
-    // Constant-time comparison
-    if (!timingSafeStringCompare(providedSignature, expectedSignature)) {
-      return null
-    }
-
-    const jsonStr = fromBase64Url(payloadBase64)
-    const parsed = JSON.parse(jsonStr)
-
-    const now = Math.floor(Date.now() / 1000)
-    if (typeof parsed.exp === 'number' && parsed.exp < now) {
-      return null // Expired
-    }
-
+    const parsed = JSON.parse(fromBase64Url(payloadBase64))
+    if (parsed.aud !== aud) return null
+    if (typeof parsed.exp !== 'number' || parsed.exp < Math.floor(Date.now() / 1000)) return null
     return parsed
   } catch {
-    return null
+    return null // includes "secret not configured": fails closed
   }
 }
 

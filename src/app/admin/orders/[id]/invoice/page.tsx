@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin-guard'
 import React from 'react'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
@@ -60,6 +61,7 @@ function BarcodeSVG({ value }: { value: string }) {
 }
 
 export default async function OrderInvoicePage({ params }: InvoicePageProps) {
+  await requireAdmin()
   const { id } = await params
 
   await ensureDatabaseTables()

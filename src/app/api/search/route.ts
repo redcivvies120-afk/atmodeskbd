@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 export async function GET(req: NextRequest) {
-  const q = req.nextUrl.searchParams.get('q')?.trim() || ''
+  const q = (req.nextUrl.searchParams.get('q') || '').trim().slice(0, 80)
 
   if (!q) {
     return NextResponse.json({ products: [], query: '' })
@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
     .toLowerCase()
     .split(/\s+/)
     .filter((w) => w.length > 1) // skip single chars
+    .slice(0, 5) // cap the number of words
 
   if (words.length === 0) {
     return NextResponse.json({ products: [], query: q })

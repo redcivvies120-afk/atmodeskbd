@@ -22,9 +22,11 @@ model User {
   password      String?
   role          String    @default("CUSTOMER") // "CUSTOMER" | "ADMIN"
   isActive      Boolean   @default(true)
+  tokenVersion  Int       @default(0)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  passwordResets PasswordReset[]
   addresses     Address[]
   orders        Order[]
   reviews       Review[]
@@ -33,6 +35,20 @@ model User {
   notifications Notification[]
 
   @@index([email])
+}
+
+model PasswordReset {
+  id        String    @id @default(cuid())
+  userId    String
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int       @default(0)
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Address {
@@ -331,6 +347,7 @@ model Review {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   user    User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  @@unique([productId, userId])
   @@index([productId])
 }
 

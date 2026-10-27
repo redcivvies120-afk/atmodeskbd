@@ -1,19 +1,19 @@
 import { NextResponse } from 'next/server'
 import { verifyAdminPassword, generateAdminSessionToken } from '@/lib/admin-auth'
 import { getClientIp, checkRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit'
-import { sanitizeString } from '@/lib/security'
 
 export async function POST(req: Request) {
   try {
     // 1. Rate limiting: max 5 login attempts per 15 minutes per IP
     const clientIp = getClientIp(req)
-    const rateCheck = checkRateLimit(`admin_login:${clientIp}`, 5, 900)
+    const rateCheck = await checkRateLimit(`admin_login:${clientIp}`, 5, 900)
     if (!rateCheck.success) {
       return rateLimitExceededResponse(rateCheck)
     }
 
     const body = await req.json()
-    const password = sanitizeString(body?.password, 200)
+    // Do NOT sanitize or trim passwords: it silently alters them.
+    const password = typeof body?.password === 'string' ? body.password.slice(0, 200) : ''
 
     if (!password) {
       return NextResponse.json({ error: 'Password is required.' }, { status: 400 })
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 12, // 12 hours (matches token lifetime)
     })
 
     return response

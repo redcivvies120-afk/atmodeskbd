@@ -30,11 +30,15 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
-// Generate order number
+// Generate order number (CSPRNG suffix; works in both server and client bundles)
 export function generateOrderNumber(): string {
   const timestamp = Date.now().toString(36).toUpperCase()
-  const random = Math.random().toString(36).substring(2, 6).toUpperCase()
-  return `ATD-${timestamp}-${random}`
+  const rand = Array.from(globalThis.crypto.getRandomValues(new Uint8Array(6)))
+    .map((b) => b.toString(36).padStart(2, '0'))
+    .join('')
+    .slice(0, 8)
+    .toUpperCase()
+  return `ATD-${timestamp}-${rand}`
 }
 
 // Calculate discount percentage

@@ -38,7 +38,7 @@ export function AccountClient() {
   const [regPassword, setRegPassword] = useState('')
   const [forgotIdentifier, setForgotIdentifier] = useState('')
   const [forgotStep, setForgotStep] = useState<1 | 2>(1)
-  const [forgotUserName, setForgotUserName] = useState('')
+  const [forgotCode, setForgotCode] = useState('')
   const [forgotNewPassword, setForgotNewPassword] = useState('')
   const [forgotConfirmPassword, setForgotConfirmPassword] = useState('')
   
@@ -142,15 +142,14 @@ export function AccountClient() {
       const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: forgotIdentifier, action: 'check' }),
+        body: JSON.stringify({ identifier: forgotIdentifier }),
       })
       const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || 'Account not found')
+        throw new Error(data.error || 'Could not send code. Please try again.')
       }
 
-      setForgotUserName(data.userName || '')
       setForgotStep(2)
       setSuccessMsg(data.message)
     } catch (err: any) {
@@ -166,8 +165,12 @@ export function AccountClient() {
       setErrorMsg('Passwords do not match. Please retype carefully.')
       return
     }
-    if (forgotNewPassword.length < 6) {
-      setErrorMsg('Password must be at least 6 characters.')
+    if (forgotNewPassword.length < 8) {
+      setErrorMsg('Password must be at least 8 characters.')
+      return
+    }
+    if (!/^\d{6}$/.test(forgotCode.trim())) {
+      setErrorMsg('Please enter the 6-digit code we sent you.')
       return
     }
 
@@ -176,11 +179,12 @@ export function AccountClient() {
     setSuccessMsg(null)
 
     try {
-      const res = await fetch('/api/auth/forgot-password', {
+      const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           identifier: forgotIdentifier,
+          code: forgotCode.trim(),
           newPassword: forgotNewPassword,
         }),
       })
@@ -196,6 +200,7 @@ export function AccountClient() {
       setTimeout(() => {
         setActiveTab('login')
         setForgotStep(1)
+        setForgotCode('')
         setForgotNewPassword('')
         setForgotConfirmPassword('')
       }, 1500)
@@ -596,12 +601,12 @@ export function AccountClient() {
           <div className="space-y-5 animate-fade-in">
             <div className="text-center space-y-1">
               <h2 className="text-base font-bold text-slate-900">
-                {forgotStep === 1 ? 'Find Your Account' : 'Set Your New Password'}
+                {forgotStep === 1 ? 'Find Your Account' : 'Verify and Set New Password'}
               </h2>
               <p className="text-xs text-slate-500">
                 {forgotStep === 1
-                  ? 'Enter your registered phone number or email to reset your password directly.'
-                  : `Account verified for ${forgotUserName || 'you'}! Enter your new password below.`}
+                  ? 'Enter your registered phone number or email. We will send a verification code.'
+                  : 'Enter the 6-digit code we sent you and choose a new password.'}
               </p>
             </div>
 
@@ -651,12 +656,29 @@ export function AccountClient() {
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Verification Code *
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    maxLength={6}
+                    placeholder="6-digit code"
+                    value={forgotCode}
+                    onChange={(e) => setForgotCode(e.target.value.replace(/\D/g, ''))}
+                    className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono tracking-widest"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     New Password *
                   </label>
                   <div className="relative">
                     <input
                       type="password"
-                      placeholder="At least 6 characters"
+                      placeholder="At least 8 characters"
                       value={forgotNewPassword}
                       onChange={(e) => setForgotNewPassword(e.target.value)}
                       className="w-full pl-4 pr-10 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"

@@ -4,6 +4,15 @@ import { isServerAdminAuthenticated } from '@/lib/admin-auth'
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
+/** Detect the real image type from the file's first bytes (the client-supplied MIME type can lie). */
+function sniffImageType(b: Buffer): string | null {
+  if (b.length > 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return 'image/jpeg'
+  if (b.length > 8 && b.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return 'image/png'
+  if (b.length > 12 && b.subarray(0, 4).toString('ascii') === 'RIFF' && b.subarray(8, 12).toString('ascii') === 'WEBP') return 'image/webp'
+  if (b.length > 6 && b.subarray(0, 3).toString('ascii') === 'GIF') return 'image/gif'
+  return null
+}
+
 export async function POST(req: NextRequest) {
   try {
     // 1. Admin Authentication Check
@@ -35,6 +44,10 @@ export async function POST(req: NextRequest) {
     // Convert to base64
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
+    const detected = sniffImageType(buffer)
+    if (!detected || detected !== file.type) {
+      return NextResponse.json({ error: 'File content does not match an allowed image type.' }, { status: 400 })
+    }
     const base64 = buffer.toString('base64')
 
     // Read ImgBB API Key securely from environment variables
@@ -69,7 +82,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Secure Data URL fallback
-    const mimeType = file.type || 'image/jpeg'
+    const mimeType = detected
     const dataUrl = `data:${mimeType};base64,${base64}`
 
     return NextResponse.json({

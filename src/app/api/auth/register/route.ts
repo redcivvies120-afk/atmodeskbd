@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   try {
     // 1. Rate limiting: max 5 account creations per hour per IP
     const clientIp = getClientIp(req)
-    const rateCheck = checkRateLimit(`user_register:${clientIp}`, 5, 3600)
+    const rateCheck = await checkRateLimit(`user_register:${clientIp}`, 5, 3600)
     if (!rateCheck.success) {
       return rateLimitExceededResponse(rateCheck)
     }
@@ -38,9 +38,9 @@ export async function POST(req: Request) {
       )
     }
 
-    if (password.length < 8) {
+    if (password.length < 8 || password.length > 72) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters long for security.' },
+        { error: 'Password must be 8 to 72 characters long.' },
         { status: 400 }
       )
     }

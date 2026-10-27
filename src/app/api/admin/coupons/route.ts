@@ -18,8 +18,8 @@ export async function POST(req: Request) {
     const value = parseFloat(String(body?.value))
     const minOrderAmount = body?.minOrderAmount ? parseFloat(String(body.minOrderAmount)) : null
 
-    if (!code || isNaN(value) || value <= 0) {
-      return NextResponse.json({ error: 'Valid Code and Value are required' }, { status: 400 })
+    if (!code || isNaN(value) || value <= 0 || (type === 'PERCENTAGE' && value > 100)) {
+      return NextResponse.json({ error: 'Valid Code and Value are required (percentage must be 1-100)' }, { status: 400 })
     }
 
     const coupon = await prisma.coupon.create({
