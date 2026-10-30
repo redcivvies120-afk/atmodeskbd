@@ -106,9 +106,9 @@ export function getOrderStatusLabel(status: string): string {
     SHIPPED: 'Shipped with Courier',
     OUT_FOR_DELIVERY: 'Out for Delivery',
     DELIVERED: 'Delivered',
-    RETURN_REQUESTED: 'Return / Refund Requested',
-    RETURNED: 'Returned',
-    REFUNDED: 'Refunded',
+    RETURN_REQUESTED: 'Replacement Requested',
+    RETURNED: 'Replacement Processing',
+    REFUNDED: 'Replacement Dispatched',
     CANCELLED: 'Cancelled',
   }
   return labels[status] || status

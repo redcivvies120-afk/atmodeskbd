@@ -169,7 +169,7 @@ export default function CheckoutPage() {
                     placeholder="01712345678"
                     className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
                   />
-                  <p className="text-[11px] text-slate-400 mt-1">Courier will call this number prior to delivery.</p>
+                  <p className="text-[11px] text-slate-400 mt-1">Courier will send SMS / text notification prior to delivery.</p>
                 </div>
 
                 <div>
@@ -357,7 +357,7 @@ export default function CheckoutPage() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
-              placeholder="e.g. Call before delivery, leave with guard, etc."
+              placeholder="e.g. Text on WhatsApp before delivery, leave with guard, etc."
               className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-sm text-slate-900 outline-none transition"
             />
           </div>

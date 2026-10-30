@@ -63,7 +63,7 @@ export default async function OrderConfirmedPage({ params, searchParams }: Order
         </h1>
 
         <p className="text-sm text-slate-500 max-w-md mx-auto">
-          We have received your order and our team is preparing it for shipment. We will send you SMS / call updates as it moves.
+          We have received your order and our team is preparing it for shipment. We will send you SMS and WhatsApp text updates as it moves.
         </p>
 
         <div className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-xs font-mono text-slate-700">

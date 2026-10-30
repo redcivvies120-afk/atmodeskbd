@@ -201,16 +201,16 @@ export function OrderRowClient({ order }: { order: any }) {
               </button>
             )}
 
-            {/* Direct Printable Invoice Button */}
+            {/* Direct Printable / Downloadable Invoice Button */}
             <a
               href={`/admin/orders/${order.id}/invoice`}
               target="_blank"
               rel="noopener noreferrer"
-              title="Open Printable A4 Invoice & Packing Slip"
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold shadow-2xs transition"
+              title="Open Professional A4 Invoice & Download PDF"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold shadow-2xs transition"
             >
               <Printer className="w-3 h-3 text-sky-400" />
-              Invoice
+              <span>Invoice (PDF)</span>
             </a>
           </div>
         </td>
@@ -331,7 +331,7 @@ export function OrderRowClient({ order }: { order: any }) {
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition whitespace-nowrap"
                 >
                   <Printer className="w-4 h-4 text-sky-400" />
-                  Print A4 Invoice &amp; Packing Slip
+                  Official Invoice (Download PDF / Print)
                   <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                 </a>
               </div>

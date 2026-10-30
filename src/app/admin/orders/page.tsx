@@ -39,29 +39,6 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
   }
 
   try {
-    await ensureDatabaseTables()
-
-    // Query counts in parallel
-    const [all, newO, prep, ship, deliv, rets, canc] = await Promise.all([
-      prisma.order.count(),
-      prisma.order.count({ where: { status: 'PENDING' } }),
-      prisma.order.count({ where: { status: { in: ['PROCESSING', 'CONFIRMED'] } } }),
-      prisma.order.count({ where: { status: { in: ['SHIPPED', 'OUT_FOR_DELIVERY'] } } }),
-      prisma.order.count({ where: { status: 'DELIVERED' } }),
-      prisma.order.count({ where: { status: { in: ['RETURN_REQUESTED', 'RETURNED', 'REFUNDED'] } } }),
-      prisma.order.count({ where: { status: 'CANCELLED' } }),
-    ])
-
-    counts = {
-      all,
-      new: newO,
-      prepared: prep,
-      shipped: ship,
-      delivered: deliv,
-      returns: rets,
-      cancelled: canc,
-    }
-
     // Build query filter based on the active stage tab
     const where: any = {}
     if (activeTab === 'NEW' || activeTab === 'PENDING') {
@@ -78,14 +55,55 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
       where.status = 'CANCELLED'
     } // activeTab === 'ALL' leaves where empty
 
-    orders = await prisma.order.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        items: true,
-        address: true,
-      },
-    })
+    // Ultra-fast: 1 group-by query for all stage counts + 1 query for orders in parallel (2 DB trips instead of 8)
+    const [statusGroups, activeOrders] = await Promise.all([
+      prisma.order.groupBy({
+        by: ['status'],
+        _count: { _all: true },
+      }),
+      prisma.order.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: 100,
+        include: {
+          items: true,
+          address: true,
+        },
+      }),
+    ])
+
+    // Calculate all stage counts in-memory instantaneously
+    let totalAll = 0
+    let countNew = 0
+    let countPrepared = 0
+    let countShipped = 0
+    let countDelivered = 0
+    let countReturns = 0
+    let countCancelled = 0
+
+    for (const group of statusGroups) {
+      const c = group._count._all
+      totalAll += c
+      const st = group.status
+      if (st === 'PENDING') countNew += c
+      else if (st === 'PROCESSING' || st === 'CONFIRMED') countPrepared += c
+      else if (st === 'SHIPPED' || st === 'OUT_FOR_DELIVERY') countShipped += c
+      else if (st === 'DELIVERED') countDelivered += c
+      else if (st === 'RETURN_REQUESTED' || st === 'RETURNED' || st === 'REFUNDED') countReturns += c
+      else if (st === 'CANCELLED') countCancelled += c
+    }
+
+    counts = {
+      all: totalAll,
+      new: countNew,
+      prepared: countPrepared,
+      shipped: countShipped,
+      delivered: countDelivered,
+      returns: countReturns,
+      cancelled: countCancelled,
+    }
+
+    orders = activeOrders
   } catch (err) {
     console.error('AdminOrdersPage error:', err)
   }
@@ -96,7 +114,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
       label: 'New Orders',
       icon: Inbox,
       count: counts.new,
-      desc: 'Newly placed orders waiting for phone verification & acceptance',
+      desc: 'Newly placed orders waiting for WhatsApp/SMS text confirmation & acceptance',
       badgeColor: 'bg-yellow-100 text-yellow-800 border-yellow-300',
     },
     {
@@ -125,10 +143,10 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
     },
     {
       key: 'RETURNS',
-      label: 'Returns & Refunds',
+      label: '7-Day Replacements',
       icon: RotateCcw,
       count: counts.returns,
-      desc: 'Customer replacement and refund requests under 7-day guarantee',
+      desc: 'Customer replacement claims under 7-day guarantee (brand new unit exchange; no cash refunds)',
       badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
     },
     {

@@ -20,10 +20,7 @@ export async function POST(
     const body = await req.json().catch(() => ({}))
     const token = typeof body?.token === 'string' ? body.token.trim() : null
     const phone = typeof body?.phone === 'string' ? normalizeBDPhone(body.phone) : null
-    const reason = sanitizeString(body?.reason, 100) || 'Defective / Damaged'
-    const resolution = body?.resolution === 'REFUND' ? 'Cash Refund' : 'Replacement (Brand New Unit)'
-    const refundMethod = sanitizeString(body?.refundMethod, 30) || 'bKash'
-    const refundNumber = sanitizeString(body?.refundNumber, 30) || ''
+    const reason = sanitizeString(body?.reason, 100) || 'Hardware malfunction / defect'
     const details = sanitizeMultiline(body?.details || '', 1000)
 
     const order = await prisma.order.findUnique({
@@ -57,20 +54,20 @@ export async function POST(
 
     if (!isAuthorized) {
       return NextResponse.json(
-        { error: 'Unauthorized: You do not have permission to request return for this order.' },
+        { error: 'Unauthorized: You do not have permission to request replacement for this order.' },
         { status: 403 }
       )
     }
 
-    // Must be DELIVERED to request a return / refund
+    // Must be DELIVERED to request a replacement
     if (order.status !== 'DELIVERED') {
       return NextResponse.json(
-        { error: 'Return and refund requests can only be initiated after your order is delivered.' },
+        { error: 'Replacement requests can only be initiated after your order is delivered.' },
         { status: 400 }
       )
     }
 
-    // Check 7-Day Guarantee Window
+    // Check 7-Day Replacement Guarantee Window
     const deliveryDate = order.updatedAt || order.createdAt
     const diffMs = Date.now() - new Date(deliveryDate).getTime()
     const diffDays = diffMs / (1000 * 60 * 60 * 24)
@@ -79,40 +76,39 @@ export async function POST(
       return NextResponse.json(
         {
           error:
-            'The 7-day return and replacement window for this order has expired according to our store policy. If you need hardware support, please contact our helpline.',
+            'The 7-day replacement window for this order has expired according to our store policy. If you need hardware support, please contact our helpline.',
         },
         { status: 400 }
       )
     }
 
-    // Update order status to RETURN_REQUESTED and store return info in notes
+    // Update order status to RETURN_REQUESTED (Replacement Requested)
     const timestamp = new Date().toLocaleString('en-BD', { timeZone: 'Asia/Dhaka' })
-    const returnNote = `\n[${timestamp}] RETURN/REFUND REQUEST:
-• Reason: ${reason}
-• Resolution Choice: ${resolution}
-• Refund Payout: ${refundMethod} (${refundNumber || 'N/A'})
-• Customer Note: ${details || 'None'}`
+    const replacementNote = `\n[${timestamp}] 7-DAY REPLACEMENT REQUEST:
+• Issue: ${reason}
+• Action: Free Brand New Unit Replacement
+• Customer Details: ${details || 'None'}`
 
     const updatedOrder = await prisma.order.update({
       where: { id: order.id },
       data: {
         status: 'RETURN_REQUESTED',
-        notes: ((order.notes || '') + returnNote).trim(),
+        notes: ((order.notes || '') + replacementNote).trim(),
       },
     })
 
     return NextResponse.json({
       success: true,
-      message: 'Your return/refund request has been submitted. Our team will verify and contact you shortly.',
+      message: 'Your 7-day replacement request has been submitted. Our team will verify and dispatch a brand new unit.',
       order: {
         orderNumber: updatedOrder.orderNumber,
         status: updatedOrder.status,
       },
     })
   } catch (error: any) {
-    console.error('[Order Return Error]', error)
+    console.error('[Order Replacement Error]', error)
     return NextResponse.json(
-      { error: 'Failed to submit return request. Please contact support via WhatsApp.' },
+      { error: 'Failed to submit replacement request. Please contact support via WhatsApp.' },
       { status: 500 }
     )
   }

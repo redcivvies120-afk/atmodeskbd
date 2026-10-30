@@ -70,7 +70,7 @@ export async function POST(
       return NextResponse.json(
         {
           error:
-            'This parcel has already left our warehouse with the courier and cannot be cancelled online. Please call +880 1318-043562 for assistance.',
+            'This parcel has already left our warehouse with the courier and cannot be cancelled online. Please text us on WhatsApp at +880 1318-043562 for assistance.',
         },
         { status: 400 }
       )

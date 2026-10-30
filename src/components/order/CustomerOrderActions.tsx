@@ -46,15 +46,12 @@ export function CustomerOrderActions({
   const [customCancelReason, setCustomCancelReason] = useState('')
   const [isSubmittingCancel, setIsSubmittingCancel] = useState(false)
 
-  const [showReturnModal, setShowReturnModal] = useState(false)
-  const [returnReason, setReturnReason] = useState('Hardware malfunction / screen defect')
-  const [resolution, setResolution] = useState<'REPLACEMENT' | 'REFUND'>('REPLACEMENT')
-  const [refundMethod, setRefundMethod] = useState<'bKash' | 'Nagad' | 'Rocket'>('bKash')
-  const [refundNumber, setRefundNumber] = useState('')
-  const [returnDetails, setReturnDetails] = useState('')
-  const [isSubmittingReturn, setIsSubmittingReturn] = useState(false)
+  const [showReplacementModal, setShowReplacementModal] = useState(false)
+  const [replacementReason, setReplacementReason] = useState('Hardware malfunction / screen defect')
+  const [replacementDetails, setReplacementDetails] = useState('')
+  const [isSubmittingReplacement, setIsSubmittingReplacement] = useState(false)
 
-  // 7-day warranty window calculation
+  // 7-day replacement window calculation
   const deliveryDate = new Date(updatedAt || createdAt)
   const diffMs = Date.now() - deliveryDate.getTime()
   const daysSinceDelivery = Math.floor(diffMs / (1000 * 60 * 60 * 24))
@@ -65,7 +62,7 @@ export function CustomerOrderActions({
   const canCancel = ['PENDING', 'CONFIRMED', 'PROCESSING'].includes(currentStatus)
   const isShippedOrLater = ['SHIPPED', 'OUT_FOR_DELIVERY'].includes(currentStatus)
   const isDelivered = currentStatus === 'DELIVERED'
-  const isReturnRequested = currentStatus === 'RETURN_REQUESTED'
+  const isReplacementRequested = currentStatus === 'RETURN_REQUESTED'
   const isCancelled = currentStatus === 'CANCELLED'
 
   // Handle Cancellation Submit
@@ -106,15 +103,10 @@ export function CustomerOrderActions({
     }
   }
 
-  // Handle Return Submit
-  const handleReturnOrder = async (e: React.FormEvent) => {
+  // Handle Replacement Submit (NO CASH REFUND, ONLY BRAND NEW REPLACEMENT)
+  const handleReplacementOrder = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (resolution === 'REFUND' && !refundNumber.trim()) {
-      toast('Please provide your bKash/Nagad mobile number to receive your refund.', 'error')
-      return
-    }
-
-    setIsSubmittingReturn(true)
+    setIsSubmittingReplacement(true)
 
     try {
       const res = await fetch(`/api/orders/${orderNumber}/return`, {
@@ -123,28 +115,25 @@ export function CustomerOrderActions({
         body: JSON.stringify({
           token: token || undefined,
           phone: phone || undefined,
-          reason: returnReason,
-          resolution,
-          refundMethod,
-          refundNumber: refundNumber.trim(),
-          details: returnDetails.trim(),
+          reason: replacementReason,
+          details: replacementDetails.trim(),
         }),
       })
 
       const data = await res.json()
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit return request.')
+        throw new Error(data.error || 'Failed to submit replacement request.')
       }
 
-      toast('Return / refund request submitted! Our team will contact you.', 'success')
+      toast('Replacement request submitted! We will dispatch a new unit.', 'success')
       setCurrentStatus('RETURN_REQUESTED')
-      setShowReturnModal(false)
+      setShowReplacementModal(false)
       if (onStatusChange) onStatusChange('RETURN_REQUESTED')
       router.refresh()
     } catch (err: any) {
-      toast(err.message || 'Error submitting return request.', 'error')
+      toast(err.message || 'Error submitting replacement request.', 'error')
     } finally {
-      setIsSubmittingReturn(false)
+      setIsSubmittingReplacement(false)
     }
   }
 
@@ -190,7 +179,7 @@ export function CustomerOrderActions({
               🚚 In Transit with Courier
             </strong>
             <p className="text-purple-800 leading-relaxed">
-              Your parcel has left our warehouse and is on the road with the delivery courier. The rider will contact you prior to arrival. Please keep the exact cash amount ready for inspection upon delivery.
+              Your parcel has left our warehouse and is on the road with the delivery courier. The rider will contact you prior to arrival. Please inspect the parcel and pay cash upon delivery.
             </p>
           </div>
         </div>
@@ -206,30 +195,30 @@ export function CustomerOrderActions({
               </strong>
               {isWithin7Days ? (
                 <span className="px-2.5 py-0.5 bg-emerald-200 text-emerald-900 font-bold rounded-full text-[11px] flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5" /> 7-Day Guarantee Active ({daysRemaining} days left)
+                  <ShieldCheck className="w-3.5 h-3.5" /> 7-Day Free Replacement Active ({daysRemaining} days left)
                 </span>
               ) : (
                 <span className="text-[11px] text-slate-400 font-medium">
-                  7-Day Return Window Closed
+                  7-Day Replacement Window Closed
                 </span>
               )}
             </div>
             <p className="text-emerald-800 leading-relaxed">
-              Your parcel was successfully delivered. You are fully protected under our 7-Day Return and Replacement policy.
+              Your parcel was successfully delivered. You are fully protected under our <strong>7-Day Free Replacement Guarantee</strong> for any hardware or transit defects.
             </p>
           </div>
         </div>
       )}
 
-      {isReturnRequested && (
+      {isReplacementRequested && (
         <div className="p-4 bg-amber-50 border border-amber-300 rounded-2xl flex items-start gap-3 text-xs text-amber-950 animate-fade-in">
           <RotateCcw className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="space-y-1">
             <strong className="font-extrabold text-sm text-amber-950 block">
-              🔄 Return / Refund Request Under Review
+              🔄 Replacement Request Under Review
             </strong>
             <p className="text-amber-800 leading-relaxed">
-              We have received your return/replacement request. Our Dhaka customer support team will contact your phone or WhatsApp to verify and schedule courier pickup.
+              We have received your 7-day replacement request. Our support team will verify your claim and dispatch a brand new replacement unit directly to your doorstep.
             </p>
           </div>
         </div>
@@ -241,7 +230,7 @@ export function CustomerOrderActions({
           <div className="space-y-1">
             <strong className="font-bold text-sm text-rose-950 block">❌ Order Cancelled</strong>
             <p className="text-rose-800 leading-relaxed">
-              This order has been cancelled. No payment will be collected, and inventory has been returned.
+              This order has been cancelled. No payment was collected, and inventory has been returned.
             </p>
           </div>
         </div>
@@ -274,20 +263,20 @@ export function CustomerOrderActions({
           </div>
         )}
 
-        {/* Case 3: Delivered within 7 Days -> Show Return / Refund Option */}
+        {/* Case 3: Delivered within 7 Days -> Show Replacement Option (NO CASH REFUND) */}
         {isDelivered && isWithin7Days && (
           <button
-            onClick={() => setShowReturnModal(true)}
+            onClick={() => setShowReplacementModal(true)}
             className="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-sm shadow-amber-600/20"
           >
-            <RotateCcw className="w-3.5 h-3.5" /> Request Return / Refund (7-Day Guarantee)
+            <RotateCcw className="w-3.5 h-3.5" /> Request 7-Day Replacement
           </button>
         )}
 
-        {/* Case 4: Delivered after 7 Days -> Return Option is Removed */}
+        {/* Case 4: Delivered after 7 Days -> Replacement Option is Removed */}
         {isDelivered && !isWithin7Days && (
           <div className="text-[11px] text-slate-400 italic">
-            The 7-day return guarantee period has ended according to store policy.
+            The 7-day replacement guarantee window has ended according to store policy.
           </div>
         )}
       </div>
@@ -318,7 +307,7 @@ export function CustomerOrderActions({
                 >
                   <option value="Change of delivery address / phone">Change of delivery address or phone</option>
                   <option value="Ordered by mistake / wrong product">Ordered by mistake or wrong model</option>
-                  <option value="Need to change payment or items">Need to change cart items</option>
+                  <option value="Need to change cart items">Need to change cart items</option>
                   <option value="Delivery time too long">Delivery time too long</option>
                   <option value="Other">Other reason</option>
                 </select>
@@ -371,8 +360,8 @@ export function CustomerOrderActions({
         </div>
       )}
 
-      {/* ── RETURN / REFUND MODAL (7-DAY GUARANTEE) ─────────────────── */}
-      {showReturnModal && (
+      {/* ── 7-DAY REPLACEMENT MODAL (NO CASH REFUND, ONLY REPLACEMENT) ─ */}
+      {showReplacementModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-scale-in max-h-[90vh] overflow-y-auto">
             <div className="flex items-center gap-3">
@@ -381,137 +370,79 @@ export function CustomerOrderActions({
               </div>
               <div>
                 <h3 className="text-base font-extrabold text-slate-900">
-                  Request Return / Refund
+                  Request 7-Day Replacement
                 </h3>
                 <p className="text-xs text-emerald-600 font-semibold">
-                  Protected by ATMODESK 7-Day Replacement Policy
+                  100% Free Brand New Unit Replacement Guarantee
                 </p>
               </div>
             </div>
 
-            <form onSubmit={handleReturnOrder} className="space-y-4">
+            {/* Policy Notice: Only Replacement */}
+            <div className="p-3.5 bg-amber-50/80 border border-amber-200 rounded-2xl text-xs text-amber-900 space-y-1">
+              <strong className="font-bold flex items-center gap-1.5 text-amber-950">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" /> Free Replacement Policy
+              </strong>
+              <p className="text-[11px] text-amber-800 leading-relaxed">
+                If your device has any transit damage, hardware fault, screen glitch, or manufacturing defect within 7 days of delivery, we provide a <strong>brand new replacement unit</strong> with zero courier fees. (Cash refunds are not issued).
+              </p>
+            </div>
+
+            <form onSubmit={handleReplacementOrder} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Reason for Return *
+                  Issue / Defect Description *
                 </label>
                 <select
-                  value={returnReason}
-                  onChange={(e) => setReturnReason(e.target.value)}
+                  value={replacementReason}
+                  onChange={(e) => setReplacementReason(e.target.value)}
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-sky-500"
                 >
                   <option value="Hardware malfunction / screen defect">Hardware malfunction or screen defect</option>
-                  <option value="Damaged during courier transit">Damaged during courier transit (cracked/broken)</option>
-                  <option value="WiFi / connectivity failure">WiFi or pairing failure</option>
-                  <option value="Incorrect item or variant delivered">Incorrect item or color delivered</option>
-                  <option value="Missing cables or accessories">Missing accessories or cables</option>
-                  <option value="Other defect">Other issue</option>
+                  <option value="Damaged during courier transit">Damaged during courier transit (cracked casing/display)</option>
+                  <option value="WiFi / pairing failure">WiFi connectivity or app pairing failure</option>
+                  <option value="Incorrect item or variant delivered">Incorrect model or color delivered</option>
+                  <option value="Missing cables or accessories">Missing accessories or USB cable</option>
+                  <option value="Other technical defect">Other technical defect</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Preferred Solution *
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setResolution('REPLACEMENT')}
-                    className={`p-3 rounded-xl border text-left text-xs font-bold transition ${
-                      resolution === 'REPLACEMENT'
-                        ? 'border-sky-600 bg-sky-50 text-sky-900 ring-1 ring-sky-500'
-                        : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    📦 Free Replacement
-                    <span className="block text-[10px] font-normal text-slate-500 mt-0.5">
-                      Brand new unit sent to your doorstep
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setResolution('REFUND')}
-                    className={`p-3 rounded-xl border text-left text-xs font-bold transition ${
-                      resolution === 'REFUND'
-                        ? 'border-emerald-600 bg-emerald-50 text-emerald-900 ring-1 ring-emerald-500'
-                        : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    💰 Cash Refund
-                    <span className="block text-[10px] font-normal text-slate-500 mt-0.5">
-                      Direct to bKash or Nagad wallet
-                    </span>
-                  </button>
-                </div>
-              </div>
-
-              {resolution === 'REFUND' && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-emerald-50/60 border border-emerald-200 rounded-2xl animate-fade-in">
-                  <div>
-                    <label className="block text-[11px] font-bold text-emerald-950 uppercase tracking-wider mb-1">
-                      Wallet Provider
-                    </label>
-                    <select
-                      value={refundMethod}
-                      onChange={(e) => setRefundMethod(e.target.value as any)}
-                      className="w-full px-3 py-2 bg-white border border-emerald-300 rounded-xl text-xs text-slate-900 outline-none"
-                    >
-                      <option value="bKash">bKash (Personal)</option>
-                      <option value="Nagad">Nagad (Personal)</option>
-                      <option value="Rocket">Rocket (Personal)</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-emerald-950 uppercase tracking-wider mb-1">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="017XXXXXXXX"
-                      value={refundNumber}
-                      onChange={(e) => setRefundNumber(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-emerald-300 rounded-xl text-xs text-slate-900 outline-none"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Describe the Issue (Optional)
+                  Additional Details (Optional)
                 </label>
                 <textarea
                   rows={2}
-                  value={returnDetails}
-                  onChange={(e) => setReturnDetails(e.target.value)}
-                  placeholder="Explain what went wrong so we can resolve it quickly..."
+                  value={replacementDetails}
+                  onChange={(e) => setReplacementDetails(e.target.value)}
+                  placeholder="Explain what is wrong with the device..."
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-sky-500"
                 />
               </div>
 
               <div className="p-3 bg-slate-50 rounded-xl text-[11px] text-slate-500 space-y-1">
-                <p>• Our team will arrange courier pickup from your address.</p>
-                <p>• Replacements are dispatched within 24 hours of inspection.</p>
+                <p>• Our Dhaka team will arrange courier pickup of the defective item.</p>
+                <p>• A brand new replacement unit will be dispatched immediately upon verification.</p>
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
                 <button
                   type="button"
-                  disabled={isSubmittingReturn}
-                  onClick={() => setShowReturnModal(false)}
+                  disabled={isSubmittingReplacement}
+                  onClick={() => setShowReplacementModal(false)}
                   className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmittingReturn}
+                  disabled={isSubmittingReplacement}
                   className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm disabled:opacity-50"
                 >
-                  {isSubmittingReturn ? (
+                  {isSubmittingReplacement ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : (
-                    'Submit Request'
+                    'Submit Replacement Request'
                   )}
                 </button>
               </div>

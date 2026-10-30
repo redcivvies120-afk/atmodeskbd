@@ -27,10 +27,12 @@ export default async function AdminDashboardPage() {
   let totalCustomers = 0
   let categoriesCount = 0
   let totalRevenue = 0
-  let allOrders: any[] = []
+  let pendingCount = 0
+  let confirmedCount = 0
+  let shippedCount = 0
+  let deliveredCount = 0
 
   try {
-    await ensureDatabaseTables()
     const [
       tp,
       to,
@@ -38,6 +40,8 @@ export default async function AdminDashboardPage() {
       low,
       cust,
       cats,
+      revenueAgg,
+      statusGroups,
     ] = await Promise.all([
       prisma.product.count({ where: { isActive: true } }),
       prisma.order.count(),
@@ -49,9 +53,18 @@ export default async function AdminDashboardPage() {
       prisma.product.findMany({
         where: { stock: { lte: 10 }, isActive: true },
         take: 5,
+        select: { id: true, name: true, stock: true, price: true, slug: true },
       }),
       prisma.user.count({ where: { role: 'CUSTOMER' } }),
       prisma.category.count(),
+      prisma.order.aggregate({
+        _sum: { total: true },
+        where: { status: { not: 'CANCELLED' } },
+      }),
+      prisma.order.groupBy({
+        by: ['status'],
+        _count: { _all: true },
+      }),
     ])
 
     totalProducts = tp
@@ -60,20 +73,19 @@ export default async function AdminDashboardPage() {
     lowStockProducts = low
     totalCustomers = cust
     categoriesCount = cats
+    totalRevenue = revenueAgg._sum.total || 0
 
-    allOrders = await prisma.order.findMany({
-      select: { total: true, status: true, createdAt: true },
-    })
-    totalRevenue = allOrders.reduce((sum, o) => sum + (o.status !== 'CANCELLED' ? o.total : 0), 0)
+    for (const group of statusGroups) {
+      const c = group._count._all
+      const st = group.status
+      if (st === 'PENDING') pendingCount += c
+      else if (st === 'CONFIRMED' || st === 'PROCESSING') confirmedCount += c
+      else if (st === 'SHIPPED' || st === 'OUT_FOR_DELIVERY') shippedCount += c
+      else if (st === 'DELIVERED') deliveredCount += c
+    }
   } catch (err) {
     console.error('Admin Dashboard query error:', err)
   }
-
-  // Orders status count
-  const pendingCount = allOrders.filter((o) => o.status === 'PENDING').length
-  const confirmedCount = allOrders.filter((o) => o.status === 'CONFIRMED' || o.status === 'PROCESSING').length
-  const shippedCount = allOrders.filter((o) => o.status === 'SHIPPED' || o.status === 'OUT_FOR_DELIVERY').length
-  const deliveredCount = allOrders.filter((o) => o.status === 'DELIVERED').length
 
   return (
     <div className="space-y-8">
