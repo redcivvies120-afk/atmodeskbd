@@ -30,7 +30,6 @@ export default function CheckoutPage() {
   const [district, setDistrict] = useState('Dhaka')
   const [postalCode, setPostalCode] = useState('')
   const [shippingLocation, setShippingLocation] = useState<'inside_dhaka' | 'outside_dhaka'>('inside_dhaka')
-  const [couponCode, setCouponCode] = useState('')
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -40,15 +39,7 @@ export default function CheckoutPage() {
   const isFreeDhakaShipping = rawSubtotal >= 2000 && shippingLocation === 'inside_dhaka'
   const shippingCost = shippingLocation === 'outside_dhaka' ? 120 : isFreeDhakaShipping ? 0 : 60
 
-  // Discount logic
-  let discountAmount = 0
-  if (couponCode.trim().toUpperCase() === 'WELCOME10') {
-    discountAmount = Math.round(rawSubtotal * 0.1)
-  } else if (couponCode.trim().toUpperCase() === 'FLAT200' && rawSubtotal >= 2000) {
-    discountAmount = 200
-  }
-
-  const finalTotal = Math.max(0, rawSubtotal - discountAmount + shippingCost)
+  const finalTotal = Math.max(0, rawSubtotal + shippingCost)
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -88,7 +79,6 @@ export default function CheckoutPage() {
           postalCode,
           shippingLocation,
           paymentMethod: 'COD',
-          couponCode: couponCode.trim() || undefined,
           notes,
           items: items.map((i) => ({
             productId: i.productId,
@@ -397,56 +387,12 @@ export default function CheckoutPage() {
             ))}
           </div>
 
-          {/* Coupon Code Input */}
-          <div className="pt-2 border-t border-slate-100">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
-                placeholder="Promo Code (e.g. WELCOME10)"
-                className="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-sky-500 focus:bg-white rounded-xl text-xs text-slate-900 outline-none uppercase font-mono"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  if (couponCode.trim().toUpperCase() === 'WELCOME10') {
-                    toast('Coupon WELCOME10 applied! 10% discount added.', 'success')
-                  } else if (couponCode.trim().toUpperCase() === 'FLAT200') {
-                    if (rawSubtotal >= 2000) {
-                      toast('Coupon FLAT200 applied! ৳200 discount added.', 'success')
-                    } else {
-                      toast('Coupon FLAT200 requires a minimum order of ৳2,000.', 'error')
-                    }
-                  } else {
-                    toast('Invalid coupon code.', 'error')
-                  }
-                }}
-                className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition"
-              >
-                Apply
-              </button>
-            </div>
-            {discountAmount > 0 && (
-              <p className="text-xs font-bold text-emerald-600 mt-2">
-                ✓ Coupon Applied: -{formatBDT(discountAmount)}
-              </p>
-            )}
-          </div>
-
           {/* Price Breakdown */}
           <div className="border-t border-slate-100 pt-4 space-y-2 text-sm text-slate-600">
             <div className="flex justify-between">
               <span>Subtotal</span>
               <span className="font-semibold text-slate-900">{formatBDT(rawSubtotal)}</span>
             </div>
-
-            {discountAmount > 0 && (
-              <div className="flex justify-between text-emerald-600">
-                <span>Discount</span>
-                <span className="font-semibold">-{formatBDT(discountAmount)}</span>
-              </div>
-            )}
 
             <div className="flex justify-between">
               <span>Shipping ({shippingLocation === 'outside_dhaka' ? 'Outside Dhaka' : 'Inside Dhaka'})</span>

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { formatBDT, formatDate, getOrderStatusLabel, getOrderStatusColor, normalizeBDPhone } from '@/lib/utils'
 import { maskPhone, maskAddress } from '@/lib/security'
+import { CustomerOrderActions } from '@/components/order/CustomerOrderActions'
 import {
   Search,
   Package,
@@ -41,14 +42,14 @@ export default async function TrackOrderPage({ searchParams }: TrackOrderProps) 
   // Pipeline order steps
   const steps = [
     { key: 'PENDING', label: 'Order Placed' },
-    { key: 'CONFIRMED', label: 'Confirmed' },
-    { key: 'PROCESSING', label: 'Processing' },
-    { key: 'SHIPPED', label: 'Shipped' },
+    { key: 'PROCESSING', label: 'Prepared in Warehouse' },
+    { key: 'SHIPPED', label: 'Shipped with Courier' },
     { key: 'OUT_FOR_DELIVERY', label: 'Out for Delivery' },
     { key: 'DELIVERED', label: 'Delivered' },
   ]
 
   const getStepIndex = (status: string) => {
+    if (status === 'CONFIRMED') return 1
     const idx = steps.findIndex((s) => s.key === status)
     return idx >= 0 ? idx : 0
   }
@@ -165,6 +166,17 @@ export default async function TrackOrderPage({ searchParams }: TrackOrderProps) 
                 })}
               </div>
             </div>
+          </div>
+
+          {/* Real-time Stage Notification & Actions (Cancel / 7-Day Return) */}
+          <div className="pt-2 border-t border-slate-100">
+            <CustomerOrderActions
+              orderNumber={order.orderNumber}
+              status={order.status}
+              updatedAt={order.updatedAt}
+              createdAt={order.createdAt}
+              phone={order.address?.phone || phone}
+            />
           </div>
 
           {/* Delivery & Items Summary */}

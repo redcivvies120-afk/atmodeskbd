@@ -20,39 +20,10 @@ export default function CartPage() {
   const { items, updateQty, removeItem, clearCart, subtotal } = useCart()
   const { toast } = useToast()
 
-  const [couponCode, setCouponCode] = useState('')
-  const [discountPercent, setDiscountPercent] = useState<number>(0)
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null)
   const [shippingCost, setShippingCost] = useState<number>(subtotal() >= 2000 ? 0 : 60)
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
-    e.preventDefault()
-    const code = couponCode.trim().toUpperCase()
-    if (code === 'WELCOME10') {
-      setDiscountPercent(10)
-      setAppliedCoupon('WELCOME10')
-      toast('Coupon WELCOME10 applied! 10% discount added. 🎉')
-    } else if (code === 'FLAT200') {
-      if (subtotal() < 2000) {
-        toast('FLAT200 requires minimum order of ৳2,000', 'error')
-        return
-      }
-      setDiscountPercent(0)
-      setAppliedCoupon('FLAT200')
-      toast('Coupon FLAT200 applied! ৳200 discount added. 🎉')
-    } else {
-      toast('Invalid or expired coupon code', 'error')
-    }
-  }
-
   const rawSubtotal = subtotal()
-  const discountAmount =
-    appliedCoupon === 'WELCOME10'
-      ? Math.round(rawSubtotal * 0.1)
-      : appliedCoupon === 'FLAT200'
-      ? 200
-      : 0
-  const finalTotal = Math.max(0, rawSubtotal - discountAmount + (rawSubtotal >= 2000 ? 0 : shippingCost))
+  const finalTotal = Math.max(0, rawSubtotal + (rawSubtotal >= 2000 ? 0 : shippingCost))
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -188,42 +159,11 @@ export default function CartPage() {
               Order Summary
             </h2>
 
-            {/* Coupon Box */}
-            <form onSubmit={handleApplyCoupon} className="space-y-2">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  placeholder="Voucher code (e.g. WELCOME10)"
-                  className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs uppercase font-mono outline-none focus:border-sky-500"
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition"
-                >
-                  Apply
-                </button>
-              </div>
-              {appliedCoupon && (
-                <div className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-                  <Tag className="w-3.5 h-3.5" /> Voucher "{appliedCoupon}" applied!
-                </div>
-              )}
-            </form>
-
-            <div className="space-y-2.5 text-sm">
+            <div className="space-y-2.5 text-sm pt-1">
               <div className="flex justify-between text-slate-600">
                 <span>Subtotal</span>
                 <span className="font-semibold text-slate-900">{formatBDT(rawSubtotal)}</span>
               </div>
-
-              {discountAmount > 0 && (
-                <div className="flex justify-between text-emerald-600 font-semibold">
-                  <span>Coupon Discount</span>
-                  <span>-{formatBDT(discountAmount)}</span>
-                </div>
-              )}
 
               <div className="flex justify-between text-slate-600">
                 <span>Estimated Shipping</span>

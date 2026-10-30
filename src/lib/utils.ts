@@ -100,15 +100,16 @@ export function formatDateShort(date: Date | string): string {
 // Get order status label
 export function getOrderStatusLabel(status: string): string {
   const labels: Record<string, string> = {
-    PENDING: 'Pending',
-    CONFIRMED: 'Confirmed',
-    PROCESSING: 'Processing',
-    SHIPPED: 'Shipped',
+    PENDING: 'Order Placed (Pending)',
+    CONFIRMED: 'Order Accepted',
+    PROCESSING: 'Prepared in Warehouse',
+    SHIPPED: 'Shipped with Courier',
     OUT_FOR_DELIVERY: 'Out for Delivery',
     DELIVERED: 'Delivered',
-    CANCELLED: 'Cancelled',
+    RETURN_REQUESTED: 'Return / Refund Requested',
     RETURNED: 'Returned',
     REFUNDED: 'Refunded',
+    CANCELLED: 'Cancelled',
   }
   return labels[status] || status
 }
@@ -116,17 +117,18 @@ export function getOrderStatusLabel(status: string): string {
 // Get order status color
 export function getOrderStatusColor(status: string): string {
   const colors: Record<string, string> = {
-    PENDING: 'bg-yellow-100 text-yellow-800',
-    CONFIRMED: 'bg-blue-100 text-blue-800',
-    PROCESSING: 'bg-indigo-100 text-indigo-800',
-    SHIPPED: 'bg-purple-100 text-purple-800',
-    OUT_FOR_DELIVERY: 'bg-orange-100 text-orange-800',
-    DELIVERED: 'bg-green-100 text-green-800',
-    CANCELLED: 'bg-red-100 text-red-800',
-    RETURNED: 'bg-gray-100 text-gray-800',
-    REFUNDED: 'bg-pink-100 text-pink-800',
+    PENDING: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+    CONFIRMED: 'bg-blue-100 text-blue-800 border-blue-200',
+    PROCESSING: 'bg-sky-100 text-sky-800 border-sky-300',
+    SHIPPED: 'bg-purple-100 text-purple-800 border-purple-200',
+    OUT_FOR_DELIVERY: 'bg-orange-100 text-orange-800 border-orange-200',
+    DELIVERED: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+    RETURN_REQUESTED: 'bg-amber-100 text-amber-900 border-amber-300',
+    RETURNED: 'bg-slate-100 text-slate-800 border-slate-200',
+    REFUNDED: 'bg-pink-100 text-pink-800 border-pink-200',
+    CANCELLED: 'bg-rose-100 text-rose-800 border-rose-200',
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return colors[status] || 'bg-gray-100 text-gray-800 border-gray-200'
 }
 
 // Stub email notification (replace with real SMTP later)

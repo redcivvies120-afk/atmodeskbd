@@ -5,7 +5,16 @@ import { isServerAdminAuthenticated } from '@/lib/admin-auth'
 import { sanitizeString } from '@/lib/security'
 
 const ALLOWED_ORDER_STATUSES = [
-  'PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED',
+  'PENDING',
+  'CONFIRMED',
+  'PROCESSING',
+  'SHIPPED',
+  'OUT_FOR_DELIVERY',
+  'DELIVERED',
+  'CANCELLED',
+  'RETURN_REQUESTED',
+  'RETURNED',
+  'REFUNDED',
 ]
 const ALLOWED_PAYMENT_STATUSES = ['PENDING', 'PAID', 'FAILED', 'REFUNDED']
 

@@ -185,9 +185,9 @@ export async function POST(req: Request) {
       })
     }
 
-    // 6. Coupon (all rules enforced; usage claimed atomically in the transaction below)
-    const applied = await resolveCoupon(couponCode, subtotal)
-    const discountAmount = applied?.discount ?? 0
+    // 6. Promo codes currently disabled
+    const applied = null
+    const discountAmount = 0
 
     // 7. Shipping
     let shippingCost = shippingLocation === 'outside_dhaka' ? 120 : 60
@@ -225,18 +225,7 @@ export async function POST(req: Request) {
           if (r.count !== 1) throw new OutOfStock()
         }
 
-        if (applied) {
-          const ok = await tx.coupon.updateMany({
-            where: {
-              id: applied.coupon.id,
-              ...(applied.coupon.usageLimit != null
-                ? { usedCount: { lt: applied.coupon.usageLimit } }
-                : {}),
-            },
-            data: { usedCount: { increment: 1 } },
-          })
-          if (ok.count !== 1) throw new CouponExhausted()
-        }
+        // Coupon processing disabled for now
 
         const address = await tx.address.create({
           data: {
@@ -264,7 +253,7 @@ export async function POST(req: Request) {
             discountAmount,
             shippingCost,
             total,
-            couponCode: applied ? applied.coupon.code : null,
+            couponCode: null,
             notes: notes || null,
             shippingMethod: shippingLocation === 'outside_dhaka' ? 'Outside Dhaka (Nationwide)' : 'Inside Dhaka',
             estimatedDelivery,

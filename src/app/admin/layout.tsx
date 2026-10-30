@@ -27,11 +27,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   const navItems = [
     { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { label: 'Products', href: '/admin/products', icon: Package },
-    { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+    { label: 'Orders Hub', href: '/admin/orders', icon: ShoppingBag },
+    { label: 'Prepared Orders', href: '/admin/orders?status=PREPARED', icon: Package },
+    { label: 'Products', href: '/admin/products', icon: Layers },
     { label: 'Customers', href: '/admin/customers', icon: Users },
     { label: 'Categories', href: '/admin/categories', icon: Layers },
-    { label: 'Coupons', href: '/admin/coupons', icon: Tag },
   ]
 
   return (

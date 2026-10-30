@@ -12,6 +12,11 @@ import {
   MessageCircle,
   Printer,
   ExternalLink,
+  CheckCircle2,
+  Truck,
+  RotateCcw,
+  XCircle,
+  Loader2,
 } from 'lucide-react'
 
 export function OrderRowClient({ order }: { order: any }) {
@@ -31,7 +36,7 @@ export function OrderRowClient({ order }: { order: any }) {
         body: JSON.stringify({ status: newStatus }),
       })
       if (!res.ok) throw new Error('Failed to update status')
-      toast(`Order ${order.orderNumber} -> ${getOrderStatusLabel(newStatus)}`)
+      toast(`Order #${order.orderNumber} updated to ${getOrderStatusLabel(newStatus)}`, 'success')
     } catch (err: any) {
       toast(err.message || 'Error updating order', 'error')
     } finally {
@@ -45,10 +50,11 @@ export function OrderRowClient({ order }: { order: any }) {
       const res = await fetch(`/api/admin/orders/${order.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trackingNumber }),
+        body: JSON.stringify({ trackingNumber, status: status === 'PROCESSING' ? 'SHIPPED' : status }),
       })
       if (!res.ok) throw new Error('Failed to save tracking number')
-      toast(`Tracking updated for ${order.orderNumber}`)
+      if (status === 'PROCESSING') setStatus('SHIPPED')
+      toast(`Tracking updated for #${order.orderNumber}`, 'success')
     } catch (err: any) {
       toast(err.message || 'Error saving tracking', 'error')
     } finally {
@@ -117,63 +123,95 @@ export function OrderRowClient({ order }: { order: any }) {
         {/* Total (BDT) */}
         <td className="py-3.5 px-4 font-bold text-slate-900">
           {formatBDT(order.total)}
-          <span className="text-[10px] text-slate-400 block font-normal">
-            {order.paymentMethod}
+          <span className="text-[10px] text-emerald-700 font-bold block">
+            {order.paymentMethod === 'COD' ? 'Cash on Delivery' : order.paymentMethod}
           </span>
         </td>
 
-        {/* Status Dropdown */}
+        {/* Status Dropdown & Stage indicator */}
         <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-          <select
-            value={status}
-            onChange={(e) => handleStatusChange(e.target.value)}
-            disabled={isUpdating}
-            className={`px-2.5 py-1 rounded-full font-bold text-[11px] outline-none border cursor-pointer ${getOrderStatusColor(
-              status
-            )}`}
-          >
-            <option value="PENDING">Pending</option>
-            <option value="CONFIRMED">Confirmed</option>
-            <option value="PROCESSING">Processing</option>
-            <option value="SHIPPED">Shipped</option>
-            <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
-            <option value="DELIVERED">Delivered</option>
-            <option value="CANCELLED">Cancelled</option>
-          </select>
+          <div className="space-y-1.5">
+            <select
+              value={status}
+              onChange={(e) => handleStatusChange(e.target.value)}
+              disabled={isUpdating}
+              className={`px-2.5 py-1 rounded-full font-bold text-[11px] outline-none border cursor-pointer ${getOrderStatusColor(
+                status
+              )}`}
+            >
+              <option value="PENDING">Pending (New)</option>
+              <option value="CONFIRMED">Order Accepted</option>
+              <option value="PROCESSING">Prepared in Warehouse</option>
+              <option value="SHIPPED">Shipped with Courier</option>
+              <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
+              <option value="DELIVERED">Delivered</option>
+              <option value="RETURN_REQUESTED">Return Requested</option>
+              <option value="RETURNED">Returned</option>
+              <option value="REFUNDED">Refunded</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
         </td>
 
-        {/* Printable Invoice & Tracking Actions */}
+        {/* Quick Actions & Printable Invoice */}
         <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {/* Stage Quick Actions */}
+            {status === 'PENDING' && (
+              <button
+                onClick={() => handleStatusChange('PROCESSING')}
+                disabled={isUpdating}
+                className="px-2.5 py-1.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-2xs"
+                title="Mark this order as packed & prepared in warehouse"
+              >
+                <Package className="w-3 h-3" /> Mark Prepared
+              </button>
+            )}
+
+            {(status === 'PROCESSING' || status === 'CONFIRMED') && (
+              <button
+                onClick={() => handleStatusChange('SHIPPED')}
+                disabled={isUpdating}
+                className="px-2.5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-2xs"
+                title="Mark as handed to courier (shipped)"
+              >
+                <Truck className="w-3 h-3" /> Mark Shipped
+              </button>
+            )}
+
+            {status === 'SHIPPED' && (
+              <button
+                onClick={() => handleStatusChange('DELIVERED')}
+                disabled={isUpdating}
+                className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-2xs"
+                title="Mark as delivered & COD collected"
+              >
+                <CheckCircle2 className="w-3 h-3" /> Mark Delivered
+              </button>
+            )}
+
+            {status === 'RETURN_REQUESTED' && (
+              <button
+                onClick={() => handleStatusChange('REFUNDED')}
+                disabled={isUpdating}
+                className="px-2.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-2xs"
+                title="Complete Refund / Exchange"
+              >
+                <RotateCcw className="w-3 h-3" /> Mark Refunded
+              </button>
+            )}
+
             {/* Direct Printable Invoice Button */}
             <a
               href={`/admin/orders/${order.id}/invoice`}
               target="_blank"
               rel="noopener noreferrer"
               title="Open Printable A4 Invoice & Packing Slip"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition"
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold shadow-2xs transition"
             >
-              <Printer className="w-3.5 h-3.5 text-sky-400" />
+              <Printer className="w-3 h-3 text-sky-400" />
               Invoice
             </a>
-
-            {/* Manual Tracking Save */}
-            <div className="flex items-center gap-1">
-              <input
-                type="text"
-                value={trackingNumber}
-                onChange={(e) => setTrackingNumber(e.target.value)}
-                placeholder="Tracking ID..."
-                className="w-24 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-[10px] outline-none font-mono"
-              />
-              <button
-                onClick={handleSaveTracking}
-                disabled={isUpdating}
-                className="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-slate-800 text-[10px] font-bold rounded-lg transition"
-              >
-                Save
-              </button>
-            </div>
           </div>
         </td>
       </tr>
@@ -223,8 +261,10 @@ export function OrderRowClient({ order }: { order: any }) {
                       <span>{fullAddress || 'No address provided'}</span>
                     </p>
                     {order.notes && (
-                      <div className="bg-amber-50 border border-amber-200 p-2 rounded-lg text-[11px] space-y-1">
-                        <strong className="text-amber-900 block font-bold">Payment &amp; Instructions:</strong>
+                      <div className="bg-amber-50 border border-amber-200 p-2.5 rounded-xl text-[11px] space-y-1">
+                        <strong className="text-amber-900 block font-bold">
+                          Order Notes / Return Details:
+                        </strong>
                         <p className="text-amber-800 font-mono whitespace-pre-line">{order.notes}</p>
                       </div>
                     )}
@@ -262,20 +302,26 @@ export function OrderRowClient({ order }: { order: any }) {
                 </div>
               </div>
 
-              {/* Printable Invoice & Packing Slip Section */}
-              <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-sky-400 flex-shrink-0">
-                    <Printer className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-slate-900 text-sm">
-                      Printable Tax Invoice & Packing Slip (A4)
-                    </h5>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Includes ATMODESK branding, customer address, barcode, COD breakdown, and 7-day warranty stamp.
-                    </p>
-                  </div>
+              {/* Courier Tracking Input & Printable Invoice Bar */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <span className="text-xs font-bold text-slate-700 whitespace-nowrap">
+                    Courier Tracking Code:
+                  </span>
+                  <input
+                    type="text"
+                    value={trackingNumber}
+                    onChange={(e) => setTrackingNumber(e.target.value)}
+                    placeholder="e.g. STDF-12345"
+                    className="flex-1 sm:w-44 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none font-mono focus:border-sky-500"
+                  />
+                  <button
+                    onClick={handleSaveTracking}
+                    disabled={isUpdating}
+                    className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-1 disabled:opacity-50"
+                  >
+                    Save Tracking
+                  </button>
                 </div>
 
                 <a
@@ -285,7 +331,7 @@ export function OrderRowClient({ order }: { order: any }) {
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition whitespace-nowrap"
                 >
                   <Printer className="w-4 h-4 text-sky-400" />
-                  Open & Print Invoice
+                  Print A4 Invoice &amp; Packing Slip
                   <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                 </a>
               </div>

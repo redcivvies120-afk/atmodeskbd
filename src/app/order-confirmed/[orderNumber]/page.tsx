@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { verifySignedToken } from '@/lib/security'
 import { getServerUserSession } from '@/lib/user-auth'
 import { formatBDT, formatDate, getOrderStatusLabel, getOrderStatusColor } from '@/lib/utils'
+import { CustomerOrderActions } from '@/components/order/CustomerOrderActions'
 import {
   CheckCircle2,
   Package,
@@ -69,6 +70,18 @@ export default async function OrderConfirmedPage({ params, searchParams }: Order
           <span>Order Number:</span>
           <strong className="text-sky-600 text-sm font-bold">{order.orderNumber}</strong>
         </div>
+      </div>
+
+      {/* Real-time Stage Notification & Actions (Cancel / 7-Day Return) */}
+      <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs">
+        <CustomerOrderActions
+          orderNumber={order.orderNumber}
+          status={order.status}
+          updatedAt={order.updatedAt}
+          createdAt={order.createdAt}
+          token={t}
+          phone={order.address?.phone}
+        />
       </div>
 
       {/* Details Grid */}

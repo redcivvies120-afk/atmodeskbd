@@ -333,16 +333,22 @@ export function AccountClient() {
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-4">
-                    <div className="text-right">
+                  <div className="flex items-center justify-between sm:justify-end gap-2">
+                    <div className="text-right mr-2">
                       <span className="text-xs text-slate-400 block">Total</span>
                       <strong className="text-base font-extrabold text-slate-900">{formatBDT(o.total)}</strong>
                     </div>
                     <Link
+                      href={`/track-order?orderNumber=${o.orderNumber}&phone=${encodeURIComponent(currentUser.phone || '')}`}
+                      className="px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-semibold rounded-lg transition"
+                    >
+                      Track &amp; Manage
+                    </Link>
+                    <Link
                       href={`/order-confirmed/${o.orderNumber}`}
                       className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-lg transition"
                     >
-                      View Receipt
+                      Receipt
                     </Link>
                   </div>
                 </div>
