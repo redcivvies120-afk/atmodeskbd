@@ -19,6 +19,7 @@ import {
   Clock,
   Calendar,
   Mail,
+  MessageCircle,
   Loader2,
 } from 'lucide-react'
 
@@ -675,6 +676,28 @@ export function AccountClient() {
                     className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono tracking-widest"
                     required
                   />
+
+                  {/* Immediate WhatsApp Help for OTP */}
+                  <div className="mt-2.5 p-3 bg-amber-50/90 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-950 text-[11px]">
+                      <MessageCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                      <span>Didn&apos;t receive an SMS code on your mobile?</span>
+                    </div>
+                    <p className="text-[10px] text-amber-800 leading-relaxed">
+                      Carrier SMS delivery may be delayed. You can message our support on WhatsApp to receive your code or have your password reset instantly:
+                    </p>
+                    <a
+                      href={`https://wa.me/8801318043562?text=${encodeURIComponent(
+                        `Hello Atmodesk, I need a password reset code for my account (${forgotIdentifier}).`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-bold text-emerald-700 hover:text-emerald-800 hover:underline pt-0.5 text-[11px]"
+                    >
+                      <MessageCircle className="w-3 h-3" />
+                      Get Reset Code via WhatsApp (+880 1318-043562) &rarr;
+                    </a>
+                  </div>
                 </div>
 
                 <div>

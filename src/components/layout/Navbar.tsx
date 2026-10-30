@@ -13,7 +13,7 @@ import {
   Menu,
   X,
   ChevronDown,
-  PhoneCall,
+  MessageCircle,
   Clock,
   Sparkles,
   Camera,
@@ -58,12 +58,18 @@ export function Navbar() {
       <div className="bg-slate-900 text-slate-300 text-xs py-2 px-4 text-center font-medium border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="hidden md:flex items-center gap-4 text-slate-400">
-            <a href="tel:+8801318043562" className="flex items-center gap-1 hover:text-white transition">
-              <PhoneCall className="w-3 h-3 text-sky-400" /> +880 1318-043562
+            <a
+              href="https://wa.me/8801318043562"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 hover:text-white transition font-medium"
+              title="Text us on WhatsApp"
+            >
+              <MessageCircle className="w-3.5 h-3.5 text-emerald-400" /> WhatsApp Text: 01318043562
             </a>
             <span>·</span>
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3 text-amber-400" /> 10:00 AM - 10:00 PM
+            <span className="flex items-center gap-1 text-[11px] text-sky-400 font-mono">
+              <Clock className="w-3 h-3 text-sky-400" /> Dhaka (BST UTC+6)
             </span>
           </div>
           <div className="mx-auto md:mx-0 flex items-center gap-1.5 text-[11px] sm:text-xs">

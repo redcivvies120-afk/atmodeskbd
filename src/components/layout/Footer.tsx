@@ -6,7 +6,7 @@ import {
   RotateCcw,
   Headphones,
   Mail,
-  Phone,
+  MessageCircle,
   MapPin,
   Banknote,
 } from 'lucide-react'
@@ -54,7 +54,7 @@ export function Footer() {
               </div>
               <div>
                 <h4 className="text-white font-bold text-sm">24/7 BD Support</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Call or WhatsApp our Dhaka team</p>
+                <p className="text-xs text-slate-400 mt-0.5">WhatsApp text support (Strictly text only)</p>
               </div>
             </div>
           </div>
@@ -80,9 +80,14 @@ export function Footer() {
                 <span>New Eskaton, Dhaka, Bangladesh</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <a href="tel:+8801318043562" className="hover:text-white transition">
-                  +880 1318-043562 (WhatsApp Support)
+                <MessageCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <a
+                  href="https://wa.me/8801318043562"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition"
+                >
+                  +880 1318-043562 (WhatsApp Text Only)
                 </a>
               </div>
               <div className="flex items-center gap-2.5">

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { ProductCard } from '@/components/product/ProductCard'
 import { formatBDT } from '@/lib/utils'
+import { LiveDhakaClock } from '@/components/home/LiveDhakaClock'
 import {
   Sparkles,
   ArrowRight,
@@ -111,46 +112,9 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Right Interactive Mockup / Product Hero */}
+            {/* Right Interactive Mockup / Product Hero with REAL-TIME DHAKA CLOCK */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-sm sm:max-w-md">
-                <div className="absolute inset-0 bg-gradient-to-tr from-sky-500/30 to-purple-500/30 rounded-3xl blur-2xl transform -rotate-2" />
-                <div className="relative rounded-3xl bg-slate-950/80 border border-slate-800 p-6 backdrop-blur-xl shadow-2xl space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                    <span className="text-xs font-mono text-sky-400">● LIVE DHAKA AMBIENT</span>
-                    <span className="text-xs font-mono text-slate-400">2.4GHz WiFi</span>
-                  </div>
-
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 text-center space-y-3 shadow-inner">
-                    <div className="text-4xl sm:text-5xl font-mono font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-amber-300 tracking-wider">
-                      12:45<span className="text-xs align-top font-bold text-slate-400 ml-1">PM</span>
-                    </div>
-                    <div className="flex items-center justify-center gap-4 text-xs font-medium text-slate-300">
-                      <span>🌤️ Dhaka 28°C</span>
-                      <span>💧 62% RH</span>
-                      <span className="text-emerald-400 font-semibold">● AQI 72 (Moderate)</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-400">
-                    <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-amber-400" />
-                      <span>USB-C Powered</span>
-                    </div>
-                    <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-sky-400" />
-                      <span>Pomodoro Timer</span>
-                    </div>
-                  </div>
-
-                  <Link
-                    href="/products"
-                    className="block w-full py-3 text-center bg-gradient-to-r from-sky-500 to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-md hover:opacity-95 transition"
-                  >
-                    View Desk Gadgets Collection →
-                  </Link>
-                </div>
-              </div>
+              <LiveDhakaClock />
             </div>
           </div>
         </div>
