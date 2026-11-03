@@ -215,28 +215,28 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* --- 4. PROMOTIONAL BANNER ------------------------------- */}
+      {/* --- 4. BRAND SHOWCASE BANNER ------------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-700 p-8 sm:p-12 text-white shadow-xl">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-slate-950 to-sky-950 p-8 sm:p-12 text-white shadow-xl border border-slate-800">
           <div className="max-w-2xl space-y-4">
-            <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider">
-              Limited Time Bangladesh Launch
+            <span className="inline-block px-3 py-1 bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-full text-xs font-bold uppercase tracking-wider">
+              Premium Minimalist Desk Tech
             </span>
             <h3 className="text-2xl sm:text-4xl font-extrabold leading-tight">
-              Get 10% Flat Off on Your First Order
+              Upgrade Your Setup with Smart WiFi Ambient Clocks
             </h3>
-            <p className="text-sky-100 text-sm sm:text-base leading-relaxed">
-              Use voucher code <strong className="bg-white text-slate-900 px-2 py-0.5 rounded font-mono font-bold">WELCOME10</strong> at checkout. Plus enjoy free delivery inside Dhaka on orders over ৳2,000!
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              Live weather telemetry, Pomodoro focus tools, and calming ambient lights. Enjoy fast 24-48h delivery in Dhaka and free shipping on orders over ৳2,000!
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-100 transition shadow-md"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-sky-500 text-slate-950 rounded-xl font-bold text-sm hover:bg-sky-400 transition shadow-md"
               >
-                Claim Discount <ArrowRight className="w-4 h-4" />
+                Explore Collection <ArrowRight className="w-4 h-4" />
               </Link>
-              <span className="text-xs text-sky-200">
-                Payment: <strong>100% Cash on Delivery (COD) Nationwide</strong>
+              <span className="text-xs text-slate-400">
+                Payment: <strong className="text-white">100% Cash on Delivery (COD) Nationwide</strong>
               </span>
             </div>
           </div>
