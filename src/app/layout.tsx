@@ -7,7 +7,6 @@ import { Footer } from '@/components/layout/Footer'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { CartDrawer } from '@/components/cart/CartDrawer'
 import { WhatsAppFloat } from '@/components/shared/WhatsAppFloat'
-import { LiquidBackground } from '@/components/shared/LiquidBackground'
 import { WaterRippleListener } from '@/components/shared/WaterRippleListener'
 
 import { safeJsonLd } from '@/lib/security'
@@ -119,14 +118,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col antialiased bg-slate-50/90 text-slate-900 font-sans selection:bg-sky-500 selection:text-white relative overflow-x-hidden">
-        {/* Ambient background light orbs for high-end frosted glass refraction */}
-        <LiquidBackground />
+      <body className="min-h-screen flex flex-col antialiased bg-white text-slate-900 font-sans selection:bg-sky-500 selection:text-white relative overflow-x-hidden">
+        {/* Interactive Water Ripple Effect */}
         <WaterRippleListener />
-        <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-sky-200/30 dark:bg-sky-900/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-        <div className="fixed top-1/3 -right-24 w-[450px] h-[450px] bg-indigo-200/25 dark:bg-indigo-900/10 rounded-full blur-[130px] pointer-events-none -z-10" />
-        <div className="fixed bottom-1/4 -left-20 w-[400px] h-[400px] bg-teal-100/30 dark:bg-teal-900/10 rounded-full blur-[120px] pointer-events-none -z-10" />
-        <div className="fixed -bottom-10 right-1/4 w-[450px] h-[450px] bg-amber-100/30 dark:bg-amber-900/10 rounded-full blur-[140px] pointer-events-none -z-10" />
 
         <Providers>
           <Navbar />

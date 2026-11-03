@@ -118,13 +118,13 @@ export function ProductCard({
           ) : null}
         </div>
 
-        {/* Wishlist Button - iOS Frosted Glass */}
+        {/* Wishlist Button - Frosted Glass */}
         <button
           onClick={handleToggleWishlist}
-          className={`absolute top-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center ios-glass-icon transition shadow-md z-10 ${
+          className={`absolute top-2.5 right-2.5 w-8.5 h-8.5 rounded-2xl flex items-center justify-center ios-glass-icon transition shadow-xs z-10 ${
             isSaved
               ? 'bg-rose-50/90 text-rose-500 border-rose-200'
-              : 'bg-white/70 hover:bg-white text-slate-600 hover:text-rose-500'
+              : 'bg-white/90 hover:bg-white text-slate-600 hover:text-rose-500 border border-slate-200/80'
           }`}
           title={isSaved ? 'Remove from wishlist' : 'Save to wishlist'}
         >
@@ -199,12 +199,12 @@ export function ProductCard({
             className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 ios-glass-icon transition-all duration-300 ${
               isOutOfStock
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-50'
-                : 'ios-icon-clock text-white shadow-md shadow-sky-500/30 hover:scale-110 active:scale-95'
+                : 'ios-icon-clock shadow-xs hover:border-sky-400 hover:scale-105 active:scale-95'
             }`}
             title="Add to cart"
             aria-label="Add to cart"
           >
-            <ShoppingBag className="w-4 h-4 drop-shadow-xs" />
+            <ShoppingBag className="w-4 h-4" />
           </button>
         </div>
       </div>

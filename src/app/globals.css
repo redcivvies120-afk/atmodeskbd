@@ -22,7 +22,7 @@ html {
 }
 
 body {
-  background-color: #f8fafc;
+  background-color: #ffffff;
   color: #0f172a;
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-tap-highlight-color: transparent;
@@ -231,143 +231,113 @@ button, a, [role="button"] {
 .snap-start { scroll-snap-align: start; }
 
 /* =========================================================================
-   APPLE iOS FROSTED LIQUID GLASS & WATER-REACTING PHYSICS SYSTEM
+   AUTHENTIC APPLE FROSTED GLASS & WATER-REACTING SYSTEM
    ========================================================================= */
 
-/* --- iOS Squircle Frosted Glass Icon Badge --------------------------- */
+/* --- Clean Frosted Glass Icon Squircle (No AI Gloss) -------------------- */
 .ios-glass-icon {
   position: relative;
   border-radius: 24%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.1) 100%);
-  backdrop-filter: blur(24px) saturate(220%);
-  -webkit-backdrop-filter: blur(24px) saturate(220%);
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   box-shadow: 
-    0 12px 28px -6px rgba(15, 23, 42, 0.12),
-    0 4px 10px -2px rgba(15, 23, 42, 0.06),
-    inset 0 2px 2px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -2px 3px 0 rgba(0, 0, 0, 0.12);
-  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 4px 14px -2px rgba(15, 23, 42, 0.05),
+    0 1px 2px 0 rgba(15, 23, 42, 0.02),
+    inset 0 1px 1px 0 #ffffff;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
-  transform: translateZ(0);
-}
-
-/* Specular Lens Reflection on top half */
-.ios-glass-icon::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 52%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.15) 80%, rgba(255, 255, 255, 0) 100%);
-  border-radius: 24% 24% 50% 50% / 24% 24% 35% 35%;
-  pointer-events: none;
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
-}
-
-/* Liquid Prismatic Sheen sweep on hover */
-.ios-glass-icon::after {
-  content: "";
-  position: absolute;
-  inset: -100%;
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.6) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s ease, transform 0.6s ease;
-  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ios-glass-icon:hover {
-  transform: translateY(-5px) scale(1.08);
+  transform: translateY(-3px) scale(1.04);
+  background: #ffffff;
+  border-color: rgba(56, 189, 248, 0.6);
   box-shadow: 
-    0 20px 38px -8px rgba(2, 132, 199, 0.3),
-    0 8px 16px -2px rgba(2, 132, 199, 0.15),
-    inset 0 2.5px 3px 0 #ffffff,
-    inset 0 -2px 4px 0 rgba(0, 0, 0, 0.15);
-}
-
-.ios-glass-icon:hover::after {
-  opacity: 1;
-  transform: translateY(20%);
+    0 12px 24px -4px rgba(2, 132, 199, 0.12),
+    0 4px 8px -2px rgba(2, 132, 199, 0.05),
+    inset 0 1px 1px 0 #ffffff;
 }
 
 .ios-glass-icon:active {
-  transform: translateY(-1px) scale(0.96);
+  transform: translateY(0) scale(0.96);
   transition-duration: 0.15s;
 }
 
-/* Specific iOS App Icon Gradients with Glass Sheen */
+/* Authentic Frosted Category Accents (Subtle Tints & Crisp Strokes) */
 .ios-icon-clock {
-  background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 40%, #0284c7 100%);
-  color: #ffffff;
+  background: rgba(240, 249, 255, 0.88);
+  border-color: rgba(186, 230, 253, 0.85);
+  color: #0284c7;
 }
 
 .ios-icon-weather {
-  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 50%, #f59e0b 100%);
-  color: #ffffff;
+  background: rgba(239, 246, 255, 0.88);
+  border-color: rgba(191, 219, 254, 0.85);
+  color: #2563eb;
 }
 
 .ios-icon-ambient {
-  background: linear-gradient(135deg, #f59e0b 0%, #ec4899 60%, #8b5cf6 100%);
-  color: #ffffff;
+  background: rgba(250, 245, 255, 0.88);
+  border-color: rgba(233, 213, 255, 0.85);
+  color: #9333ea;
 }
 
 .ios-icon-tech {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0284c7 100%);
-  color: #38bdf8;
+  background: rgba(240, 253, 250, 0.88);
+  border-color: rgba(153, 246, 228, 0.85);
+  color: #0d9488;
 }
 
 .ios-icon-power {
-  background: linear-gradient(135deg, #10b981 0%, #059669 60%, #047857 100%);
-  color: #ffffff;
+  background: rgba(236, 253, 245, 0.88);
+  border-color: rgba(167, 243, 208, 0.85);
+  color: #059669;
 }
 
-/* --- True Liquid Glass Card (Refractive & Thick) --------------------- */
+/* --- Clean Frosted Glass Card (Pure White Backing) ------------------- */
 .liquid-glass-card {
   position: relative;
-  background: radial-gradient(130% 130% at 20% 0%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.72) 60%, rgba(255, 255, 255, 0.5) 100%);
-  backdrop-filter: blur(28px) saturate(220%);
-  -webkit-backdrop-filter: blur(28px) saturate(220%);
-  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  background: #ffffff;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.85);
   box-shadow: 
-    0 20px 48px -12px rgba(15, 23, 42, 0.08),
-    0 4px 12px -2px rgba(15, 23, 42, 0.03),
-    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1),
-    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.04);
-  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    0 4px 16px -2px rgba(15, 23, 42, 0.04),
+    0 1px 3px 0 rgba(15, 23, 42, 0.02);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
 
 .liquid-glass-card:hover {
-  background: radial-gradient(130% 130% at 20% 0%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.82) 60%, rgba(255, 255, 255, 0.65) 100%);
-  border-color: rgba(56, 189, 248, 0.6);
+  background: #ffffff;
+  border-color: rgba(56, 189, 248, 0.5);
   box-shadow: 
-    0 28px 60px -14px rgba(2, 132, 199, 0.16),
-    0 8px 24px -4px rgba(2, 132, 199, 0.08),
-    inset 0 2px 2px 0 #ffffff;
-  transform: translateY(-4px);
+    0 16px 32px -4px rgba(15, 23, 42, 0.08),
+    0 4px 12px -2px rgba(15, 23, 42, 0.03);
+  transform: translateY(-3px);
 }
 
-/* Water Droplet Glow for Liquid Pill Buttons */
+/* Frosted Pill */
 .liquid-pill {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.45) 100%);
-  backdrop-filter: blur(20px) saturate(200%);
-  -webkit-backdrop-filter: blur(20px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 
-    0 8px 20px -4px rgba(15, 23, 42, 0.08),
-    inset 0 1.5px 1.5px 0 #ffffff,
-    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.08);
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 2px 8px -1px rgba(15, 23, 42, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .liquid-pill:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 
-    0 14px 28px -6px rgba(2, 132, 199, 0.22),
-    inset 0 2px 2px 0 #ffffff;
+  transform: translateY(-1px);
+  background: #ffffff;
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 4px 12px -1px rgba(2, 132, 199, 0.12);
 }
 
 .liquid-pill:active {

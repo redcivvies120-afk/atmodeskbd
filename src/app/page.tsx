@@ -97,11 +97,11 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-10 sm:space-y-16 pb-12 sm:pb-16">
+    <div className="space-y-10 sm:space-y-16 pb-12 sm:pb-16 bg-white">
       {/* --- 1. HERO SECTION ------------------------------------- */}
       <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white pt-8 pb-14 sm:pt-12 sm:pb-20 md:py-24">
         {/* Glow ambient backdrops */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-sky-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 right-10 w-60 sm:w-80 h-60 sm:h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -142,23 +142,23 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              {/* Trust badges - Frosted Liquid Pills with iOS Squircle Icons */}
+              {/* Trust badges - Clean Frosted Badges */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 pt-4 sm:pt-6 border-t border-slate-800/80 text-xs">
-                <div className="liquid-pill px-3 py-2 rounded-2xl bg-slate-900/50 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 shadow-sm backdrop-blur-xl">
-                  <div className="w-7 h-7 rounded-xl ios-glass-icon ios-icon-clock flex items-center justify-center flex-shrink-0 shadow-xs">
-                    <Truck className="w-3.5 h-3.5 text-white" />
+                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 backdrop-blur-md">
+                  <div className="w-7 h-7 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0">
+                    <Truck className="w-3.5 h-3.5 text-sky-400" />
                   </div>
                   <span className="text-[11px] font-medium text-slate-300">24-48h Delivery in Dhaka</span>
                 </div>
-                <div className="liquid-pill px-3 py-2 rounded-2xl bg-slate-900/50 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 shadow-sm backdrop-blur-xl">
-                  <div className="w-7 h-7 rounded-xl ios-glass-icon ios-icon-power flex items-center justify-center flex-shrink-0 shadow-xs">
-                    <ShieldCheck className="w-3.5 h-3.5 text-white" />
+                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 backdrop-blur-md">
+                  <div className="w-7 h-7 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                   </div>
                   <span className="text-[11px] font-medium text-slate-300">Cash on Delivery</span>
                 </div>
-                <div className="liquid-pill px-3 py-2 rounded-2xl bg-slate-900/50 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 shadow-sm backdrop-blur-xl">
-                  <div className="w-7 h-7 rounded-xl ios-glass-icon ios-icon-ambient flex items-center justify-center flex-shrink-0 shadow-xs">
-                    <RotateCcw className="w-3.5 h-3.5 text-white" />
+                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 backdrop-blur-md">
+                  <div className="w-7 h-7 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0">
+                    <RotateCcw className="w-3.5 h-3.5 text-purple-400" />
                   </div>
                   <span className="text-[11px] font-medium text-slate-300">7-Day Replacement</span>
                 </div>
@@ -208,9 +208,9 @@ export default async function HomePage() {
                 }`}
               >
                 <div
-                  className={`w-12 h-12 sm:w-16 sm:h-16 ios-glass-icon ${theme.gradient} flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-md ${theme.glow}`}
+                  className={`w-12 h-12 sm:w-16 sm:h-16 ios-glass-icon ${theme.gradient} flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-xs`}
                 >
-                  <CatIcon className="w-6 h-6 sm:w-8 sm:h-8 text-white drop-shadow-sm" />
+                  <CatIcon className="w-6 h-6 sm:w-8 sm:h-8 transition-transform duration-300" />
                 </div>
                 <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 group-hover:text-sky-600 transition truncate max-w-full">
                   {c.name}
@@ -336,8 +336,8 @@ export default async function HomePage() {
         <div className="liquid-glass-card rounded-3xl p-8 sm:p-12 border border-white/80 shadow-md backdrop-blur-2xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 text-center sm:text-left">
             <div className="space-y-3">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-clock flex items-center justify-center mx-auto sm:mx-0 shadow-md">
-                <Truck className="w-6 h-6 text-white drop-shadow-sm" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 ios-glass-icon ios-icon-clock flex items-center justify-center mx-auto sm:mx-0 shadow-xs">
+                <Truck className="w-6 h-6" />
               </div>
               <h3 className="font-extrabold text-base text-slate-900">Fast Express Shipping</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -346,8 +346,8 @@ export default async function HomePage() {
             </div>
 
             <div className="space-y-3">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-power flex items-center justify-center mx-auto sm:mx-0 shadow-md">
-                <ShieldCheck className="w-6 h-6 text-white drop-shadow-sm" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 ios-glass-icon ios-icon-power flex items-center justify-center mx-auto sm:mx-0 shadow-xs">
+                <ShieldCheck className="w-6 h-6" />
               </div>
               <h3 className="font-extrabold text-base text-slate-900">Zero-Risk Checkout</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -356,8 +356,8 @@ export default async function HomePage() {
             </div>
 
             <div className="space-y-3">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-ambient flex items-center justify-center mx-auto sm:mx-0 shadow-md">
-                <RotateCcw className="w-6 h-6 text-white drop-shadow-sm" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 ios-glass-icon ios-icon-ambient flex items-center justify-center mx-auto sm:mx-0 shadow-xs">
+                <RotateCcw className="w-6 h-6" />
               </div>
               <h3 className="font-extrabold text-base text-slate-900">7-Day Replacement</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -366,8 +366,8 @@ export default async function HomePage() {
             </div>
 
             <div className="space-y-3">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-tech flex items-center justify-center mx-auto sm:mx-0 shadow-md">
-                <Zap className="w-6 h-6 text-white drop-shadow-sm" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 ios-glass-icon ios-icon-tech flex items-center justify-center mx-auto sm:mx-0 shadow-xs">
+                <Zap className="w-6 h-6" />
               </div>
               <h3 className="font-extrabold text-base text-slate-900">Authentic Tech Only</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
