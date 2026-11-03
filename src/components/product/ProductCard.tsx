@@ -101,18 +101,18 @@ export function ProductCard({
         />
 
         {/* Badges */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
           {discount && discount > 0 ? (
-            <span className="liquid-pill bg-rose-500/90 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-xs border border-white/40">
+            <span className="bg-rose-600 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow-md tracking-tight border border-rose-400/30 flex items-center justify-center">
               -{discount}%
             </span>
           ) : null}
           {isBestSeller ? (
-            <span className="liquid-pill bg-amber-500/90 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs border border-white/40">
+            <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md tracking-tight border border-amber-300/40 flex items-center justify-center">
               ★ Best Seller
             </span>
           ) : isNewArrival ? (
-            <span className="liquid-pill bg-sky-500/90 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs border border-white/40">
+            <span className="bg-sky-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow-md tracking-tight border border-sky-400/30 flex items-center justify-center">
               New
             </span>
           ) : null}
@@ -139,7 +139,7 @@ export function ProductCard({
             e.stopPropagation()
             setIsQuickViewOpen(true)
           }}
-          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 liquid-pill text-slate-800 hover:text-sky-600 text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg border border-white/90 flex items-center gap-1.5 z-10 whitespace-nowrap hover:scale-105 active:scale-95"
+          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/95 hover:bg-white text-slate-800 hover:text-sky-600 text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg border border-slate-200/90 flex items-center gap-1.5 z-10 whitespace-nowrap hover:scale-105 active:scale-95 backdrop-blur-md"
           title="Quick View"
         >
           <Eye className="w-3.5 h-3.5 text-sky-600" />

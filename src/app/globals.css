@@ -325,7 +325,6 @@ button, a, [role="button"] {
 /* Frosted Pill */
 .liquid-pill {
   position: relative;
-  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid rgba(226, 232, 240, 0.85);
@@ -333,7 +332,11 @@ button, a, [role="button"] {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.liquid-pill:hover {
+.liquid-pill:not([class*="bg-"]) {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.liquid-pill:not([class*="bg-"]):hover {
   transform: translateY(-1px);
   background: #ffffff;
   border-color: rgba(56, 189, 248, 0.5);
