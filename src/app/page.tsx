@@ -16,7 +16,54 @@ import {
   Layers,
   Star,
   CheckCircle2,
+  CloudSun,
+  BatteryCharging,
+  Package,
 } from 'lucide-react'
+
+function getCategoryTheme(slug: string, name: string) {
+  const s = (slug + ' ' + name).toLowerCase()
+  if (s.includes('clock')) {
+    return {
+      Icon: Clock,
+      gradient: 'ios-icon-clock',
+      glow: 'shadow-sky-500/30',
+    }
+  }
+  if (s.includes('weather')) {
+    return {
+      Icon: CloudSun,
+      gradient: 'ios-icon-weather',
+      glow: 'shadow-blue-500/30',
+    }
+  }
+  if (s.includes('ambient') || s.includes('light')) {
+    return {
+      Icon: Sparkles,
+      gradient: 'ios-icon-ambient',
+      glow: 'shadow-purple-500/30',
+    }
+  }
+  if (s.includes('desk') || s.includes('tech') || s.includes('gadget')) {
+    return {
+      Icon: Zap,
+      gradient: 'ios-icon-tech',
+      glow: 'shadow-cyan-500/30',
+    }
+  }
+  if (s.includes('power') || s.includes('charger')) {
+    return {
+      Icon: BatteryCharging,
+      gradient: 'ios-icon-power',
+      glow: 'shadow-emerald-500/30',
+    }
+  }
+  return {
+    Icon: Package,
+    gradient: 'ios-icon-clock',
+    glow: 'shadow-slate-500/20',
+  }
+}
 
 // Edge ISR caching: revalidates every 60s without blocking users
 export const revalidate = 60
@@ -95,19 +142,25 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              {/* Trust badges */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 pt-4 sm:pt-6 border-t border-slate-800 text-slate-400 text-xs">
-                <div className="flex items-center justify-center lg:justify-start gap-2">
-                  <Truck className="w-4 h-4 text-sky-400" />
-                  <span>24-48h Delivery in Dhaka</span>
+              {/* Trust badges - Frosted Liquid Pills with iOS Squircle Icons */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 pt-4 sm:pt-6 border-t border-slate-800/80 text-xs">
+                <div className="liquid-pill px-3 py-2 rounded-2xl bg-slate-900/50 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 shadow-sm backdrop-blur-xl">
+                  <div className="w-7 h-7 rounded-xl ios-glass-icon ios-icon-clock flex items-center justify-center flex-shrink-0 shadow-xs">
+                    <Truck className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-300">24-48h Delivery in Dhaka</span>
                 </div>
-                <div className="flex items-center justify-center lg:justify-start gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Cash on Delivery</span>
+                <div className="liquid-pill px-3 py-2 rounded-2xl bg-slate-900/50 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 shadow-sm backdrop-blur-xl">
+                  <div className="w-7 h-7 rounded-xl ios-glass-icon ios-icon-power flex items-center justify-center flex-shrink-0 shadow-xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-300">Cash on Delivery</span>
                 </div>
-                <div className="flex items-center justify-center lg:justify-start gap-2">
-                  <RotateCcw className="w-4 h-4 text-purple-400" />
-                  <span>7-Day Replacement</span>
+                <div className="liquid-pill px-3 py-2 rounded-2xl bg-slate-900/50 border border-white/10 text-slate-200 flex items-center justify-center lg:justify-start gap-2.5 shadow-sm backdrop-blur-xl">
+                  <div className="w-7 h-7 rounded-xl ios-glass-icon ios-icon-ambient flex items-center justify-center flex-shrink-0 shadow-xs">
+                    <RotateCcw className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-300">7-Day Replacement</span>
                 </div>
               </div>
             </div>
@@ -141,33 +194,33 @@ export default async function HomePage() {
           {categories.map((c) => {
             const productCount = c._count?.products ?? 0
             const hasStock = productCount > 0
+            const theme = getCategoryTheme(c.slug, c.name)
+            const CatIcon = theme.Icon
 
             return (
               <Link
                 key={c.id}
                 href={hasStock ? `/products?category=${c.slug}` : `/products`}
-                className={`group min-w-[130px] sm:min-w-0 snap-start p-3 sm:p-5 glass-card rounded-2xl transition-all duration-300 flex flex-col items-center text-center space-y-1.5 sm:space-y-2 flex-shrink-0 sm:flex-shrink ${
+                className={`group min-w-[130px] sm:min-w-0 snap-start p-3.5 sm:p-5 liquid-glass-card fluid-spring rounded-3xl transition-all duration-300 flex flex-col items-center text-center space-y-2 flex-shrink-0 sm:flex-shrink ${
                   hasStock
-                    ? 'hover:border-sky-400 hover:shadow-xl hover:shadow-sky-100/60 hover:-translate-y-1 active:scale-95'
+                    ? 'hover:border-sky-400/80 hover:shadow-xl hover:shadow-sky-500/15 hover:-translate-y-1.5'
                     : 'opacity-85 hover:border-slate-300'
                 }`}
               >
-                <div className={`w-11 h-11 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center text-xl sm:text-2xl transition duration-300 shadow-xs ${
-                  hasStock
-                    ? 'bg-sky-50 text-sky-600 group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white'
-                    : 'bg-slate-100 text-slate-400'
-                }`}>
-                  <Layers className="w-5 h-5 sm:w-6 sm:h-6" />
+                <div
+                  className={`w-12 h-12 sm:w-16 sm:h-16 ios-glass-icon ${theme.gradient} flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-md ${theme.glow}`}
+                >
+                  <CatIcon className="w-6 h-6 sm:w-8 sm:h-8 text-white drop-shadow-sm" />
                 </div>
-                <h3 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-sky-600 transition truncate max-w-full">
+                <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 group-hover:text-sky-600 transition truncate max-w-full">
                   {c.name}
                 </h3>
                 {hasStock ? (
-                  <span className="text-[10px] sm:text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] sm:text-xs text-emerald-700 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
                     {productCount} {productCount === 1 ? 'Item' : 'Items'} In Stock
                   </span>
                 ) : (
-                  <span className="text-[10px] sm:text-xs text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] sm:text-xs text-amber-700 font-bold bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full">
                     Restocking Soon
                   </span>
                 )}
@@ -231,7 +284,7 @@ export default async function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-          <div className="glass-card p-6 rounded-2xl shadow-xs space-y-3">
+          <div className="liquid-glass-card fluid-spring p-6 rounded-3xl shadow-sm border border-white/80 space-y-3">
             <div className="flex items-center gap-1 text-amber-400">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-amber-400" />
@@ -246,7 +299,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="glass-card p-6 rounded-2xl shadow-xs space-y-3">
+          <div className="liquid-glass-card fluid-spring p-6 rounded-3xl shadow-sm border border-white/80 space-y-3">
             <div className="flex items-center gap-1 text-amber-400">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-amber-400" />
@@ -261,7 +314,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="glass-card p-6 rounded-2xl shadow-xs space-y-3">
+          <div className="liquid-glass-card fluid-spring p-6 rounded-3xl shadow-sm border border-white/80 space-y-3">
             <div className="flex items-center gap-1 text-amber-400">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-amber-400" />
@@ -280,11 +333,11 @@ export default async function HomePage() {
 
       {/* --- 6. WHY ATMODESK (TRUST BADGES) ----------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-xs">
+        <div className="liquid-glass-card rounded-3xl p-8 sm:p-12 border border-white/80 shadow-md backdrop-blur-2xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 text-center sm:text-left">
-            <div className="space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mx-auto sm:mx-0">
-                <Truck className="w-6 h-6" />
+            <div className="space-y-3">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-clock flex items-center justify-center mx-auto sm:mx-0 shadow-md">
+                <Truck className="w-6 h-6 text-white drop-shadow-sm" />
               </div>
               <h3 className="font-extrabold text-base text-slate-900">Fast Express Shipping</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -292,9 +345,9 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto sm:mx-0">
-                <ShieldCheck className="w-6 h-6" />
+            <div className="space-y-3">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-power flex items-center justify-center mx-auto sm:mx-0 shadow-md">
+                <ShieldCheck className="w-6 h-6 text-white drop-shadow-sm" />
               </div>
               <h3 className="font-extrabold text-base text-slate-900">Zero-Risk Checkout</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -302,19 +355,19 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto sm:mx-0">
-                <RotateCcw className="w-6 h-6" />
+            <div className="space-y-3">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-ambient flex items-center justify-center mx-auto sm:mx-0 shadow-md">
+                <RotateCcw className="w-6 h-6 text-white drop-shadow-sm" />
               </div>
-              <h3 className="font-extrabold text-base text-slate-900">7-Day Warranty</h3>
+              <h3 className="font-extrabold text-base text-slate-900">7-Day Replacement</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
                 Hassle-free 7-day replacement guarantee on any manufacturing defects or transit issues.
               </p>
             </div>
 
-            <div className="space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto sm:mx-0">
-                <Zap className="w-6 h-6" />
+            <div className="space-y-3">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 ios-glass-icon ios-icon-tech flex items-center justify-center mx-auto sm:mx-0 shadow-md">
+                <Zap className="w-6 h-6 text-white drop-shadow-sm" />
               </div>
               <h3 className="font-extrabold text-base text-slate-900">Authentic Tech Only</h3>
               <p className="text-xs text-slate-500 leading-relaxed">

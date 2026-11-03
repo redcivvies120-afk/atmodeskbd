@@ -85,7 +85,7 @@ export function ProductCard({
   }
 
   return (
-    <div className="group relative glass-card rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-sky-100/50 hover:border-sky-300/50 transition-all duration-500 ease-out flex flex-col h-full">
+    <div className="group relative liquid-glass-card fluid-spring rounded-3xl overflow-hidden hover:shadow-2xl hover:shadow-sky-200/50 hover:border-sky-400/60 transition-all duration-500 ease-out flex flex-col h-full border border-white/80">
       {/* Image Container */}
       <Link href={`/product/${slug}`} className="relative aspect-square w-full bg-slate-100 overflow-hidden block">
         <img
@@ -103,28 +103,28 @@ export function ProductCard({
         {/* Badges */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
           {discount && discount > 0 ? (
-            <span className="bg-rose-500 text-white text-[11px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+            <span className="liquid-pill bg-rose-500/90 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-xs border border-white/40">
               -{discount}%
             </span>
           ) : null}
           {isBestSeller ? (
-            <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+            <span className="liquid-pill bg-amber-500/90 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs border border-white/40">
               ★ Best Seller
             </span>
           ) : isNewArrival ? (
-            <span className="bg-sky-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+            <span className="liquid-pill bg-sky-500/90 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs border border-white/40">
               New
             </span>
           ) : null}
         </div>
 
-        {/* Wishlist Button */}
+        {/* Wishlist Button - iOS Frosted Glass */}
         <button
           onClick={handleToggleWishlist}
-          className={`absolute top-2.5 right-2.5 p-2 rounded-full backdrop-blur-md transition shadow-xs z-10 ${
+          className={`absolute top-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center ios-glass-icon transition shadow-md z-10 ${
             isSaved
-              ? 'bg-rose-50 text-rose-500'
-              : 'bg-white/80 hover:bg-white text-slate-600 hover:text-rose-500'
+              ? 'bg-rose-50/90 text-rose-500 border-rose-200'
+              : 'bg-white/70 hover:bg-white text-slate-600 hover:text-rose-500'
           }`}
           title={isSaved ? 'Remove from wishlist' : 'Save to wishlist'}
         >
@@ -139,7 +139,7 @@ export function ProductCard({
             e.stopPropagation()
             setIsQuickViewOpen(true)
           }}
-          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-white/95 hover:bg-white text-slate-800 hover:text-sky-600 text-xs font-bold px-3 py-1.5 rounded-full shadow-md backdrop-blur-xs flex items-center gap-1.5 z-10 whitespace-nowrap"
+          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 liquid-pill text-slate-800 hover:text-sky-600 text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg border border-white/90 flex items-center gap-1.5 z-10 whitespace-nowrap hover:scale-105 active:scale-95"
           title="Quick View"
         >
           <Eye className="w-3.5 h-3.5 text-sky-600" />
@@ -196,15 +196,15 @@ export function ProductCard({
           <button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-xl transition-all duration-200 ${
+            className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 ios-glass-icon transition-all duration-300 ${
               isOutOfStock
-                ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                : 'bg-sky-600 hover:bg-sky-700 active:scale-90 text-white shadow-sm shadow-sky-600/30'
+                ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-50'
+                : 'ios-icon-clock text-white shadow-md shadow-sky-500/30 hover:scale-110 active:scale-95'
             }`}
             title="Add to cart"
             aria-label="Add to cart"
           >
-            <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <ShoppingBag className="w-4 h-4 drop-shadow-xs" />
           </button>
         </div>
       </div>
