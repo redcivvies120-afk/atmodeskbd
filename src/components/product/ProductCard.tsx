@@ -24,7 +24,16 @@ export interface ProductCardProps {
   isNewArrival?: boolean
   isBestSeller?: boolean
   isFeatured?: boolean
+  /** Above-the-fold cards load eagerly (set on the first few in a grid) */
+  priority?: boolean
 }
+
+/* Inline placeholder: the old '/placeholder-product.jpg' did not exist in /public. */
+const PLACEHOLDER =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#f1f5f9'/><stop offset='1' stop-color='#e2e8f0'/></linearGradient></defs><rect width='600' height='600' fill='url(#g)'/><g fill='none' stroke='#94a3b8' stroke-width='14' stroke-linecap='round'><circle cx='300' cy='300' r='92'/><path d='M300 244v56l36 22'/></g></svg>`
+  )
 
 export function ProductCard({
   id,
@@ -34,27 +43,29 @@ export function ProductCard({
   originalPrice,
   discount,
   stock,
-  rating = 4.8,
-  reviewCount = 12,
+  rating = 0,
+  reviewCount = 0,
   images = [],
   category,
   isNewArrival,
   isBestSeller,
+  priority = false,
 }: ProductCardProps) {
-  const { addItem } = useCart()
-  const { toggleItem, isWishlisted } = useWishlist()
+  const addItem = useCart((s) => s.addItem)
+  const toggleItem = useWishlist((s) => s.toggleItem)
+  const isSaved = useWishlist((s) => s.items.some((i) => i.productId === id))
   const { toast } = useToast()
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false)
+  const [pop, setPop] = useState(0)
 
-  const primaryImage = images.find((i) => i.isPrimary)?.url || images[0]?.url || '/placeholder-product.jpg'
+  const primaryImage = images.find((i) => i.isPrimary)?.url || images[0]?.url || PLACEHOLDER
   const isOutOfStock = stock <= 0
-  const isSaved = isWishlisted(id)
+  const isLowStock = stock > 0 && stock <= 5
+  const hasReviews = reviewCount > 0 && rating > 0
+  const discountPct = discount && discount > 0 ? Math.round(discount) : 0
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const handleAddToCart = () => {
     if (isOutOfStock) return
-
     addItem({
       id,
       productId: id,
@@ -66,12 +77,10 @@ export function ProductCard({
       stock,
       quantity: 1,
     })
-    toast(`Added "${name}" to cart! 🛍️`)
+    toast(`Added “${name}” to your cart`)
   }
 
-  const handleToggleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const handleToggleWishlist = () => {
     toggleItem({
       productId: id,
       name,
@@ -81,135 +90,133 @@ export function ProductCard({
       originalPrice: originalPrice || undefined,
       addedAt: new Date().toISOString(),
     })
-    toast(isSaved ? `Removed from wishlist` : `Saved to wishlist ❤️`)
+    setPop((n) => n + 1)
+    toast(isSaved ? 'Removed from wishlist' : 'Saved to wishlist', 'info')
   }
 
   return (
-    <div className="group relative liquid-glass-card fluid-spring rounded-3xl overflow-hidden hover:shadow-2xl hover:shadow-sky-200/50 hover:border-sky-400/60 transition-all duration-500 ease-out flex flex-col h-full border border-white/80">
-      {/* Image Container */}
-      <Link href={`/product/${slug}`} className="relative aspect-square w-full bg-slate-100 overflow-hidden block">
-        <img
-          src={primaryImage}
-          alt={name}
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-          onError={(e) => {
-            const el = e.target as HTMLImageElement
-            if (!el.src.includes('placeholder-product.jpg')) {
-              el.src = '/placeholder-product.jpg'
-            }
-          }}
-        />
+    <article className="group relative liquid-glass-card flex h-full flex-col rounded-[28px]">
+      {/* Media. Buttons are siblings of the link (nested interactive elements are invalid HTML). */}
+      <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
+        <Link href={`/product/${slug}`} className="absolute inset-0 block" aria-label={name}>
+          <img
+            src={primaryImage}
+            alt={name}
+            width={600}
+            height={600}
+            loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
+            fetchPriority={priority ? 'high' : 'auto'}
+            className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+            onError={(e) => {
+              const el = e.currentTarget
+              if (el.src !== PLACEHOLDER) el.src = PLACEHOLDER
+            }}
+          />
+          {/* soft glass sheen over the photo */}
+          <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-slate-900/10" />
+        </Link>
 
         {/* Badges */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
-          {discount && discount > 0 ? (
-            <span className="bg-rose-600 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow-md tracking-tight border border-rose-400/30 flex items-center justify-center">
-              -{discount}%
+        <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1.5">
+          {discountPct > 0 && (
+            <span className="rounded-full bg-rose-500 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_12px_-4px_rgba(255,55,95,0.6)]">
+              -{discountPct}%
             </span>
-          ) : null}
+          )}
           {isBestSeller ? (
-            <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md tracking-tight border border-amber-300/40 flex items-center justify-center">
-              ★ Best Seller
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-semibold text-amber-700 backdrop-blur-md shadow-[inset_0_1px_0_#fff,0_0_0_0.5px_rgba(245,158,11,0.35)]">
+              <Star className="h-3 w-3 fill-amber-400 text-amber-400" /> Best seller
             </span>
           ) : isNewArrival ? (
-            <span className="bg-sky-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow-md tracking-tight border border-sky-400/30 flex items-center justify-center">
+            <span className="rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-semibold text-sky-700 backdrop-blur-md shadow-[inset_0_1px_0_#fff,0_0_0_0.5px_rgba(10,132,255,0.35)]">
               New
             </span>
           ) : null}
         </div>
 
-        {/* Wishlist Button - Frosted Glass */}
-        <button
-          onClick={handleToggleWishlist}
-          className={`absolute top-2.5 right-2.5 w-8.5 h-8.5 rounded-2xl flex items-center justify-center ios-glass-icon transition shadow-xs z-10 ${
-            isSaved
-              ? 'bg-rose-50/90 text-rose-500 border-rose-200'
-              : 'bg-white/90 hover:bg-white text-slate-600 hover:text-rose-500 border border-slate-200/80'
-          }`}
-          title={isSaved ? 'Remove from wishlist' : 'Save to wishlist'}
-        >
-          <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-500' : ''}`} />
-        </button>
-
-        {/* Quick View Button on Hover */}
+        {/* Wishlist */}
         <button
           type="button"
-          onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            setIsQuickViewOpen(true)
-          }}
-          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/95 hover:bg-white text-slate-800 hover:text-sky-600 text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg border border-slate-200/90 flex items-center gap-1.5 z-10 whitespace-nowrap hover:scale-105 active:scale-95 backdrop-blur-md"
-          title="Quick View"
+          onClick={handleToggleWishlist}
+          aria-pressed={isSaved}
+          aria-label={isSaved ? `Remove ${name} from wishlist` : `Save ${name} to wishlist`}
+          className="lg-glass-btn absolute right-3 top-3 z-20"
         >
-          <Eye className="w-3.5 h-3.5 text-sky-600" />
-          <span>Quick View</span>
+          <Heart key={pop} className={`h-[18px] w-[18px] animate-bounce-in ${isSaved ? 'fill-rose-500 text-rose-500' : ''}`} />
         </button>
 
-        {/* Out of Stock Overlay */}
+        {/* Quick view */}
+        <button
+          type="button"
+          onClick={() => setIsQuickViewOpen(true)}
+          className="lg-glass-btn absolute bottom-3 left-1/2 z-20 h-9! w-auto! -translate-x-1/2 gap-1.5 px-4 text-xs font-semibold opacity-0 transition-opacity duration-300 focus-visible:opacity-100 group-hover:opacity-100"
+        >
+          <Eye className="h-3.5 w-3.5 text-sky-600" />
+          Quick view
+        </button>
+
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center">
-            <span className="bg-white text-slate-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
-              Out of Stock
+          <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center bg-slate-900/45 backdrop-blur-[3px]">
+            <span className="rounded-full bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-slate-900 shadow-md">
+              Out of stock
             </span>
           </div>
         )}
-      </Link>
+      </div>
 
-      {/* Product Info */}
-      <div className="p-3 sm:p-4 flex flex-col flex-1">
-        {category && (
-          <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-sky-600 mb-1 truncate">
-            {category.name}
-          </span>
-        )}
+      {/* Info */}
+      <div className="flex flex-1 flex-col p-3.5 sm:p-4">
+        {category && <span className="mb-1 truncate text-[11px] font-medium text-sky-600">{category.name}</span>}
 
-        <Link href={`/product/${slug}`} className="group-hover:text-sky-600 transition">
-          <h3 className="font-semibold text-xs sm:text-sm text-slate-900 line-clamp-2 leading-tight sm:leading-snug mb-1.5 min-h-[2rem] sm:min-h-[2.5rem]">
-            {name}
-          </h3>
+        <Link href={`/product/${slug}`} className="transition group-hover:text-sky-600">
+          <h3 className="mb-1.5 line-clamp-2 min-h-[2.5rem] text-sm font-semibold leading-snug text-slate-900">{name}</h3>
         </Link>
 
-        {/* Ratings */}
-        <div className="flex items-center gap-1 text-[11px] sm:text-xs text-slate-500 mb-2.5">
-          <div className="flex items-center text-amber-400">
-            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400" />
-            <span className="font-bold text-slate-800 ml-1">{rating.toFixed(1)}</span>
-          </div>
-          <span>·</span>
-          <span className="truncate">{reviewCount} reviews</span>
+        <div className="mb-3 flex items-center gap-2 text-xs text-slate-500">
+          {hasReviews ? (
+            <>
+              <span className="inline-flex items-center gap-1">
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                <span className="font-semibold tabular text-slate-800">{rating.toFixed(1)}</span>
+              </span>
+              <span aria-hidden="true">·</span>
+              <span>
+                {reviewCount} {reviewCount === 1 ? 'review' : 'reviews'}
+              </span>
+            </>
+          ) : (
+            <span className="text-slate-400">No reviews yet</span>
+          )}
+          {isLowStock && (
+            <span className="ml-auto rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+              Only {stock} left
+            </span>
+          )}
         </div>
 
-        {/* Pricing & Cart Action */}
-        <div className="mt-auto pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1">
+        <div className="mt-auto flex items-center justify-between gap-2 border-t border-slate-900/5 pt-3">
           <div>
-            <div className="text-sm sm:text-base font-black text-slate-900">
-              {formatBDT(price)}
-            </div>
+            <div className="text-base font-bold tabular tracking-tight text-slate-900">{formatBDT(price)}</div>
             {originalPrice && originalPrice > price ? (
-              <div className="text-[10px] sm:text-xs text-slate-400 line-through">
-                {formatBDT(originalPrice)}
-              </div>
+              <div className="text-xs tabular text-slate-400 line-through">{formatBDT(originalPrice)}</div>
             ) : null}
           </div>
 
           <button
+            type="button"
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 ios-glass-icon transition-all duration-300 ${
-              isOutOfStock
-                ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-50'
-                : 'ios-icon-clock shadow-xs hover:border-sky-400 hover:scale-105 active:scale-95'
-            }`}
-            title="Add to cart"
-            aria-label="Add to cart"
+            className="lg-icon lg-sky"
+            data-v="solid"
+            data-size="sm"
+            aria-label={isOutOfStock ? `${name} is out of stock` : `Add ${name} to cart`}
           >
-            <ShoppingBag className="w-4 h-4" />
+            <ShoppingBag />
           </button>
         </div>
       </div>
 
-      {/* Quick View Modal */}
       {isQuickViewOpen && (
         <QuickViewModal
           isOpen={isQuickViewOpen}
@@ -225,6 +232,6 @@ export function ProductCard({
           category={category}
         />
       )}
-    </div>
+    </article>
   )
 }

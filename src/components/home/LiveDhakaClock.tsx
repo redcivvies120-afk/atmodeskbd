@@ -1,312 +1,291 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Zap, Clock, Wifi, RefreshCw, Sun, CloudRain, Flame, Check } from 'lucide-react'
+import {
+  ArrowRight,
+  Cloud,
+  CloudFog,
+  CloudLightning,
+  CloudRain,
+  CloudSun,
+  Droplets,
+  Sun,
+  Timer,
+  Wifi,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react'
+import { LiquidIcon } from '@/components/shared/LiquidIcon'
+import { WaterDroplets } from '@/components/shared/WaterDroplets'
+
+type Mode = 'CLOCK' | 'POMODORO' | 'WEATHER'
+const MODES: { id: Mode; label: string }[] = [
+  { id: 'CLOCK', label: 'Clock' },
+  { id: 'POMODORO', label: 'Focus' },
+  { id: 'WEATHER', label: 'Weather' },
+]
+
+interface Weather {
+  temp: number
+  humidity: number
+  condition: string
+  Icon: LucideIcon
+}
+
+/** WMO weather code to label and icon */
+function describe(code: number): { condition: string; Icon: LucideIcon } {
+  if (code === 0) return { condition: 'Clear', Icon: Sun }
+  if (code <= 2) return { condition: 'Partly cloudy', Icon: CloudSun }
+  if (code === 3) return { condition: 'Overcast', Icon: Cloud }
+  if (code === 45 || code === 48) return { condition: 'Haze', Icon: CloudFog }
+  if (code >= 51 && code <= 67) return { condition: 'Rain', Icon: CloudRain }
+  if (code >= 80 && code <= 82) return { condition: 'Showers', Icon: CloudRain }
+  if (code >= 95) return { condition: 'Thunderstorm', Icon: CloudLightning }
+  return { condition: 'Cloudy', Icon: Cloud }
+}
+
+// One formatter instance, not one per tick.
+const dhakaFmt = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Dhaka',
+  hourCycle: 'h23',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+})
+
+function readDhaka() {
+  const p = Object.fromEntries(dhakaFmt.formatToParts(new Date()).map((x) => [x.type, x.value]))
+  const h24 = parseInt(p.hour, 10) % 24
+  return {
+    h24: String(h24).padStart(2, '0'),
+    h12: String(h24 % 12 || 12),
+    minute: p.minute,
+    second: p.second,
+    ampm: h24 >= 12 ? 'PM' : 'AM',
+    date: `${p.weekday}, ${p.month} ${p.day}`,
+  }
+}
 
 export function LiveDhakaClock() {
-  const [mounted, setMounted] = useState(false)
-  const [time, setTime] = useState({
-    hour: '12',
-    minute: '00',
-    second: '00',
-    ampm: 'PM',
-    hour24: '12',
-    dateStr: 'Dhaka, Bangladesh',
-  })
+  const [now, setNow] = useState<ReturnType<typeof readDhaka> | null>(null)
   const [is24Hour, setIs24Hour] = useState(false)
-  const [weather, setWeather] = useState({
-    temp: 28,
-    humidity: 64,
-    condition: 'Sunny / Clear',
-    icon: '🌤️',
-  })
-  const [activeMode, setActiveMode] = useState<'CLOCK' | 'POMODORO' | 'WEATHER'>('CLOCK')
+  const [weather, setWeather] = useState<Weather | null>(null)
+  const [mode, setMode] = useState<Mode>('CLOCK')
   const [pomodoroSeconds, setPomodoroSeconds] = useState(25 * 60)
   const [pomodoroActive, setPomodoroActive] = useState(false)
 
-  // Fetch real-time Dhaka date & time every second
+  // Real Dhaka time. Paused while the tab is hidden.
   useEffect(() => {
-    setMounted(true)
+    const tick = () => {
+      if (document.visibilityState === 'visible') setNow(readDhaka())
+    }
+    tick()
+    const id = window.setInterval(tick, 1000)
+    document.addEventListener('visibilitychange', tick)
+    return () => {
+      window.clearInterval(id)
+      document.removeEventListener('visibilitychange', tick)
+    }
+  }, [])
 
-    const updateClock = () => {
-      const now = new Date()
-
-      // 12-hour format parts
-      const parts12 = new Intl.DateTimeFormat('en-US', {
-        timeZone: 'Asia/Dhaka',
-        hour: 'numeric',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-      }).formatToParts(now)
-
-      // 24-hour format parts
-      const parts24 = new Intl.DateTimeFormat('en-US', {
-        timeZone: 'Asia/Dhaka',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }).formatToParts(now)
-
-      const hour12 = parts12.find((p) => p.type === 'hour')?.value || '12'
-      const minute = parts12.find((p) => p.type === 'minute')?.value || '00'
-      const second = parts12.find((p) => p.type === 'second')?.value || '00'
-      const ampm = parts12.find((p) => p.type === 'dayPeriod')?.value || 'PM'
-      const hour24 = parts24.find((p) => p.type === 'hour')?.value || '12'
-
-      const dateStr = new Intl.DateTimeFormat('en-US', {
-        timeZone: 'Asia/Dhaka',
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-      }).format(now)
-
-      setTime({
-        hour: hour12,
-        minute,
-        second,
-        ampm,
-        hour24,
-        dateStr,
+  // Live Dhaka weather (free Open-Meteo API, no key). Requires api.open-meteo.com in the CSP connect-src.
+  useEffect(() => {
+    const ctrl = new AbortController()
+    fetch(
+      'https://api.open-meteo.com/v1/forecast?latitude=23.8103&longitude=90.4125&current=temperature_2m,relative_humidity_2m,weather_code',
+      { signal: ctrl.signal }
+    )
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        const c = data?.current
+        if (!c) return
+        setWeather({
+          temp: Math.round(c.temperature_2m),
+          humidity: Math.round(c.relative_humidity_2m),
+          ...describe(Number(c.weather_code) || 0),
+        })
       })
-    }
-
-    updateClock()
-    const timer = setInterval(updateClock, 1000)
-    return () => clearInterval(timer)
+      .catch(() => {})
+    return () => ctrl.abort()
   }, [])
 
-  // Optional live weather fetch for Dhaka from open-meteo (100% free, no API key needed)
-  useEffect(() => {
-    async function fetchDhakaWeather() {
-      try {
-        const res = await fetch(
-          'https://api.open-meteo.com/v1/forecast?latitude=23.8103&longitude=90.4125&current=temperature_2m,relative_humidity_2m,weather_code'
-        )
-        if (!res.ok) return
-        const data = await res.json()
-        if (data?.current) {
-          const t = Math.round(data.current.temperature_2m)
-          const h = Math.round(data.current.relative_humidity_2m)
-          const code = data.current.weather_code || 0
-          let cond = 'Clear'
-          let ic = '☀️'
-          if (code >= 1 && code <= 3) {
-            cond = 'Partly Cloudy'
-            ic = '🌤️'
-          } else if (code >= 51 && code <= 67) {
-            cond = 'Light Rain'
-            ic = '🌧️'
-          } else if (code >= 80) {
-            cond = 'Showers'
-            ic = '🌦️'
-          }
-          setWeather({ temp: t, humidity: h, condition: cond, icon: ic })
-        }
-      } catch {
-        // Fallback gracefully on network limit
-      }
-    }
-    fetchDhakaWeather()
-  }, [])
-
-  // Pomodoro countdown timer logic
+  // Pomodoro
   useEffect(() => {
     if (!pomodoroActive) return
-    const pTimer = setInterval(() => {
-      setPomodoroSeconds((prev) => {
-        if (prev <= 1) {
+    const id = window.setInterval(() => {
+      setPomodoroSeconds((s) => {
+        if (s <= 1) {
           setPomodoroActive(false)
           return 25 * 60
         }
-        return prev - 1
+        return s - 1
       })
     }, 1000)
-    return () => clearInterval(pTimer)
+    return () => window.clearInterval(id)
   }, [pomodoroActive])
 
   const pomoMin = String(Math.floor(pomodoroSeconds / 60)).padStart(2, '0')
   const pomoSec = String(pomodoroSeconds % 60).padStart(2, '0')
+  const WeatherIcon = weather?.Icon ?? CloudSun
+
+  const hour = now ? (is24Hour ? now.h24 : now.h12) : '--'
+  const label = now ? `Current time in Dhaka: ${hour}:${now.minute}${is24Hour ? '' : ' ' + now.ampm}` : 'Loading Dhaka time'
 
   return (
     <div className="relative w-full max-w-sm sm:max-w-md">
-      {/* Ambient glowing backdrop */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-sky-500/30 to-purple-500/30 rounded-3xl blur-2xl transform -rotate-2" />
+      {/* ambient glow behind the device */}
+      <div className="absolute -inset-4 rounded-[44px] bg-gradient-to-tr from-sky-500/35 via-indigo-500/20 to-fuchsia-500/25 blur-3xl" aria-hidden="true" />
 
-      {/* Main Clock Shell */}
-      <div className="relative rounded-3xl bg-slate-950/85 border border-slate-800 p-6 backdrop-blur-xl shadow-2xl space-y-4">
-        {/* Top Status Bar */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      {/* Glass shell */}
+      <div className="relative rounded-[32px] p-5 bg-white/[0.07] backdrop-blur-2xl backdrop-saturate-200 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18),inset_0_1.5px_0_rgba(255,255,255,0.35),0_30px_60px_-20px_rgba(0,0,0,0.7)]">
+        {/* status */}
+        <div className="mb-4 flex items-center justify-between text-xs text-slate-300">
+          <span className="inline-flex items-center gap-2 font-medium text-sky-300">
+            <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
-            <span className="text-xs font-mono font-bold text-sky-400 tracking-wider">
-              LIVE DHAKA TIME
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
-            <Wifi className="w-3.5 h-3.5 text-teal-400" />
-            <span>BST (UTC+6)</span>
-          </div>
+            Live Dhaka time
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-slate-400">
+            <Wifi className="h-3.5 w-3.5 text-teal-300" /> UTC+6
+          </span>
         </div>
 
-        {/* Display Screen Canvas */}
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-slate-800/90 text-center space-y-3 shadow-inner relative overflow-hidden">
-          {/* Subtle grid lines background overlay */}
-          <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]" />
+        {/* Screen */}
+        <div className="relative overflow-hidden rounded-[22px] bg-gradient-to-br from-slate-900 via-slate-950 to-black px-5 pb-5 pt-4 text-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08),inset_0_2px_20px_rgba(0,0,0,0.6)]">
+          <WaterDroplets preset="card" />
+          {/* glass reflection */}
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.09)_0%,rgba(255,255,255,0)_38%)]" aria-hidden="true" />
 
-          {/* Mode Tabs inside Clock Screen */}
-          <div className="flex justify-center gap-1 mb-2 relative z-10">
-            <button
-              onClick={() => setActiveMode('CLOCK')}
-              className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold transition ${
-                activeMode === 'CLOCK'
-                  ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30'
-                  : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              Real Clock
-            </button>
-            <button
-              onClick={() => setActiveMode('POMODORO')}
-              className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold transition ${
-                activeMode === 'POMODORO'
-                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                  : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              Pomodoro
-            </button>
-            <button
-              onClick={() => setActiveMode('WEATHER')}
-              className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold transition ${
-                activeMode === 'WEATHER'
-                  ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30'
-                  : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              Weather
-            </button>
+          {/* segmented control */}
+          <div role="tablist" aria-label="Display mode" className="relative z-10 mx-auto mb-4 flex w-fit rounded-full bg-white/[0.08] p-0.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]">
+            {MODES.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                role="tab"
+                aria-selected={mode === m.id}
+                onClick={() => setMode(m.id)}
+                className={`rounded-full px-3.5 py-1 text-[11px] font-semibold transition-all duration-300 ${
+                  mode === m.id
+                    ? 'bg-white text-slate-900 shadow-[0_2px_8px_rgba(0,0,0,0.35)]'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {m.label}
+              </button>
+            ))}
           </div>
 
-          {/* MODE 1: REAL-TIME DHAKA CLOCK */}
-          {activeMode === 'CLOCK' && (
-            <div className="space-y-2 relative z-10">
-              <div className="text-4xl sm:text-5xl font-mono font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-amber-300 select-none">
-                {mounted ? (
-                  <>
-                    <span>{is24Hour ? time.hour24 : time.hour}</span>
-                    <span className="text-sky-300 animate-pulse">:</span>
-                    <span>{time.minute}</span>
-                    <span className="text-2xl text-teal-300 font-bold ml-0.5">
-                      :{time.second}
-                    </span>
-                    {!is24Hour && (
-                      <span className="text-xs align-top font-bold text-amber-300 ml-1.5 uppercase">
-                        {time.ampm}
+          <div className="relative z-10 min-h-[132px]" role="tabpanel">
+            {mode === 'CLOCK' && (
+              <div className="space-y-2.5">
+                <div
+                  role="img"
+                  aria-label={label}
+                  className="tabular text-[2.75rem] font-semibold leading-none tracking-tight text-white sm:text-6xl"
+                >
+                  <span>{hour}</span>
+                  <span className="mx-0.5 animate-pulse text-sky-300">:</span>
+                  <span>{now?.minute ?? '--'}</span>
+                  <span className="ml-1 align-baseline text-xl font-medium text-sky-200/80" aria-hidden="true">
+                    :{now?.second ?? '--'}
+                  </span>
+                  {!is24Hour && now && <span className="ml-1.5 align-top text-xs font-semibold text-amber-300">{now.ampm}</span>}
+                </div>
+                <div className="text-xs text-slate-400">
+                  {now?.date ?? 'Dhaka, Bangladesh'}
+                  <span className="mx-2 text-slate-600" aria-hidden="true">|</span>
+                  <button type="button" onClick={() => setIs24Hour((v) => !v)} className="font-medium text-sky-300 hover:underline">
+                    {is24Hour ? 'Use 12-hour' : 'Use 24-hour'}
+                  </button>
+                </div>
+                <div className="flex items-center justify-center gap-3 border-t border-white/10 pt-3 text-xs text-slate-300">
+                  {weather ? (
+                    <>
+                      <span className="inline-flex items-center gap-1.5">
+                        <WeatherIcon className="h-4 w-4 text-sky-300" /> Dhaka {weather.temp}°C
                       </span>
-                    )}
+                      <span className="text-slate-600" aria-hidden="true">·</span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <Droplets className="h-4 w-4 text-sky-300" /> {weather.humidity}% humidity
+                      </span>
+                    </>
+                  ) : (
+                    <span className="skeleton h-4 w-44 rounded-full! opacity-20" aria-label="Loading weather" />
+                  )}
+                </div>
+              </div>
+            )}
+
+            {mode === 'POMODORO' && (
+              <div className="space-y-2.5 py-1">
+                <div className="tabular text-5xl font-semibold tracking-tight text-amber-300 sm:text-6xl">
+                  {pomoMin}:{pomoSec}
+                </div>
+                <p className="text-xs text-slate-400">{pomodoroActive ? 'Focus session in progress' : 'Ready to focus · 25 minutes'}</p>
+                <div className="flex justify-center gap-2 pt-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setPomodoroActive((v) => !v)}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-4 py-1.5 text-xs font-semibold text-slate-950 transition hover:bg-amber-300 active:scale-95"
+                  >
+                    <Timer className="h-3.5 w-3.5" /> {pomodoroActive ? 'Pause' : 'Start focus'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPomodoroActive(false)
+                      setPomodoroSeconds(25 * 60)
+                    }}
+                    className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-white/15 active:scale-95"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {mode === 'WEATHER' && (
+              <div className="space-y-2 py-1">
+                {weather ? (
+                  <>
+                    <div className="tabular text-5xl font-semibold tracking-tight text-teal-200 sm:text-6xl">{weather.temp}°C</div>
+                    <p className="inline-flex items-center gap-1.5 text-sm text-slate-200">
+                      <WeatherIcon className="h-4 w-4 text-sky-300" /> Dhaka · {weather.condition}
+                    </p>
+                    <p className="text-xs text-slate-400">Humidity {weather.humidity}%</p>
                   </>
                 ) : (
-                  <span>12:00:00 PM</span>
+                  <p className="pt-6 text-sm text-slate-400">Weather is unavailable right now.</p>
                 )}
               </div>
-
-              {/* Date & Location */}
-              <div className="text-xs font-mono text-slate-400">
-                <span>{time.dateStr}</span>
-                <span className="mx-2 text-slate-600">|</span>
-                <button
-                  onClick={() => setIs24Hour(!is24Hour)}
-                  className="text-sky-400 hover:underline cursor-pointer"
-                  title="Switch 12h/24h"
-                >
-                  {is24Hour ? 'Switch to 12h' : 'Switch to 24h'}
-                </button>
-              </div>
-
-              {/* Live Dhaka Weather Strip */}
-              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-center gap-3 text-xs font-medium text-slate-300">
-                <span>
-                  {weather.icon} Dhaka {weather.temp}°C
-                </span>
-                <span className="text-slate-600">·</span>
-                <span>💧 {weather.humidity}% RH</span>
-                <span className="text-slate-600">·</span>
-                <span className="text-emerald-400 font-semibold">● AQI 68</span>
-              </div>
-            </div>
-          )}
-
-          {/* MODE 2: INTERACTIVE POMODORO */}
-          {activeMode === 'POMODORO' && (
-            <div className="space-y-2 relative z-10 py-1">
-              <div className="text-4xl sm:text-5xl font-mono font-black text-amber-400 tracking-wider">
-                {pomoMin}:{pomoSec}
-              </div>
-              <p className="text-xs text-slate-400 font-mono">
-                {pomodoroActive ? 'Focus Session in Progress...' : 'Ready to Focus (25 min)'}
-              </p>
-              <div className="flex justify-center gap-2 pt-2">
-                <button
-                  onClick={() => setPomodoroActive(!pomodoroActive)}
-                  className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg transition"
-                >
-                  {pomodoroActive ? 'Pause' : 'Start Focus'}
-                </button>
-                <button
-                  onClick={() => {
-                    setPomodoroActive(false)
-                    setPomodoroSeconds(25 * 60)
-                  }}
-                  className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition"
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* MODE 3: AMBIENT WEATHER */}
-          {activeMode === 'WEATHER' && (
-            <div className="space-y-2 relative z-10 py-1">
-              <div className="text-4xl sm:text-5xl font-mono font-black text-teal-300">
-                {weather.temp}°C
-              </div>
-              <p className="text-xs text-slate-300 font-medium">
-                {weather.icon} Dhaka, Bangladesh • {weather.condition}
-              </p>
-              <div className="flex justify-center gap-4 text-xs text-slate-400 pt-1">
-                <span>Humidity: {weather.humidity}%</span>
-                <span>Wind: 8 km/h</span>
-                <span className="text-emerald-400">Air: Good</span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Product Specs Chips */}
-        <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-400">
-          <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-2">
-            <Zap className="w-4 h-4 text-amber-400" />
-            <span>USB-C / 5V 1A</span>
-          </div>
-          <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-2">
-            <Clock className="w-4 h-4 text-sky-400" />
-            <span>Auto Sync over WiFi</span>
+            )}
           </div>
         </div>
 
-        {/* CTA Button */}
+        {/* spec chips */}
+        <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[0.06] p-2 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
+            <LiquidIcon icon={Zap} tone="amber" variant="frost" size="sm" />
+            <span>USB-C powered</span>
+          </div>
+          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[0.06] p-2 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
+            <LiquidIcon icon={Wifi} tone="sky" variant="frost" size="sm" />
+            <span>Auto-sync over WiFi</span>
+          </div>
+        </div>
+
         <Link
           href="/products"
-          className="block w-full py-3 text-center bg-gradient-to-r from-sky-500 to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-md hover:opacity-95 transition"
+          className="lg-btn-primary mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold"
         >
-          View Desk Clocks &amp; Gadgets Collection →
+          Shop clocks &amp; gadgets <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </div>

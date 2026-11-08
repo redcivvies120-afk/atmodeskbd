@@ -9,7 +9,7 @@ const cspHeader = `
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com data:;
   img-src 'self' data: blob: https://cdn.jsdelivr.net https://raw.githubusercontent.com https://images.unsplash.com https://via.placeholder.com https://res.cloudinary.com https://i.ibb.co https://*.imgbb.com;
-  connect-src 'self' https://*.neon.tech https://connect.facebook.net https://api.imgbb.com https://wa.me;
+  connect-src 'self' https://*.neon.tech https://connect.facebook.net https://api.imgbb.com https://wa.me https://api.open-meteo.com;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';
@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
       { protocol: 'https', hostname: 'raw.githubusercontent.com' },
@@ -46,6 +47,15 @@ const nextConfig: NextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()' },
         ],
+      },
+      {
+        // Product photos and the logo are static files: let browsers and the CDN keep them.
+        source: '/products/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
+      {
+        source: '/logo.jpg',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
       },
     ]
   },

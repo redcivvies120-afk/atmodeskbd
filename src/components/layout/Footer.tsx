@@ -10,76 +10,75 @@ import {
   MapPin,
   Banknote,
 } from 'lucide-react'
+import { LiquidIcon } from '@/components/shared/LiquidIcon'
+import { WaterDroplets } from '@/components/shared/WaterDroplets'
+
+const FEATURES = [
+  { icon: Truck, tone: 'sky', title: 'Fast BD delivery', text: 'Inside Dhaka 24-48h, nationwide 3-5 days' },
+  { icon: ShieldCheck, tone: 'green', title: '100% authentic', text: 'Tested gadgets with warranty' },
+  { icon: RotateCcw, tone: 'amber', title: '7-day replacement', text: 'Hassle-free replacement policy' },
+  { icon: Headphones, tone: 'violet', title: 'WhatsApp support', text: 'Text-only support, we reply fast' },
+] as const
+
+const CATEGORY_LINKS = [
+  ['/products?category=smart-clocks', 'Smart Clocks'],
+  ['/products?category=weather-stations', 'Weather Stations'],
+  ['/products?category=ambient-lights', 'Ambient Lights'],
+  ['/products?category=desk-tech', 'Desk Tech & Hubs'],
+  ['/products', 'All Products'],
+]
+
+const CARE_LINKS = [
+  ['/track-order', 'Track Your Order'],
+  ['/account', 'My Account'],
+  ['/faq', 'FAQ / Help Center'],
+  ['/returns', 'Return & Replacement Policy'],
+  ['/about', 'About Us'],
+  ['/contact', 'Contact Us'],
+]
 
 export function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 pb-20 md:pb-0">
-      {/* Features Value Bar */}
-      <div className="border-b border-slate-800">
+    <footer className="relative bg-slate-950 text-slate-300 pb-28 md:pb-0 overflow-hidden">
+      {/* faint condensation on the glass, top edge only */}
+      <div className="absolute inset-x-0 top-0 h-40 opacity-60 [mask-image:linear-gradient(to_bottom,black,transparent)]">
+        <WaterDroplets preset="card" />
+      </div>
+
+      {/* Value bar */}
+      <div className="relative border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-400 flex items-center justify-center flex-shrink-0">
-                <Truck className="w-6 h-6" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="flex items-center gap-4">
+                <LiquidIcon icon={f.icon} tone={f.tone} variant="frost" size="lg" />
+                <div>
+                  <h4 className="text-white font-semibold text-sm">{f.title}</h4>
+                  <p className="text-xs text-slate-400 mt-0.5">{f.text}</p>
+                </div>
               </div>
-              <div>
-                <h4 className="text-white font-bold text-sm">Fast BD Delivery</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Inside Dhaka 24-48h, Nationwide 3-5 days</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-white font-bold text-sm">100% Authentic</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Tested gadgets with warranty</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center flex-shrink-0">
-                <RotateCcw className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-white font-bold text-sm">7-Day Replacement</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Hassle-free replacement policy</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center flex-shrink-0">
-                <Headphones className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-white font-bold text-sm">24/7 BD Support</h4>
-                <p className="text-xs text-slate-400 mt-0.5">WhatsApp text support (Strictly text only)</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      {/* Links */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Company Bio */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="font-black text-2xl tracking-tight text-white">
-                ATMODESK<span className="text-sky-400">.bd</span>
-              </span>
+            <Link href="/" className="inline-block font-bold text-2xl tracking-tight text-white">
+              ATMODESK<span className="text-sky-400">.bd</span>
             </Link>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
-              Bangladesh's premier online store for aesthetic desk setups, WiFi smart clocks, mini weather displays, and ambient LED tech gadgets. Sourced directly from global OEM manufacturers.
+              Bangladesh&apos;s online store for aesthetic desk setups, WiFi smart clocks, mini weather displays and
+              ambient LED tech. Sourced directly from global OEM manufacturers.
             </p>
-            <div className="space-y-2 text-sm text-slate-400 pt-2">
-              <div className="flex items-center gap-2.5">
+            <ul className="space-y-2.5 text-sm text-slate-400 pt-2">
+              <li className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-sky-400 flex-shrink-0" />
                 <span>New Eskaton, Dhaka, Bangladesh</span>
-              </div>
-              <div className="flex items-center gap-2.5">
+              </li>
+              <li className="flex items-center gap-2.5">
                 <MessageCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                 <a
                   href="https://wa.me/8801318043562"
@@ -87,141 +86,92 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-white transition"
                 >
-                  +880 1318-043562 (WhatsApp Text Only)
+                  +880 1318-043562 (WhatsApp text only)
                 </a>
-              </div>
-              <div className="flex items-center gap-2.5">
+              </li>
+              <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span>support@atmodeskbd.com</span>
-              </div>
-              <div className="flex items-center gap-2.5 pt-2">
-                <a
-                  href="https://www.facebook.com/people/Atmodeskbd/61593715040434/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3.5 py-2 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20 rounded-xl text-sky-400 hover:text-white text-xs font-semibold transition"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                  Follow us on Facebook
+                <a href="mailto:support@atmodeskbd.com" className="hover:text-white transition">
+                  support@atmodeskbd.com
                 </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Categories */}
-          <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Categories</h4>
-            <ul className="space-y-2.5 text-sm text-slate-400">
-              <li>
-                <Link href="/products?category=smart-clocks" className="hover:text-white transition">
-                  Smart Clocks
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=weather-stations" className="hover:text-white transition">
-                  Weather Stations
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=ambient-lights" className="hover:text-white transition">
-                  Ambient Lights
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=desk-tech" className="hover:text-white transition">
-                  Desk Tech &amp; Hubs
-                </Link>
-              </li>
-              <li>
-                <Link href="/products" className="hover:text-white transition">
-                  All Products
-                </Link>
               </li>
             </ul>
+            <a
+              href="https://www.facebook.com/people/Atmodeskbd/61593715040434/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lg-btn-ghost inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+              Follow us on Facebook
+            </a>
           </div>
 
-          {/* Customer Service */}
-          <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Customer Care</h4>
+          <nav aria-label="Categories">
+            <h4 className="text-white font-semibold text-sm mb-4">Categories</h4>
             <ul className="space-y-2.5 text-sm text-slate-400">
+              {CATEGORY_LINKS.map(([href, label]) => (
+                <li key={label}>
+                  <Link href={href} className="hover:text-white transition">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Customer care">
+            <h4 className="text-white font-semibold text-sm mb-4">Customer care</h4>
+            <ul className="space-y-2.5 text-sm text-slate-400">
+              {CARE_LINKS.map(([href, label]) => (
+                <li key={label}>
+                  <Link href={href} className="hover:text-white transition">
+                    {label}
+                  </Link>
+                </li>
+              ))}
               <li>
-                <Link href="/track-order" className="hover:text-white transition">
-                  Track Your Order
-                </Link>
-              </li>
-              <li>
-                <Link href="/account" className="hover:text-white transition">
-                  My Account
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-white transition">
-                  FAQ / Help Center
-                </Link>
-              </li>
-              <li>
-                <Link href="/returns" className="hover:text-white transition">
-                  Return &amp; Refund Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-white transition">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-white transition">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <a href="https://wa.me/8801318043562" target="_blank" rel="noopener noreferrer" className="hover:text-white text-emerald-400 transition">
-                  WhatsApp Helpline
+                <a href="https://wa.me/8801318043562" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-white transition">
+                  WhatsApp helpline
                 </a>
               </li>
               <li>
-                <a href="https://m.me/atmodeskbd" target="_blank" rel="noopener noreferrer" className="hover:text-white text-sky-400 transition">
+                <a href="https://m.me/atmodeskbd" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-white transition">
                   Message on Facebook
                 </a>
               </li>
             </ul>
-          </div>
+          </nav>
 
-          {/* Payment & Courier Partners */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Payment Method</h4>
-            <div className="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 mb-6 space-y-2">
-              <div className="flex items-center gap-2.5 text-emerald-400">
-                <Banknote className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider text-white">Cash on Delivery</span>
+            <h4 className="text-white font-semibold text-sm mb-4">Payment</h4>
+            <div className="rounded-3xl bg-white/[0.07] p-4 mb-6 space-y-2 ring-1 ring-white/15 backdrop-blur-xl">
+              <div className="flex items-center gap-2.5">
+                <LiquidIcon icon={Banknote} tone="green" variant="frost" size="sm" />
+                <span className="text-sm font-semibold text-white">Cash on Delivery</span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Pay safely in cash when your order is delivered to your doorstep. Available nationwide.
+              <p className="text-[12px] text-slate-400 leading-relaxed">
+                Pay in cash when your order reaches your door. Available nationwide.
               </p>
             </div>
-
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-2 text-slate-400">Delivery Partners</h4>
-            <p className="text-xs text-slate-500">
+            <h4 className="text-slate-400 font-medium text-xs mb-2">Delivery partners</h4>
+            <p className="text-xs text-slate-500 leading-relaxed">
               Steadfast · Pathao Courier · RedX · Paperfly · Sundarban Courier
             </p>
           </div>
         </div>
       </div>
 
-      {/* Copyright Bar */}
-      <div className="border-t border-slate-800/80 bg-slate-950 py-6">
+      {/* Copyright */}
+      <div className="relative border-t border-white/10 bg-black/30 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} ATMODESK.bd · All rights reserved. Registered in Bangladesh.</p>
           <div className="flex items-center gap-6">
-            <Link href="/terms" className="hover:text-slate-300 transition underline underline-offset-2">
-              Terms &amp; Conditions
-            </Link>
-            <Link href="/privacy" className="hover:text-slate-300 transition">
-              Privacy Policy
-            </Link>
-            <Link href="/returns" className="hover:text-slate-300 transition">
-              Return &amp; Refund Policy
-            </Link>
+            <Link href="/terms" className="hover:text-slate-300 transition">Terms &amp; Conditions</Link>
+            <Link href="/privacy" className="hover:text-slate-300 transition">Privacy Policy</Link>
+            <Link href="/returns" className="hover:text-slate-300 transition">Returns Policy</Link>
           </div>
         </div>
       </div>

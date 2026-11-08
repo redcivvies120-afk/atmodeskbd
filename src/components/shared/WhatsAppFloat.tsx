@@ -8,24 +8,24 @@ export function WhatsAppFloat() {
       href="https://wa.me/8801318043562?text=Hi%20ATMODESK!%20I%20have%20a%20question."
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-20 md:bottom-8 right-3 sm:right-4 z-40 group"
-      title="Chat on WhatsApp"
-      aria-label="Chat on WhatsApp"
+      className="group fixed right-3 sm:right-5 z-40 bottom-[calc(env(safe-area-inset-bottom,0px)+96px)] md:bottom-8"
+      title="Text us on WhatsApp"
+      aria-label="Text us on WhatsApp"
     >
-      <div className="relative">
-        {/* Pulse animation */}
-        <span className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-25" />
-        
-        {/* Button */}
-        <div className="relative flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg shadow-emerald-500/30 transition-all duration-300 p-2.5 sm:px-4 sm:py-3 active:scale-95">
-          <svg className="w-5 h-5 sm:w-6 sm:h-6 fill-current flex-shrink-0" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-          </svg>
-          <span className="text-sm font-bold hidden group-hover:inline whitespace-nowrap">
-            Chat with us!
-          </span>
-        </div>
-      </div>
+      <span className="relative flex items-center gap-2 rounded-full p-3 text-white transition-all duration-300 active:scale-95 sm:px-4 sm:py-3 lg-wa">
+        <svg className="h-6 w-6 flex-shrink-0 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.979-.276-.1-.476-.15-.676.15-.2.301-.776.979-.951 1.18-.175.2-.35.225-.651.075-.3-.15-1.267-.467-2.414-1.49-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.132-.612.136-.135.301-.35.451-.525.15-.175.2-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.676-1.631-.926-2.233-.244-.587-.492-.507-.676-.516h-.576c-.2 0-.526.075-.801.376-.275.3-1.051 1.027-1.051 2.504s1.077 2.905 1.227 3.106c.15.2 2.119 3.235 5.132 4.537.717.31 1.277.495 1.713.633.72.229 1.375.197 1.893.12.578-.087 1.78-.727 2.03-1.43.25-.702.25-1.303.175-1.43-.075-.125-.275-.2-.576-.35zM12.04 2C6.543 2 2.08 6.463 2.08 11.96c0 1.98.58 3.824 1.583 5.378L2 22l4.808-1.579a9.92 9.92 0 005.232 1.499c5.497 0 9.96-4.463 9.96-9.96C22 6.463 17.537 2 12.04 2zm0 18.232c-1.603 0-3.093-.453-4.364-1.238l-.313-.193-2.855.939.954-2.783-.211-.336a8.212 8.212 0 01-1.252-4.661c0-4.57 3.719-8.288 8.29-8.288 4.572 0 8.29 3.718 8.29 8.288 0 4.57-3.718 8.288-8.29 8.288z" />
+        </svg>
+        <span className="hidden max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold opacity-0 transition-all duration-300 group-hover:max-w-[8rem] group-hover:opacity-100 sm:inline">
+          Text us
+        </span>
+      </span>
+      <style>{`
+        .lg-wa{
+          background:linear-gradient(180deg,#4be27d 0%,#1fb855 100%);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 4px rgba(0,0,0,.1),0 14px 28px -10px rgba(31,184,85,.7),0 0 0 .5px rgba(0,120,50,.5);
+        }
+      `}</style>
     </a>
   )
 }
