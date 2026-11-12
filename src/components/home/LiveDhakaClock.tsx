@@ -17,7 +17,6 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { LiquidIcon } from '@/components/shared/LiquidIcon'
-import { WaterDroplets } from '@/components/shared/WaterDroplets'
 
 type Mode = 'CLOCK' | 'POMODORO' | 'WEATHER'
 const MODES: { id: Mode; label: string }[] = [
@@ -158,7 +157,6 @@ export function LiveDhakaClock() {
 
         {/* Screen */}
         <div className="relative overflow-hidden rounded-[22px] bg-gradient-to-br from-slate-900 via-slate-950 to-black px-5 pb-5 pt-4 text-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08),inset_0_2px_20px_rgba(0,0,0,0.6)]">
-          <WaterDroplets preset="card" />
           {/* glass reflection */}
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.09)_0%,rgba(255,255,255,0)_38%)]" aria-hidden="true" />
 

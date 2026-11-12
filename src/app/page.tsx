@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 import { ProductCard } from '@/components/product/ProductCard'
 import { LiveDhakaClock } from '@/components/home/LiveDhakaClock'
 import { LiquidIcon, type LiquidTone } from '@/components/shared/LiquidIcon'
-import { WaterDroplets } from '@/components/shared/WaterDroplets'
 import {
   Sparkles,
   ArrowRight,
@@ -66,7 +65,6 @@ export default async function HomePage() {
       <section className="relative isolate overflow-hidden bg-slate-950 text-white pt-10 pb-16 sm:pt-14 sm:pb-24 lg:py-28">
         <div className="absolute inset-0 -z-10" aria-hidden="true">
           <div className="absolute inset-0 bg-[radial-gradient(70rem_40rem_at_20%_-10%,rgba(10,132,255,0.35),transparent_60%),radial-gradient(50rem_36rem_at_100%_30%,rgba(191,90,242,0.22),transparent_60%),linear-gradient(to_bottom,#020617,#0b1226)]" />
-          <WaterDroplets preset="hero" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

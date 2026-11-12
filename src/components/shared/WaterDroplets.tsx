@@ -47,26 +47,5 @@ export function WaterDroplets({
   preset?: 'hero' | 'card'
   className?: string
 }) {
-  const drops = preset === 'hero' ? HERO_DROPS : CARD_DROPS
-  return (
-    <div className={`water-droplets ${className}`} aria-hidden="true">
-      {drops.map((p, i) => (
-        <span
-          key={i}
-          className="droplet"
-          data-lens={p.d >= 12 ? '' : undefined}
-          style={
-            {
-              '--x': p.x,
-              '--y': p.y,
-              '--d': `${p.d}px`,
-              '--run': `${p.run}px`,
-              '--dur': `${p.dur}s`,
-              '--delay': `${p.delay}s`,
-            } as CSSProperties
-          }
-        />
-      ))}
-    </div>
-  )
+  return null
 }

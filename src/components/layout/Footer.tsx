@@ -11,7 +11,6 @@ import {
   Banknote,
 } from 'lucide-react'
 import { LiquidIcon } from '@/components/shared/LiquidIcon'
-import { WaterDroplets } from '@/components/shared/WaterDroplets'
 
 const FEATURES = [
   { icon: Truck, tone: 'sky', title: 'Fast BD delivery', text: 'Inside Dhaka 24-48h, nationwide 3-5 days' },
@@ -40,11 +39,6 @@ const CARE_LINKS = [
 export function Footer() {
   return (
     <footer className="relative bg-slate-950 text-slate-300 pb-28 md:pb-0 overflow-hidden">
-      {/* faint condensation on the glass, top edge only */}
-      <div className="absolute inset-x-0 top-0 h-40 opacity-60 [mask-image:linear-gradient(to_bottom,black,transparent)]">
-        <WaterDroplets preset="card" />
-      </div>
-
       {/* Value bar */}
       <div className="relative border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
