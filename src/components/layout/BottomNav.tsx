@@ -1,11 +1,14 @@
+// src/components/layout/BottomNav.tsx
 'use client'
 
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { motion } from 'motion/react'
 import { useCart } from '@/store/cart'
 import { useWishlist } from '@/store/wishlist'
 import { useMounted } from '@/lib/use-mounted'
+import { MORPH_SPRING, TACTILE_SPRING } from '@/components/shared/LiquidMotion'
 import { Home, LayoutGrid, Heart, ShoppingBag, User } from 'lucide-react'
 
 export function BottomNav() {
@@ -15,7 +18,6 @@ export function BottomNav() {
   const toggleCart = useCart((s) => s.toggleCart)
   const wishlistCount = useWishlist((s) => s.items.length)
 
-  // Hide on admin routes
   if (pathname?.startsWith('/admin')) return null
 
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname?.startsWith(href))
@@ -47,8 +49,18 @@ export function BottomNav() {
               aria-current={active ? 'page' : undefined}
               className={itemCls}
             >
+              {active && (
+                <motion.span
+                  layoutId="bottom-dock-active-pill"
+                  transition={MORPH_SPRING}
+                  className="absolute inset-0 rounded-[22px] bg-white/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_16px_-4px_rgba(56,189,248,0.45),0_0_0_0.5px_rgba(125,211,252,0.35)]"
+                />
+              )}
               <span className="relative">
-                <Icon className="h-[22px] w-[22px]" strokeWidth={active ? 2.4 : 2} />
+                <Icon
+                  className={`h-[22px] w-[22px] transition-colors ${active ? 'text-sky-300' : ''}`}
+                  strokeWidth={active ? 2.4 : 2}
+                />
                 {mounted && item.badge > 0 && (
                   <span
                     key={item.badge}
@@ -63,8 +75,10 @@ export function BottomNav() {
           )
         })}
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{ scale: 0.9 }}
+          transition={TACTILE_SPRING}
           onClick={toggleCart}
           className={itemCls}
           aria-label={`Open cart${mounted && cartCount ? `, ${cartCount} items` : ''}`}
@@ -81,7 +95,7 @@ export function BottomNav() {
             )}
           </span>
           <span className="mt-0.5">Cart</span>
-        </button>
+        </motion.button>
       </div>
     </nav>
   )

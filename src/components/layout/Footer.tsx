@@ -1,3 +1,4 @@
+// src/components/layout/Footer.tsx
 import React from 'react'
 import Link from 'next/link'
 import {
@@ -38,9 +39,9 @@ const CARE_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="relative bg-slate-950 text-slate-300 pb-28 md:pb-0 overflow-hidden">
+    <footer className="relative bg-[#04070f] text-slate-300 pb-28 md:pb-0 overflow-hidden border-t border-white/[0.08]">
       {/* Value bar */}
-      <div className="relative border-b border-white/10">
+      <div className="relative border-b border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {FEATURES.map((f) => (
@@ -141,7 +142,7 @@ export function Footer() {
 
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Payment</h4>
-            <div className="rounded-3xl bg-white/[0.07] p-4 mb-6 space-y-2 ring-1 ring-white/15 backdrop-blur-xl">
+            <div className="rounded-3xl bg-white/[0.06] p-4 mb-6 space-y-2 ring-1 ring-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.16)]">
               <div className="flex items-center gap-2.5">
                 <LiquidIcon icon={Banknote} tone="green" variant="frost" size="sm" />
                 <span className="text-sm font-semibold text-white">Cash on Delivery</span>
@@ -159,7 +160,7 @@ export function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="relative border-t border-white/10 bg-black/30 py-6">
+      <div className="relative border-t border-white/[0.08] bg-black/40 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} ATMODESK.bd · All rights reserved. Registered in Bangladesh.</p>
           <div className="flex items-center gap-6">

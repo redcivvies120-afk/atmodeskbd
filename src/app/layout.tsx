@@ -1,3 +1,4 @@
+// src/app/layout.tsx
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
@@ -9,21 +10,16 @@ import { BottomNav } from '@/components/layout/BottomNav'
 import { CartDrawer } from '@/components/cart/CartDrawer'
 import { WhatsAppFloat } from '@/components/shared/WhatsAppFloat'
 import { WaterRippleListener } from '@/components/shared/WaterRippleListener'
-
 import { safeJsonLd } from '@/lib/security'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
-
-// Set NEXT_PUBLIC_FB_PIXEL_ID in Vercel to enable the Meta pixel.
-// (Before, the literal string 'YOUR_PIXEL_ID' was loaded and fired on every page.)
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  // Required for env(safe-area-inset-*): the floating dock and toasts depend on it on iPhones.
   viewportFit: 'cover',
-  themeColor: '#ffffff',
+  themeColor: '#060913',
 }
 
 export const metadata: Metadata = {
@@ -123,27 +119,25 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className={`${inter.variable} overflow-x-hidden`}>
+    <html lang="en" className={`${inter.variable} dark overflow-x-hidden`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col antialiased bg-white text-slate-900 font-sans relative overflow-x-hidden">
+      <body className="min-h-screen flex flex-col antialiased bg-[#060913] text-slate-100 font-sans relative overflow-x-hidden">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-sky-700 focus:shadow-lg"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-slate-900 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-sky-300 focus:ring-1 focus:ring-white/20"
         >
           Skip to content
         </a>
 
-        {/* Water ripple on tap + glass glare on hover */}
         <WaterRippleListener />
 
         <Providers>
           <Navbar />
-          {/* pb-28 leaves room for the floating bottom dock on phones */}
           <main id="main" className="flex-1 pb-28 md:pb-0">
             {children}
           </main>

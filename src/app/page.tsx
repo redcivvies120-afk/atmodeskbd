@@ -1,8 +1,10 @@
+// src/app/page.tsx
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { ProductCard } from '@/components/product/ProductCard'
 import { LiveDhakaClock } from '@/components/home/LiveDhakaClock'
 import { LiquidIcon, type LiquidTone } from '@/components/shared/LiquidIcon'
+import { LiquidReveal } from '@/components/shared/LiquidMotion'
 import {
   Sparkles,
   ArrowRight,
@@ -29,7 +31,6 @@ function getCategoryTheme(slug: string, name: string): { Icon: LucideIcon; tone:
   return { Icon: Package, tone: 'slate' }
 }
 
-// Edge ISR caching: revalidates every 60s without blocking users
 export const revalidate = 60
 
 const HOME_PRODUCT_LIMIT = 12
@@ -49,7 +50,6 @@ export default async function HomePage() {
         where: { isActive: true },
         include: { images: true, category: true },
         orderBy: [{ isFeatured: 'desc' }, { soldCount: 'desc' }, { createdAt: 'desc' }],
-        // Was unbounded: the home page rendered (and shipped HTML for) every product.
         take: HOME_PRODUCT_LIMIT,
       }),
     ])
@@ -60,22 +60,22 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-12 sm:space-y-20 pb-12 sm:pb-20">
+    <div className="space-y-14 sm:space-y-24 pb-14 sm:pb-24">
       {/* --- HERO ------------------------------------------------------- */}
-      <section className="relative isolate overflow-hidden bg-slate-950 text-white pt-10 pb-16 sm:pt-14 sm:pb-24 lg:py-28">
+      <section className="relative isolate overflow-hidden pt-10 pb-16 sm:pt-14 sm:pb-24 lg:py-28 border-b border-white/[0.07]">
         <div className="absolute inset-0 -z-10" aria-hidden="true">
-          <div className="absolute inset-0 bg-[radial-gradient(70rem_40rem_at_20%_-10%,rgba(10,132,255,0.35),transparent_60%),radial-gradient(50rem_36rem_at_100%_30%,rgba(191,90,242,0.22),transparent_60%),linear-gradient(to_bottom,#020617,#0b1226)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(68rem_38rem_at_18%_-8%,rgba(56,189,248,0.24),transparent_60%),radial-gradient(50rem_36rem_at_95%_25%,rgba(129,140,248,0.18),transparent_60%),linear-gradient(to_bottom,#040711,#060913)]" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            <div className="lg:col-span-7 space-y-5 sm:space-y-7 text-center lg:text-left">
-              <div className="mx-auto lg:mx-0 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-medium text-sky-200 ring-1 ring-white/20 backdrop-blur-xl">
-                <Sparkles className="w-3.5 h-3.5" />
+            <LiquidReveal className="lg:col-span-7 space-y-5 sm:space-y-7 text-center lg:text-left">
+              <div className="mx-auto lg:mx-0 inline-flex items-center gap-2 rounded-full bg-white/[0.07] px-3.5 py-1.5 text-xs font-medium text-sky-200 ring-1 ring-white/15 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
+                <Sparkles className="w-3.5 h-3.5 text-sky-300" />
                 <span>Desk tech, shipped across Bangladesh</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-[-0.03em] leading-[1.05]">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-[-0.03em] leading-[1.05] text-white">
                 Smart clocks.
                 <br />
                 <span className="bg-gradient-to-r from-sky-300 via-cyan-200 to-indigo-300 bg-clip-text text-transparent">
@@ -111,17 +111,20 @@ export default async function HomePage() {
                   { icon: ShieldCheck, tone: 'green', text: 'Cash on delivery' },
                   { icon: RotateCcw, tone: 'violet', text: '7-day replacement' },
                 ].map((b) => (
-                  <li key={b.text} className="flex items-center gap-3 rounded-2xl bg-white/[0.05] p-2 pr-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.09)]">
+                  <li
+                    key={b.text}
+                    className="flex items-center gap-3 rounded-2xl bg-white/[0.05] p-2 pr-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.09),inset_0_1px_0_rgba(255,255,255,0.14)]"
+                  >
                     <LiquidIcon icon={b.icon} tone={b.tone as LiquidTone} variant="frost" size="sm" />
                     <span className="text-xs font-medium text-slate-200">{b.text}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </LiquidReveal>
 
-            <div className="lg:col-span-5 flex justify-center">
+            <LiquidReveal delay={0.1} className="lg:col-span-5 flex justify-center">
               <LiveDhakaClock />
-            </div>
+            </LiquidReveal>
           </div>
         </div>
       </section>
@@ -129,14 +132,14 @@ export default async function HomePage() {
       {/* --- CATEGORIES ------------------------------------------------- */}
       {categories.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="cat-heading">
-          <div className="flex items-end justify-between mb-5 sm:mb-7">
-            <h2 id="cat-heading" className="text-2xl sm:text-4xl font-semibold tracking-tight text-slate-900">
+          <LiquidReveal className="flex items-end justify-between mb-5 sm:mb-7">
+            <h2 id="cat-heading" className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
               Browse by category
             </h2>
-            <Link href="/products" className="inline-flex items-center gap-1 text-sm font-medium text-sky-600 hover:text-sky-700">
+            <Link href="/products" className="inline-flex items-center gap-1 text-sm font-medium text-sky-400 hover:text-sky-300">
               All products <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </LiquidReveal>
 
           <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar snap-x-mandatory">
             {categories.map((c) => {
@@ -149,17 +152,17 @@ export default async function HomePage() {
                   key={c.id}
                   href={hasStock ? `/products?category=${c.slug}` : '/products'}
                   className={`group snap-start min-w-[148px] sm:min-w-0 flex-shrink-0 sm:flex-shrink liquid-glass-card rounded-[28px] p-4 sm:p-5 flex flex-col items-center text-center gap-3 ${
-                    hasStock ? '' : 'opacity-80'
+                    hasStock ? '' : 'opacity-70'
                   }`}
                 >
                   <LiquidIcon icon={Icon} tone={tone} size="lg" lift />
-                  <h3 className="font-semibold text-sm text-slate-900 truncate max-w-full">{c.name}</h3>
+                  <h3 className="font-semibold text-sm text-white truncate max-w-full">{c.name}</h3>
                   {hasStock ? (
-                    <span className="text-[11px] font-medium text-emerald-700 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-medium text-emerald-300 bg-emerald-500/15 ring-1 ring-emerald-400/25 px-2.5 py-0.5 rounded-full">
                       {productCount} in stock
                     </span>
                   ) : (
-                    <span className="text-[11px] font-medium text-amber-700 bg-amber-500/10 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-medium text-amber-300 bg-amber-500/15 ring-1 ring-amber-400/25 px-2.5 py-0.5 rounded-full">
                       Restocking soon
                     </span>
                   )}
@@ -172,19 +175,21 @@ export default async function HomePage() {
 
       {/* --- FEATURED --------------------------------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="featured-heading">
-        <div className="flex items-end justify-between mb-5 sm:mb-8">
-          <h2 id="featured-heading" className="text-2xl sm:text-4xl font-semibold tracking-tight text-slate-900">
+        <LiquidReveal className="flex items-end justify-between mb-5 sm:mb-8">
+          <h2 id="featured-heading" className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
             Featured desk tech &amp; clocks
           </h2>
-          <Link href="/products" className="inline-flex items-center gap-1 text-sm font-medium text-sky-600 hover:text-sky-700">
+          <Link href="/products" className="inline-flex items-center gap-1 text-sm font-medium text-sky-400 hover:text-sky-300">
             Full catalog <ArrowRight className="w-4 h-4" />
           </Link>
-        </div>
+        </LiquidReveal>
 
         {allProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {allProducts.map((p, i) => (
-              <ProductCard key={p.id} {...p} priority={i < 3} />
+              <LiquidReveal key={p.id} delay={Math.min(i * 0.05, 0.25)}>
+                <ProductCard {...p} priority={i < 3} />
+              </LiquidReveal>
             ))}
           </div>
         ) : (
@@ -192,8 +197,8 @@ export default async function HomePage() {
             <div className="mx-auto w-fit">
               <LiquidIcon icon={Sparkles} tone="sky" size="lg" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900">New products coming soon</h3>
-            <p className="text-sm text-slate-500 max-w-md mx-auto">
+            <h3 className="text-xl font-semibold text-white">New products coming soon</h3>
+            <p className="text-sm text-slate-400 max-w-md mx-auto">
               We&apos;re curating the best smart clocks, weather stations and desk gadgets for you.
             </p>
           </div>
@@ -202,14 +207,14 @@ export default async function HomePage() {
 
       {/* --- REVIEWS ---------------------------------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 cv-auto" aria-labelledby="reviews-heading">
-        <div className="text-center max-w-2xl mx-auto space-y-2 mb-8 sm:mb-12">
-          <p className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-emerald-700">
+        <LiquidReveal className="text-center max-w-2xl mx-auto space-y-2 mb-8 sm:mb-12">
+          <p className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-emerald-400">
             <CheckCircle2 className="w-4 h-4" /> Customers across Bangladesh
           </p>
-          <h2 id="reviews-heading" className="text-2xl sm:text-4xl font-semibold tracking-tight text-slate-900">
+          <h2 id="reviews-heading" className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
             Loved by desk setup enthusiasts
           </h2>
-        </div>
+        </LiquidReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {[
@@ -228,42 +233,48 @@ export default async function HomePage() {
               name: 'Samiul Karim',
               place: 'Uttara, Dhaka',
             },
-          ].map((r) => (
-            <figure key={r.name} className="liquid-glass-card rounded-[28px] p-6 space-y-3">
-              <div className="flex items-center gap-0.5" role="img" aria-label="5 out of 5 stars">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <blockquote className="text-sm text-slate-700 leading-relaxed">&ldquo;{r.text}&rdquo;</blockquote>
-              <figcaption className="pt-3 border-t border-slate-900/5 flex items-center justify-between text-xs">
-                <strong className="font-semibold text-slate-900">{r.name}</strong>
-                <span className="text-slate-400">{r.place} · Verified buyer</span>
-              </figcaption>
-            </figure>
+          ].map((r, i) => (
+            <LiquidReveal key={r.name} delay={i * 0.07}>
+              <figure className="liquid-glass-card rounded-[28px] p-6 space-y-3 h-full flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-0.5" role="img" aria-label="5 out of 5 stars">
+                    {[...Array(5)].map((_, idx) => (
+                      <Star key={idx} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <blockquote className="text-sm text-slate-200 leading-relaxed">&ldquo;{r.text}&rdquo;</blockquote>
+                </div>
+                <figcaption className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                  <strong className="font-semibold text-white">{r.name}</strong>
+                  <span className="text-slate-400">{r.place} · Verified buyer</span>
+                </figcaption>
+              </figure>
+            </LiquidReveal>
           ))}
         </div>
       </section>
 
       {/* --- WHY ATMODESK ---------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 cv-auto" aria-label="Why shop with ATMODESK">
-        <div className="liquid-glass-card rounded-[36px] p-8 sm:p-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center sm:text-left">
-            {[
-              { icon: Truck, tone: 'sky', title: 'Fast express shipping', text: '24–48 hours inside Dhaka. Nationwide courier coverage in 3–5 days.' },
-              { icon: ShieldCheck, tone: 'green', title: 'Zero-risk checkout', text: 'Cash on Delivery or advance bKash / Nagad. Inspect your gadget when the courier arrives.' },
-              { icon: RotateCcw, tone: 'violet', title: '7-day replacement', text: 'Replacement guarantee on manufacturing defects and transit damage.' },
-              { icon: Zap, tone: 'amber', title: 'Tested before dispatch', text: 'Every unit is checked in Bangladesh first. English manual and USB cable included.' },
-            ].map((f) => (
-              <div key={f.title} className="space-y-3 flex flex-col items-center sm:items-start">
-                <LiquidIcon icon={f.icon} tone={f.tone as LiquidTone} variant="solid" size="lg" />
-                <h3 className="font-semibold text-base text-slate-900">{f.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{f.text}</p>
-              </div>
-            ))}
+      <LiquidReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 cv-auto">
+        <section aria-label="Why shop with ATMODESK">
+          <div className="liquid-glass-card rounded-[36px] p-8 sm:p-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center sm:text-left">
+              {[
+                { icon: Truck, tone: 'sky', title: 'Fast express shipping', text: '24–48 hours inside Dhaka. Nationwide courier coverage in 3–5 days.' },
+                { icon: ShieldCheck, tone: 'green', title: 'Zero-risk checkout', text: 'Cash on Delivery or advance bKash / Nagad. Inspect your gadget when the courier arrives.' },
+                { icon: RotateCcw, tone: 'violet', title: '7-day replacement', text: 'Replacement guarantee on manufacturing defects and transit damage.' },
+                { icon: Zap, tone: 'amber', title: 'Tested before dispatch', text: 'Every unit is checked in Bangladesh first. English manual and USB cable included.' },
+              ].map((f) => (
+                <div key={f.title} className="space-y-3 flex flex-col items-center sm:items-start">
+                  <LiquidIcon icon={f.icon} tone={f.tone as LiquidTone} variant="solid" size="lg" />
+                  <h3 className="font-semibold text-base text-white">{f.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{f.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </LiquidReveal>
     </div>
   )
 }
