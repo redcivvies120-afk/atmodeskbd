@@ -23,9 +23,9 @@ const ToastContext = createContext<ToastContextType>({ toast: () => {} })
 export const useToast = () => useContext(ToastContext)
 
 const TONE: Record<ToastType, { icon: typeof Info; cls: string }> = {
-  success: { icon: CheckCircle2, cls: 'text-emerald-400' },
-  error: { icon: AlertTriangle, cls: 'text-rose-400' },
-  info: { icon: Info, cls: 'text-sky-400' },
+  success: { icon: CheckCircle2, cls: 'text-emerald-600' },
+  error: { icon: AlertTriangle, cls: 'text-rose-600' },
+  info: { icon: Info, cls: 'text-[#0071e3]' },
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -64,18 +64,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 <motion.div
                   key={t.id}
                   layout
-                  initial={{ opacity: 0, y: 18, scale: 0.92 }}
+                  initial={{ opacity: 0, y: 14, scale: 0.94 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.94 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={LIQUID_SPRING}
-                  className="pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl px-3.5 py-3 text-sm font-medium text-slate-100 glass-bright"
+                  className="pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-[#1d1d1f] glass-bright"
                 >
                   <Icon className={`h-5 w-5 flex-none ${cls}`} aria-hidden="true" />
                   <span className="flex-1 leading-snug">{t.text}</span>
                   <button
                     type="button"
                     onClick={() => dismiss(t.id)}
-                    className="flex-none rounded-full p-1 text-slate-400 transition hover:bg-white/10 hover:text-white"
+                    className="flex-none rounded-full p-1 text-slate-400 transition hover:bg-black/5 hover:text-slate-700"
                     aria-label="Dismiss notification"
                   >
                     <X className="h-4 w-4" />

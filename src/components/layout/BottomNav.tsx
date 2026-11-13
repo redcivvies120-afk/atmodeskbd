@@ -53,12 +53,12 @@ export function BottomNav() {
                 <motion.span
                   layoutId="bottom-dock-active-pill"
                   transition={MORPH_SPRING}
-                  className="absolute inset-0 rounded-[22px] bg-white/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_16px_-4px_rgba(56,189,248,0.45),0_0_0_0.5px_rgba(125,211,252,0.35)]"
+                  className="absolute inset-0 rounded-[22px] bg-white shadow-[inset_0_1px_0_#ffffff,0_4px_12px_-4px_rgba(0,113,227,0.28),0_0_0_0.5px_rgba(0,0,0,0.06)]"
                 />
               )}
               <span className="relative">
                 <Icon
-                  className={`h-[22px] w-[22px] transition-colors ${active ? 'text-sky-300' : ''}`}
+                  className={`h-[22px] w-[22px] transition-colors ${active ? 'text-[#0071e3]' : ''}`}
                   strokeWidth={active ? 2.4 : 2}
                 />
                 {mounted && item.badge > 0 && (
@@ -88,7 +88,7 @@ export function BottomNav() {
             {mounted && cartCount > 0 && (
               <span
                 key={cartCount}
-                className="absolute -right-2.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-sky-500 px-1 text-[9px] font-bold text-white animate-bounce-in"
+                className="absolute -right-2.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#0071e3] px-1 text-[9px] font-bold text-white animate-bounce-in"
               >
                 {cartCount}
               </span>

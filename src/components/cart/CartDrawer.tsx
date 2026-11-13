@@ -12,7 +12,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight } from 'lucide-react'
 const FALLBACK_IMG =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' fill='#0f172a'/><circle cx='100' cy='100' r='34' fill='none' stroke='#475569' stroke-width='6'/></svg>`
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' fill='#f5f5f7'/><circle cx='100' cy='100' r='34' fill='none' stroke='#86868b' stroke-width='6'/></svg>`
   )
 
 export function CartDrawer() {
@@ -27,9 +27,9 @@ export function CartDrawer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.22 }}
             onClick={closeCart}
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-slate-900/35 backdrop-blur-xs"
           />
 
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
@@ -38,14 +38,14 @@ export function CartDrawer() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={LIQUID_SPRING}
-              className="w-screen max-w-md glass-bright border-l border-white/15 flex flex-col text-slate-100"
+              className="w-screen max-w-md glass-bright border-l border-black/[0.08] flex flex-col text-[#1d1d1f]"
             >
               {/* Header */}
-              <div className="p-4 md:p-6 border-b border-white/10 flex items-center justify-between">
+              <div className="p-4 md:p-6 border-b border-black/[0.06] flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-sky-400" />
-                  <h2 className="text-lg font-bold text-white">Your Shopping Cart</h2>
-                  <span className="bg-sky-500/15 text-sky-300 ring-1 ring-sky-400/25 text-xs font-semibold px-2 py-0.5 rounded-full">
+                  <ShoppingBag className="w-5 h-5 text-[#0071e3]" />
+                  <h2 className="text-lg font-bold text-[#1d1d1f]">Your Shopping Cart</h2>
+                  <span className="bg-[#f0f7ff] text-[#0071e3] text-xs font-semibold px-2.5 py-0.5 rounded-full">
                     {itemCount()} items
                   </span>
                 </div>
@@ -61,12 +61,12 @@ export function CartDrawer() {
               {/* Body */}
               <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3">
                 {items.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
-                    <div className="w-16 h-16 bg-white/[0.06] ring-1 ring-white/10 rounded-full flex items-center justify-center mb-4 text-slate-400">
+                  <div className="h-full flex flex-col items-center justify-center text-center p-6 text-[#6e6e73]">
+                    <div className="w-16 h-16 bg-[#f5f5f7] rounded-full flex items-center justify-center mb-4 text-[#86868b]">
                       <ShoppingBag className="w-8 h-8" />
                     </div>
-                    <h3 className="text-base font-semibold text-white mb-1">Your cart is empty</h3>
-                    <p className="text-sm text-slate-400 mb-6">
+                    <h3 className="text-base font-semibold text-[#1d1d1f] mb-1">Your cart is empty</h3>
+                    <p className="text-sm text-[#6e6e73] mb-6">
                       Looks like you haven&apos;t added any smart gadgets yet.
                     </p>
                     <motion.button
@@ -84,13 +84,13 @@ export function CartDrawer() {
                       <motion.div
                         key={item.productId + (item.variantId || '')}
                         layout
-                        initial={{ opacity: 0, y: 12 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, x: 30 }}
+                        exit={{ opacity: 0, x: 24 }}
                         transition={LIQUID_SPRING}
-                        className="flex gap-4 p-3 bg-white/[0.05] rounded-2xl border border-white/10 items-center"
+                        className="flex gap-4 p-3 bg-[#f5f5f7] rounded-2xl border border-black/[0.05] items-center"
                       >
-                        <div className="relative w-18 h-18 bg-slate-900 rounded-xl overflow-hidden flex-shrink-0 border border-white/10">
+                        <div className="relative w-18 h-18 bg-white rounded-xl overflow-hidden flex-shrink-0 border border-black/[0.06]">
                           <img
                             src={item.image || FALLBACK_IMG}
                             alt={item.name}
@@ -105,31 +105,31 @@ export function CartDrawer() {
                           <Link
                             href={`/product/${item.slug}`}
                             onClick={closeCart}
-                            className="text-sm font-semibold text-white hover:text-sky-300 line-clamp-1"
+                            className="text-sm font-semibold text-[#1d1d1f] hover:text-[#0071e3] line-clamp-1"
                           >
                             {item.name}
                           </Link>
                           {item.variantName && (
-                            <p className="text-xs text-slate-400 mt-0.5">{item.variantName}</p>
+                            <p className="text-xs text-[#6e6e73] mt-0.5">{item.variantName}</p>
                           )}
                           <div className="flex items-center justify-between mt-2">
-                            <span className="text-sm font-bold text-sky-300 tabular">
+                            <span className="text-sm font-bold text-[#0071e3] tabular">
                               {formatBDT(item.price)}
                             </span>
-                            <div className="flex items-center border border-white/15 rounded-lg bg-white/[0.06] overflow-hidden">
+                            <div className="flex items-center border border-black/10 rounded-lg bg-white overflow-hidden">
                               <button
                                 onClick={() => updateQty(item.productId, item.quantity - 1, item.variantId)}
-                                className="p-1.5 hover:bg-white/10 text-slate-200 transition"
+                                className="p-1.5 hover:bg-[#f5f5f7] text-[#1d1d1f] transition"
                               >
                                 <Minus className="w-3.5 h-3.5" />
                               </button>
-                              <span className="px-2 text-xs font-semibold text-white min-w-6 text-center tabular">
+                              <span className="px-2 text-xs font-semibold text-[#1d1d1f] min-w-6 text-center tabular">
                                 {item.quantity}
                               </span>
                               <button
                                 onClick={() => updateQty(item.productId, item.quantity + 1, item.variantId)}
                                 disabled={item.quantity >= item.stock}
-                                className="p-1.5 hover:bg-white/10 text-slate-200 transition disabled:opacity-30"
+                                className="p-1.5 hover:bg-[#f5f5f7] text-[#1d1d1f] transition disabled:opacity-30"
                               >
                                 <Plus className="w-3.5 h-3.5" />
                               </button>
@@ -138,7 +138,7 @@ export function CartDrawer() {
                         </div>
                         <button
                           onClick={() => removeItem(item.productId, item.variantId)}
-                          className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/15 rounded-lg transition"
+                          className="p-1.5 text-[#86868b] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                           title="Remove item"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -151,21 +151,21 @@ export function CartDrawer() {
 
               {/* Footer */}
               {items.length > 0 && (
-                <div className="p-4 md:p-6 border-t border-white/10 bg-black/25 space-y-4">
+                <div className="p-4 md:p-6 border-t border-black/[0.06] bg-[#f5f5f7]/70 space-y-4">
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-sm text-slate-300">
+                    <div className="flex justify-between text-sm text-[#6e6e73]">
                       <span>Subtotal</span>
-                      <span className="font-semibold text-white tabular">{formatBDT(subtotal())}</span>
+                      <span className="font-semibold text-[#1d1d1f] tabular">{formatBDT(subtotal())}</span>
                     </div>
-                    <div className="flex justify-between text-xs text-slate-400">
+                    <div className="flex justify-between text-xs text-[#86868b]">
                       <span>Shipping</span>
                       <span>Calculated at checkout</span>
                     </div>
                   </div>
 
-                  <div className="border-t border-white/10 pt-3 flex justify-between items-baseline">
-                    <span className="text-base font-bold text-white">Total (Est.)</span>
-                    <span className="text-xl font-extrabold text-sky-300 tabular">
+                  <div className="border-t border-black/[0.08] pt-3 flex justify-between items-baseline">
+                    <span className="text-base font-bold text-[#1d1d1f]">Total (Est.)</span>
+                    <span className="text-xl font-bold text-[#0071e3] tabular">
                       {formatBDT(subtotal())}
                     </span>
                   </div>
@@ -186,7 +186,7 @@ export function CartDrawer() {
                       Checkout <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
-                  <p className="text-center text-[11px] text-slate-400">
+                  <p className="text-center text-[11px] text-[#86868b]">
                     Safe &amp; Secure Checkout · Cash on Delivery Available
                   </p>
                 </div>

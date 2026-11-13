@@ -136,33 +136,27 @@ export function LiveDhakaClock() {
 
   return (
     <div className="relative w-full max-w-sm sm:max-w-md">
-      {/* Ambient refraction aura behind the glass enclosure */}
-      <div
-        className="absolute -inset-4 rounded-[44px] bg-gradient-to-tr from-sky-500/30 via-indigo-500/20 to-fuchsia-500/20 blur-2xl pointer-events-none"
-        aria-hidden="true"
-      />
-
-      {/* Liquid Glass Shell */}
-      <div className="relative rounded-[32px] p-5 bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-200 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16),inset_0_1.5px_0_rgba(255,255,255,0.34),0_30px_60px_-20px_rgba(0,0,0,0.8)]">
-        {/* Status bar */}
-        <div className="mb-4 flex items-center justify-between text-xs text-slate-300">
-          <span className="inline-flex items-center gap-2 font-medium text-sky-300">
+      {/* Frosted Silver & White Apple Hardware Enclosure */}
+      <div className="relative rounded-[34px] p-5 bg-white/85 backdrop-blur-2xl backdrop-saturate-180 border border-black/[0.08] shadow-[0_24px_54px_-16px_rgba(0,0,0,0.12),inset_0_1px_0_#ffffff]">
+        {/* Top Status Row */}
+        <div className="mb-4 flex items-center justify-between text-xs text-[#6e6e73]">
+          <span className="inline-flex items-center gap-2 font-semibold text-[#1d1d1f]">
             <span className="relative flex h-2 w-2" aria-hidden="true">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
             Live Dhaka time
           </span>
-          <span className="inline-flex items-center gap-1.5 text-slate-400">
-            <Wifi className="h-3.5 w-3.5 text-teal-300" /> UTC+6
+          <span className="inline-flex items-center gap-1.5 font-medium text-[#6e6e73]">
+            <Wifi className="h-3.5 w-3.5 text-[#0071e3]" /> UTC+6
           </span>
         </div>
 
-        {/* Display Screen */}
-        <div className="relative overflow-hidden rounded-[22px] bg-gradient-to-br from-[#070b16] via-[#04070e] to-black px-5 pb-5 pt-4 text-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.09),inset_0_2px_20px_rgba(0,0,0,0.75)]">
-          {/* Specular diagonal reflection */}
+        {/* Realistic Compact OLED Display Screen */}
+        <div className="relative overflow-hidden rounded-[22px] bg-[#141416] px-5 pb-5 pt-4 text-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.12),0_8px_20px_-8px_rgba(0,0,0,0.35)]">
+          {/* Subtle glass reflection */}
           <div
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_40%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(125deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0)_42%)]"
             aria-hidden="true"
           />
 
@@ -170,7 +164,7 @@ export function LiveDhakaClock() {
           <div
             role="tablist"
             aria-label="Display mode"
-            className="relative z-10 mx-auto mb-4 flex w-fit rounded-full bg-white/[0.07] p-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]"
+            className="relative z-10 mx-auto mb-4 flex w-fit rounded-full bg-white/10 p-1"
           >
             {MODES.map((m) => {
               const selected = mode === m.id
@@ -182,14 +176,14 @@ export function LiveDhakaClock() {
                   aria-selected={selected}
                   onClick={() => setMode(m.id)}
                   className={`relative rounded-full px-3.5 py-1 text-[11px] font-semibold transition-colors ${
-                    selected ? 'text-slate-950' : 'text-slate-400 hover:text-white'
+                    selected ? 'text-[#1d1d1f]' : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   {selected && (
                     <motion.span
                       layoutId="dhaka-clock-mode-pill"
                       transition={MORPH_SPRING}
-                      className="absolute inset-0 rounded-full bg-white shadow-[0_2px_10px_rgba(255,255,255,0.35)]"
+                      className="absolute inset-0 rounded-full bg-white shadow-sm"
                     />
                   )}
                   <span className="relative z-10">{m.label}</span>
@@ -203,10 +197,10 @@ export function LiveDhakaClock() {
               {mode === 'CLOCK' && (
                 <motion.div
                   key="CLOCK"
-                  initial={{ opacity: 0, y: 6, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
-                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                   className="space-y-2.5"
                 >
                   <div
@@ -215,9 +209,9 @@ export function LiveDhakaClock() {
                     className="tabular text-[2.75rem] font-semibold leading-none tracking-tight text-white sm:text-6xl"
                   >
                     <span>{hour}</span>
-                    <span className="mx-0.5 animate-pulse text-sky-300">:</span>
+                    <span className="mx-0.5 animate-pulse text-sky-400">:</span>
                     <span>{now?.minute ?? '--'}</span>
-                    <span className="ml-1 align-baseline text-xl font-medium text-sky-200/80" aria-hidden="true">
+                    <span className="ml-1 align-baseline text-xl font-medium text-slate-400" aria-hidden="true">
                       :{now?.second ?? '--'}
                     </span>
                     {!is24Hour && now && (
@@ -230,7 +224,7 @@ export function LiveDhakaClock() {
                     <button
                       type="button"
                       onClick={() => setIs24Hour((v) => !v)}
-                      className="font-medium text-sky-300 hover:underline"
+                      className="font-medium text-sky-400 hover:underline"
                     >
                       {is24Hour ? 'Use 12-hour' : 'Use 24-hour'}
                     </button>
@@ -239,15 +233,15 @@ export function LiveDhakaClock() {
                     {weather ? (
                       <>
                         <span className="inline-flex items-center gap-1.5">
-                          <WeatherIcon className="h-4 w-4 text-sky-300" /> Dhaka {weather.temp}°C
+                          <WeatherIcon className="h-4 w-4 text-sky-400" /> Dhaka {weather.temp}°C
                         </span>
                         <span className="text-slate-600" aria-hidden="true">·</span>
                         <span className="inline-flex items-center gap-1.5">
-                          <Droplets className="h-4 w-4 text-sky-300" /> {weather.humidity}% humidity
+                          <Droplets className="h-4 w-4 text-sky-400" /> {weather.humidity}% humidity
                         </span>
                       </>
                     ) : (
-                      <span className="skeleton h-4 w-44 rounded-full! opacity-40" aria-label="Loading weather" />
+                      <span className="inline-block h-4 w-40 rounded-full bg-white/10 animate-pulse" aria-label="Loading weather" />
                     )}
                   </div>
                 </motion.div>
@@ -256,10 +250,10 @@ export function LiveDhakaClock() {
               {mode === 'POMODORO' && (
                 <motion.div
                   key="POMODORO"
-                  initial={{ opacity: 0, y: 6, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
-                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                   className="space-y-2.5 py-1"
                 >
                   <div className="tabular text-5xl font-semibold tracking-tight text-amber-300 sm:text-6xl">
@@ -271,7 +265,7 @@ export function LiveDhakaClock() {
                   <div className="flex justify-center gap-2 pt-1.5">
                     <motion.button
                       type="button"
-                      whileTap={{ scale: 0.94 }}
+                      whileTap={{ scale: 0.95 }}
                       transition={TACTILE_SPRING}
                       onClick={() => setPomodoroActive((v) => !v)}
                       className="inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-4 py-1.5 text-xs font-semibold text-slate-950 transition hover:bg-amber-300"
@@ -280,7 +274,7 @@ export function LiveDhakaClock() {
                     </motion.button>
                     <motion.button
                       type="button"
-                      whileTap={{ scale: 0.94 }}
+                      whileTap={{ scale: 0.95 }}
                       transition={TACTILE_SPRING}
                       onClick={() => {
                         setPomodoroActive(false)
@@ -297,19 +291,19 @@ export function LiveDhakaClock() {
               {mode === 'WEATHER' && (
                 <motion.div
                   key="WEATHER"
-                  initial={{ opacity: 0, y: 6, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
-                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                   className="space-y-2 py-1"
                 >
                   {weather ? (
                     <>
-                      <div className="tabular text-5xl font-semibold tracking-tight text-teal-200 sm:text-6xl">
+                      <div className="tabular text-5xl font-semibold tracking-tight text-sky-300 sm:text-6xl">
                         {weather.temp}°C
                       </div>
                       <p className="inline-flex items-center gap-1.5 text-sm text-slate-200">
-                        <WeatherIcon className="h-4 w-4 text-sky-300" /> Dhaka · {weather.condition}
+                        <WeatherIcon className="h-4 w-4 text-sky-400" /> Dhaka · {weather.condition}
                       </p>
                       <p className="text-xs text-slate-400">Humidity {weather.humidity}%</p>
                     </>
@@ -322,14 +316,14 @@ export function LiveDhakaClock() {
           </div>
         </div>
 
-        {/* Spec chips */}
-        <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] text-slate-300">
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[0.06] p-2 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
-            <LiquidIcon icon={Zap} tone="amber" variant="frost" size="sm" />
+        {/* Light Spec Chips */}
+        <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] font-medium text-[#1d1d1f]">
+          <div className="flex items-center gap-2.5 rounded-2xl bg-[#f5f5f7] p-2">
+            <LiquidIcon icon={Zap} tone="amber" variant="glass" size="sm" />
             <span>USB-C powered</span>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[0.06] p-2 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
-            <LiquidIcon icon={Wifi} tone="sky" variant="frost" size="sm" />
+          <div className="flex items-center gap-2.5 rounded-2xl bg-[#f5f5f7] p-2">
+            <LiquidIcon icon={Wifi} tone="sky" variant="glass" size="sm" />
             <span>Auto-sync over WiFi</span>
           </div>
         </div>

@@ -20,7 +20,6 @@ import {
   ChevronDown,
   MessageCircle,
   Clock,
-  Sparkles,
   Camera,
   CloudSun,
   Lightbulb,
@@ -95,36 +94,35 @@ export function Navbar() {
   }
 
   const iconBtn =
-    'relative hidden sm:flex items-center justify-center h-10 min-w-10 px-2.5 rounded-full text-slate-300 hover:text-sky-300 hover:bg-white/[0.08] transition'
+    'relative hidden sm:flex items-center justify-center h-10 min-w-10 px-2.5 rounded-full text-[#1d1d1f] hover:text-[#0071e3] hover:bg-black/[0.04] transition'
 
   return (
     <>
-      {/* Top notification bar */}
-      <div className="bg-[#04070f] text-slate-400 text-xs py-2 px-4 border-b border-white/[0.06]">
+      {/* Clean Light Apple Announcement Strip */}
+      <div className="bg-[#f5f5f7] text-[#6e6e73] text-xs py-2 px-4 border-b border-black/[0.06]">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="hidden md:flex items-center gap-4">
             <a
               href="https://wa.me/8801318043562"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-white transition"
+              className="flex items-center gap-1.5 hover:text-[#1d1d1f] transition"
               title="Text us on WhatsApp"
             >
-              <MessageCircle className="w-3.5 h-3.5 text-emerald-400" /> WhatsApp text: 01318043562
+              <MessageCircle className="w-3.5 h-3.5 text-emerald-600" /> WhatsApp text: 01318043562
             </a>
             <span aria-hidden="true">·</span>
-            <span className="flex items-center gap-1 text-[11px] text-sky-400 tabular">
+            <span className="flex items-center gap-1 text-[11px] text-[#0071e3] font-medium tabular">
               <Clock className="w-3 h-3" /> Dhaka (BST UTC+6)
             </span>
           </div>
-          <div className="mx-auto md:mx-0 flex items-center gap-1.5 text-[11px] sm:text-xs">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+          <div className="mx-auto md:mx-0 flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#1d1d1f]">
             <span className="truncate">
-              Free delivery in Dhaka over <strong className="text-white">৳2,000</strong> · Cash on Delivery
+              Free delivery in Dhaka over <strong>৳2,000</strong> · Cash on Delivery
             </span>
           </div>
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/track-order" className="hover:text-white transition">
+            <Link href="/track-order" className="hover:text-[#1d1d1f] transition">
               Track order
             </Link>
             <span aria-hidden="true">·</span>
@@ -132,7 +130,7 @@ export function Navbar() {
               href="https://wa.me/8801318043562"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-emerald-400 hover:text-white transition"
+              className="flex items-center gap-1 text-emerald-700 hover:text-emerald-800 font-medium transition"
             >
               <MessageCircle className="w-3.5 h-3.5" /> WhatsApp support
             </a>
@@ -140,7 +138,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Sticky Liquid Glass Navbar */}
+      {/* Sticky Bright White Liquid Glass Navbar */}
       <header className="sticky top-0 z-40 w-full glass-nav" data-scrolled={isScrolled}>
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div
@@ -148,14 +146,14 @@ export function Navbar() {
               isScrolled ? 'h-14 md:h-[60px]' : 'h-14 md:h-[68px]'
             }`}
           >
-            {/* Left: mobile menu toggle + logo */}
+            {/* Left: mobile menu button + logo */}
             <div className="flex items-center gap-1.5">
               <motion.button
                 type="button"
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.92 }}
                 transition={TACTILE_SPRING}
                 onClick={() => setMobileMenuOpen((v) => !v)}
-                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-slate-200 hover:bg-white/10 transition"
+                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-[#1d1d1f] hover:bg-black/5 transition"
                 aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
@@ -170,20 +168,20 @@ export function Navbar() {
                   width={88}
                   height={44}
                   priority
-                  className="h-7 sm:h-9 md:h-10 w-auto object-contain rounded-lg ring-1 ring-white/15"
+                  className="h-7 sm:h-9 md:h-10 w-auto object-contain rounded-lg"
                 />
                 <span className="flex flex-col leading-none">
-                  <span className="font-bold text-base sm:text-xl tracking-tight text-white group-hover:text-sky-300 transition">
-                    ATMODESK<span className="text-sky-400">.bd</span>
+                  <span className="font-bold text-base sm:text-xl tracking-tight text-[#1d1d1f] group-hover:text-[#0071e3] transition">
+                    ATMODESK<span className="text-[#0071e3]">.bd</span>
                   </span>
-                  <span className="mt-0.5 hidden text-[10px] tracking-wide text-slate-400 sm:block">
+                  <span className="mt-0.5 hidden text-[10px] tracking-wide text-[#6e6e73] sm:block">
                     Smart desk tech
                   </span>
                 </span>
               </Link>
             </div>
 
-            {/* Desktop Liquid Search */}
+            {/* Desktop Search */}
             <form
               onSubmit={handleSearch}
               role="search"
@@ -198,20 +196,20 @@ export function Navbar() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search smart clocks, weather stations, desk gadgets"
-                className="w-full h-10 pl-11 pr-32 rounded-full text-sm text-white placeholder:text-slate-400 outline-none transition-all duration-300 bg-white/[0.06] border border-white/[0.1] hover:bg-white/[0.09] focus:bg-slate-900/90 focus:border-sky-400/60 focus:shadow-[0_0_0_3px_rgba(56,189,248,0.18)]"
+                className="w-full h-10 pl-11 pr-32 rounded-full text-sm text-[#1d1d1f] placeholder:text-[#86868b] outline-none transition-all duration-200 bg-[#f5f5f7] border border-black/[0.06] hover:bg-[#efeff2] focus:bg-white focus:border-[#0071e3] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)]"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-4 h-4 text-[#86868b] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
               <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1">
                 <Link
                   href="/search"
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:text-sky-300 hover:bg-white/10 transition"
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-[#6e6e73] hover:text-[#0071e3] hover:bg-black/5 transition"
                   title="Search by image"
                   aria-label="Search by image"
                 >
                   <Camera className="w-4 h-4" />
                 </Link>
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.96 }}
                   transition={TACTILE_SPRING}
                   type="submit"
                   className="lg-btn-primary h-8 px-4 rounded-full text-xs font-semibold"
@@ -225,7 +223,7 @@ export function Navbar() {
             <div className="flex items-center gap-0.5 sm:gap-1.5">
               <Link
                 href="/search"
-                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-slate-200 hover:bg-white/10 active:scale-95 transition"
+                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-[#1d1d1f] hover:bg-black/5 active:scale-95 transition"
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" />
@@ -243,7 +241,7 @@ export function Navbar() {
                     initial={{ scale: 0.4 }}
                     animate={{ scale: 1 }}
                     transition={TACTILE_SPRING}
-                    className="absolute top-0.5 right-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white ring-2 ring-[#0a0e1a]"
+                    className="absolute top-0.5 right-0 grid min-w-[18px] h-[18px] place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white ring-2 ring-white"
                   >
                     {wishlistCount}
                   </motion.span>
@@ -257,8 +255,8 @@ export function Navbar() {
 
               <motion.button
                 type="button"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.96 }}
                 transition={TACTILE_SPRING}
                 onClick={toggleCart}
                 className="lg-btn-primary relative flex h-10 items-center gap-1.5 rounded-full px-3.5 sm:px-4 text-xs sm:text-sm font-semibold"
@@ -272,7 +270,7 @@ export function Navbar() {
                     initial={{ scale: 0.4 }}
                     animate={{ scale: 1 }}
                     transition={TACTILE_SPRING}
-                    className="grid min-w-[20px] h-5 place-items-center rounded-full bg-white px-1.5 text-[11px] font-bold text-sky-900"
+                    className="grid min-w-[20px] h-5 place-items-center rounded-full bg-white px-1.5 text-[11px] font-bold text-[#0071e3]"
                   >
                     {cartCount}
                   </motion.span>
@@ -281,10 +279,10 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Desktop Category Navigation with Morphing Liquid Dropdown */}
+          {/* Desktop Category Navigation with Morphing Frosted Dropdown */}
           <nav
             aria-label="Categories"
-            className="hidden md:flex items-center gap-8 py-2 border-t border-white/[0.06] text-sm font-medium text-slate-300"
+            className="hidden md:flex items-center gap-8 py-2 border-t border-black/[0.05] text-sm font-medium text-[#6e6e73]"
           >
             <div
               ref={catDropdownRef}
@@ -297,12 +295,12 @@ export function Navbar() {
                 aria-haspopup="true"
                 aria-expanded={categoryMenuOpen}
                 onClick={() => setCategoryMenuOpen((v) => !v)}
-                className="flex items-center gap-1.5 py-1 font-semibold text-white hover:text-sky-300 transition"
+                className="flex items-center gap-1.5 py-1 font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition"
               >
                 All categories
                 <ChevronDown
                   className={`w-4 h-4 transition-transform duration-300 ${
-                    categoryMenuOpen ? 'rotate-180 text-sky-400' : ''
+                    categoryMenuOpen ? 'rotate-180 text-[#0071e3]' : ''
                   }`}
                 />
               </button>
@@ -310,9 +308,9 @@ export function Navbar() {
               <AnimatePresence>
                 {categoryMenuOpen && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.92, y: -6 }}
+                    initial={{ opacity: 0, scale: 0.94, y: -6 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.94, y: -4 }}
+                    exit={{ opacity: 0, scale: 0.96, y: -4 }}
                     transition={MORPH_SPRING}
                     style={{ transformOrigin: 'top left' }}
                     className="absolute left-0 top-full z-50 pt-2"
@@ -323,7 +321,7 @@ export function Navbar() {
                           key={c.slug}
                           href={c.available ? `/products?category=${c.slug}` : '/products'}
                           onClick={() => setCategoryMenuOpen(false)}
-                          className="flex items-center justify-between gap-3 rounded-2xl px-2.5 py-2 text-slate-100 transition hover:bg-white/[0.08]"
+                          className="flex items-center justify-between gap-3 rounded-2xl px-2.5 py-2 text-[#1d1d1f] transition hover:bg-[#0071e3]/[0.06]"
                         >
                           <span className="flex items-center gap-3">
                             <LiquidIcon icon={c.icon} tone={c.tone} size="sm" />
@@ -332,8 +330,8 @@ export function Navbar() {
                           <span
                             className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                               c.available
-                                ? 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/25'
-                                : 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-400/25'
+                                ? 'bg-emerald-50 text-emerald-700'
+                                : 'bg-amber-50 text-amber-700'
                             }`}
                           >
                             {c.available ? 'In stock' : 'Soon'}
@@ -347,26 +345,26 @@ export function Navbar() {
             </div>
 
             {CATEGORIES.filter((c) => c.available).map((c) => (
-              <Link key={c.slug} href={`/products?category=${c.slug}`} className="hover:text-sky-300 transition">
+              <Link key={c.slug} href={`/products?category=${c.slug}`} className="hover:text-[#1d1d1f] transition">
                 {c.name}
               </Link>
             ))}
-            <Link href="/products" className="hover:text-sky-300 transition">
+            <Link href="/products" className="hover:text-[#1d1d1f] transition">
               All products
             </Link>
-            <Link href="/track-order" className="text-slate-400 hover:text-sky-300 transition">
+            <Link href="/track-order" className="hover:text-[#1d1d1f] transition">
               Track order
             </Link>
             <Link
               href="/products"
-              className="ml-auto flex items-center gap-1.5 font-semibold text-amber-300 hover:text-amber-200 transition"
+              className="ml-auto flex items-center gap-1.5 font-semibold text-amber-600 hover:text-amber-700 transition"
             >
               <Flame className="w-4 h-4" /> Hot deals
             </Link>
           </nav>
         </div>
 
-        {/* Mobile Morphing Glass Drawer */}
+        {/* Mobile Glass Drawer */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -375,7 +373,7 @@ export function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={MORPH_SPRING}
-              className="md:hidden glass-bright border-t border-white/10 overflow-hidden"
+              className="md:hidden glass-bright border-t border-black/[0.06] overflow-hidden"
             >
               <div className="p-4 space-y-4 max-h-[calc(100dvh-7rem)] overflow-y-auto">
                 <form onSubmit={handleSearch} role="search" className="relative">
@@ -388,9 +386,9 @@ export function Navbar() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search smart clocks, weather tech"
-                    className="w-full h-11 rounded-2xl bg-white/[0.07] border border-white/15 text-white placeholder:text-slate-400 pl-10 pr-4 text-base outline-none focus:border-sky-400"
+                    className="w-full h-11 rounded-2xl bg-[#f5f5f7] border border-black/[0.08] text-[#1d1d1f] placeholder:text-[#86868b] pl-10 pr-4 text-base outline-none focus:bg-white focus:border-[#0071e3]"
                   />
-                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Search className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </form>
 
                 <div className="grid grid-cols-2 gap-2">
@@ -398,12 +396,12 @@ export function Navbar() {
                     <Link
                       key={c.slug}
                       href={c.available ? `/products?category=${c.slug}` : '/products'}
-                      className="flex items-center gap-2.5 rounded-2xl bg-white/[0.06] p-2 text-xs font-semibold text-slate-100 ring-1 ring-white/10 active:scale-95 transition"
+                      className="flex items-center gap-2.5 rounded-2xl bg-[#f5f5f7] p-2 text-xs font-semibold text-[#1d1d1f] active:scale-95 transition"
                     >
                       <LiquidIcon icon={c.icon} tone={c.tone} size="sm" />
                       <span className="flex-1 truncate">{c.name}</span>
                       {!c.available && (
-                        <span className="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-bold text-amber-300">
+                        <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold text-amber-800">
                           Soon
                         </span>
                       )}
@@ -411,7 +409,7 @@ export function Navbar() {
                   ))}
                 </div>
 
-                <div className="border-t border-white/10 pt-3 text-[15px] font-medium text-slate-200 space-y-1">
+                <div className="border-t border-black/[0.06] pt-3 text-[15px] font-medium text-[#1d1d1f] space-y-1">
                   <Link
                     href="/account"
                     className="lg-btn-primary mb-2 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold"
@@ -425,7 +423,7 @@ export function Navbar() {
                     ['/about', 'About us'],
                     ['/contact', 'Contact us'],
                   ].map(([href, label]) => (
-                    <Link key={href} href={href} className="block rounded-xl px-3 py-2.5 hover:bg-white/[0.07]">
+                    <Link key={href} href={href} className="block rounded-xl px-3 py-2.5 hover:bg-black/[0.04]">
                       {label}
                     </Link>
                   ))}
