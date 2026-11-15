@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'motion/react'
 import { ProductCard, type ProductCardProps } from '@/components/product/ProductCard'
 import { LiquidReveal, TACTILE_SPRING } from '@/components/shared/LiquidMotion'
-import { Layers, ArrowRight, Sparkles } from 'lucide-react'
+import { Layers, ArrowRight, Sparkles, Star, TrendingUp } from 'lucide-react'
 
 interface ProductCatalogShelfProps {
   products: any[]
@@ -18,12 +18,18 @@ export function ProductCatalogShelf({ products, categories }: ProductCatalogShel
 
   const tabs = [
     { id: 'ALL', label: 'All Products' },
+    { id: 'NEW_ARRIVALS', label: '🆕 New Arrivals' },
+    { id: 'BEST_SELLERS', label: '🔥 Best Sellers' },
     ...categories.map((c) => ({ id: c.slug, label: c.name })),
   ]
 
   const filteredProducts =
     activeTab === 'ALL'
       ? products
+      : activeTab === 'NEW_ARRIVALS'
+      ? [...products].sort((a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime())
+      : activeTab === 'BEST_SELLERS'
+      ? [...products].sort((a, b) => (b.soldCount ?? 0) - (a.soldCount ?? 0))
       : products.filter(
           (p) =>
             p.category?.slug === activeTab ||

@@ -1,7 +1,7 @@
 // src/components/home/AppleGadgetsHero.tsx
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'motion/react'
@@ -95,6 +95,8 @@ export function AppleGadgetsHero() {
 
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length)
@@ -110,6 +112,13 @@ export function AppleGadgetsHero() {
     const timer = setInterval(nextSlide, 5000)
     return () => clearInterval(timer)
   }, [isPaused, nextSlide])
+
+  const handleTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX }
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX
+    const diff = touchStartX.current - touchEndX.current
+    if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide() }
+  }
 
   const handleInstantBuy = (product: {
     id: string
@@ -148,6 +157,8 @@ export function AppleGadgetsHero() {
           className="lg:col-span-8 relative rounded-[32px] sm:rounded-[36px] overflow-hidden border border-black/[0.08] bg-white shadow-sm flex flex-col justify-between min-h-[460px] sm:min-h-[500px]"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           {/* Animated Slide Content */}
           <AnimatePresence mode="wait">

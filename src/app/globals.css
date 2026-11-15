@@ -468,3 +468,16 @@ button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
     -webkit-backdrop-filter: none;
   }
 }
+
+
+/* Marquee scrolling animation for announcement strip */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-scroll 40s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+}

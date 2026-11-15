@@ -54,7 +54,11 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchSuggestions, setSearchSuggestions] = useState<{ id: string; name: string; slug: string; price: number }[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const catDropdownRef = useRef<HTMLDivElement>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20)
@@ -73,11 +77,15 @@ export function Navbar() {
       if (e.key === 'Escape') {
         setMobileMenuOpen(false)
         setCategoryMenuOpen(false)
+        setShowSuggestions(false)
       }
     }
     const onClickOutside = (e: MouseEvent) => {
       if (catDropdownRef.current && !catDropdownRef.current.contains(e.target as Node)) {
         setCategoryMenuOpen(false)
+      }
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false)
       }
     }
     window.addEventListener('keydown', onKey)
@@ -93,8 +101,30 @@ export function Navbar() {
     const q = searchQuery.trim()
     if (q) {
       setMobileMenuOpen(false)
+      setShowSuggestions(false)
       router.push(`/search?q=${encodeURIComponent(q)}`)
     }
+  }
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (val.trim().length < 2) { setSearchSuggestions([]); setShowSuggestions(false); return }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(val.trim())}&limit=5`)
+        if (!res.ok) return
+        const data = await res.json()
+        const hits = (data.products ?? []).map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          price: p.salePrice ?? p.price,
+        }))
+        setSearchSuggestions(hits.slice(0, 5))
+        setShowSuggestions(hits.length > 0)
+      } catch {}
+    }, 300)
   }
 
   const iconBtn =
@@ -102,43 +132,30 @@ export function Navbar() {
 
   return (
     <>
-      {/* Clean Light Apple Announcement Strip */}
-      <div className="bg-[#f5f5f7] text-[#6e6e73] text-xs py-2 px-4 border-b border-black/[0.06]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-4">
-            <a
-              href="https://wa.me/8801318043562"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-[#1d1d1f] transition"
-              title="Text us on WhatsApp"
-            >
-              <MessageCircle className="w-3.5 h-3.5 text-emerald-600" /> WhatsApp text: 01318043562
-            </a>
-            <span aria-hidden="true">·</span>
-            <span className="flex items-center gap-1 text-[11px] text-[#0071e3] font-medium tabular">
-              <Clock className="w-3 h-3" /> Dhaka (BST UTC+6)
-            </span>
-          </div>
-          <div className="mx-auto md:mx-0 flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#1d1d1f]">
-            <span className="truncate">
-              Free delivery in Dhaka over <strong>৳2,000</strong> · Cash on Delivery
-            </span>
-          </div>
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/track-order" className="hover:text-[#1d1d1f] transition">
-              Track order
-            </Link>
-            <span aria-hidden="true">·</span>
-            <a
-              href="https://wa.me/8801318043562"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-emerald-700 hover:text-emerald-800 font-medium transition"
-            >
-              <MessageCircle className="w-3.5 h-3.5" /> WhatsApp support
-            </a>
-          </div>
+      {/* Scrolling Marquee Announcement Strip */}
+      <div className="bg-[#1d1d1f] text-white text-xs py-2 px-4 overflow-hidden relative">
+        <div className="animate-marquee whitespace-nowrap inline-block">
+          {[
+            '🚀 Free delivery inside Dhaka over ৳2,000',
+            '💳 Cash on Delivery nationwide — no prepayment needed',
+            '🔄 7-Day Replacement Guarantee on all products',
+            '📦 24-48h Dhaka dispatch · 3-5 days nationwide',
+            '💬 WhatsApp support: 01318043562 (text only)',
+            '✅ 100% authentic — OEM-sourced desk tech',
+          ].map((msg, i) => (
+            <span key={i} className="mx-8">{msg}</span>
+          ))}
+          {/* Duplicate for seamless loop */}
+          {[
+            '🚀 Free delivery inside Dhaka over ৳2,000',
+            '💳 Cash on Delivery nationwide — no prepayment needed',
+            '🔄 7-Day Replacement Guarantee on all products',
+            '📦 24-48h Dhaka dispatch · 3-5 days nationwide',
+            '💬 WhatsApp support: 01318043562 (text only)',
+            '✅ 100% authentic — OEM-sourced desk tech',
+          ].map((msg, i) => (
+            <span key={`d-${i}`} className="mx-8">{msg}</span>
+          ))}
         </div>
       </div>
 
@@ -185,43 +202,63 @@ export function Navbar() {
               </Link>
             </div>
 
-            {/* Desktop Search */}
-            <form
-              onSubmit={handleSearch}
-              role="search"
-              className="hidden md:flex flex-1 max-w-lg mx-6 relative"
-            >
-              <label htmlFor="nav-search" className="sr-only">
-                Search products
-              </label>
-              <input
-                id="nav-search"
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search smart clocks, weather stations, desk gadgets"
-                className="w-full h-10 pl-11 pr-32 rounded-full text-sm text-[#1d1d1f] placeholder:text-[#86868b] outline-none transition-all duration-200 bg-[#f5f5f7] border border-black/[0.06] hover:bg-[#efeff2] focus:bg-white focus:border-[#0071e3] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)]"
-              />
-              <Search className="w-4 h-4 text-[#86868b] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                <Link
-                  href="/search"
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-[#6e6e73] hover:text-[#0071e3] hover:bg-black/5 transition"
-                  title="Search by image"
-                  aria-label="Search by image"
-                >
-                  <Camera className="w-4 h-4" />
-                </Link>
-                <motion.button
-                  whileTap={{ scale: 0.96 }}
-                  transition={TACTILE_SPRING}
-                  type="submit"
-                  className="lg-btn-primary h-8 px-4 rounded-full text-xs font-semibold"
-                >
-                  Search
-                </motion.button>
-              </div>
-            </form>
+            {/* Desktop Search with Autocomplete */}
+            <div ref={searchRef} className="hidden md:flex flex-1 max-w-lg mx-6 relative">
+              <form onSubmit={handleSearch} role="search" className="w-full relative">
+                <label htmlFor="nav-search" className="sr-only">Search products</label>
+                <input
+                  id="nav-search"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  onFocus={() => searchSuggestions.length > 0 && setShowSuggestions(true)}
+                  placeholder="Search smart clocks, weather stations, desk gadgets"
+                  autoComplete="off"
+                  className="w-full h-10 pl-11 pr-32 rounded-full text-sm text-[#1d1d1f] placeholder:text-[#86868b] outline-none transition-all duration-200 bg-[#f5f5f7] border border-black/[0.06] hover:bg-[#efeff2] focus:bg-white focus:border-[#0071e3] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)]"
+                />
+                <Search className="w-4 h-4 text-[#86868b] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                  <Link href="/search" className="flex h-8 w-8 items-center justify-center rounded-full text-[#6e6e73] hover:text-[#0071e3] hover:bg-black/5 transition" title="Search by image" aria-label="Search by image">
+                    <Camera className="w-4 h-4" />
+                  </Link>
+                  <motion.button whileTap={{ scale: 0.96 }} transition={TACTILE_SPRING} type="submit" className="lg-btn-primary h-8 px-4 rounded-full text-xs font-semibold">
+                    Search
+                  </motion.button>
+                </div>
+              </form>
+              {/* Autocomplete Dropdown */}
+              <AnimatePresence>
+                {showSuggestions && searchSuggestions.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                    transition={MORPH_SPRING}
+                    className="absolute top-full left-0 right-0 mt-2 z-50 glass-bright rounded-2xl shadow-lg border border-black/[0.06] overflow-hidden"
+                  >
+                    {searchSuggestions.map((s) => (
+                      <Link
+                        key={s.id}
+                        href={`/product/${s.slug}`}
+                        onClick={() => { setShowSuggestions(false); setSearchQuery('') }}
+                        className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-[#0071e3]/[0.06] transition group"
+                      >
+                        <span className="flex items-center gap-2 text-[#1d1d1f] font-medium truncate">
+                          <Search className="w-3.5 h-3.5 text-[#86868b] flex-shrink-0" />
+                          {s.name}
+                        </span>
+                        <span className="text-xs font-bold text-[#0071e3] flex-shrink-0">৳{s.price?.toLocaleString()}</span>
+                      </Link>
+                    ))}
+                    <div className="border-t border-black/[0.05] px-4 py-2">
+                      <button onClick={() => { setShowSuggestions(false); router.push(`/search?q=${encodeURIComponent(searchQuery)}`) }} className="text-xs text-[#0071e3] font-semibold hover:underline">
+                        See all results for &quot;{searchQuery}&quot; →
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Right Actions */}
             <div className="flex items-center gap-0.5 sm:gap-1.5">
