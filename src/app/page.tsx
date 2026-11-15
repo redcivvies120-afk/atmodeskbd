@@ -1,12 +1,13 @@
 // src/app/page.tsx
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
-import { ProductCard } from '@/components/product/ProductCard'
 import { AppleGadgetsHero } from '@/components/home/AppleGadgetsHero'
 import { TrustBadgesStrip } from '@/components/home/TrustBadgesStrip'
 import { FlashDealsSection } from '@/components/home/FlashDealsSection'
+import { PromoBannerPair } from '@/components/home/PromoBannerPair'
 import { DeskSetupBuilder } from '@/components/home/DeskSetupBuilder'
 import { LiveDhakaClock } from '@/components/home/LiveDhakaClock'
+import { ProductCatalogShelf } from '@/components/home/ProductCatalogShelf'
 import { LiquidIcon, type LiquidTone } from '@/components/shared/LiquidIcon'
 import { LiquidReveal } from '@/components/shared/LiquidMotion'
 import {
@@ -22,8 +23,6 @@ import {
   CloudSun,
   BatteryCharging,
   Package,
-  Layers,
-  Flame,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -130,7 +129,13 @@ export default async function HomePage() {
       {/* --- 4. FLASH DEALS OF THE DAY WITH LIVE COUNTDOWN ---------------- */}
       <FlashDealsSection />
 
-      {/* --- 5. LIVE DHAKA ATMOSPHERIC TELEMETRY SHOWCASE ---------------- */}
+      {/* --- 5. DUAL PROMOTIONAL FEATURE BANNERS (Apple Gadgets style) ---- */}
+      <PromoBannerPair />
+
+      {/* --- 6. ATMODESK STUDIO: THE UNIQUE INTERACTIVE DESK BUILDER ------ */}
+      <DeskSetupBuilder />
+
+      {/* --- 7. LIVE DHAKA ATMOSPHERIC TELEMETRY SHOWCASE ---------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-labelledby="telemetry-heading">
         <div className="rounded-[36px] bg-gradient-to-r from-[#f0f4f9] via-white to-[#f5f5f7] border border-black/[0.08] p-6 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-xs">
           <div className="space-y-4 text-center lg:text-left max-w-xl">
@@ -164,58 +169,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* --- 6. ATMODESK STUDIO: THE UNIQUE INTERACTIVE DESK BUILDER ------ */}
-      <DeskSetupBuilder />
+      {/* --- 8. FEATURED CATALOG SHELF WITH TABS (Apple Gadgets Grid) ----- */}
+      <ProductCatalogShelf products={allProducts} categories={categories} />
 
-      {/* --- 7. FEATURED CATALOG SHELF (Apple Gadgets Grid) --------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="featured-heading">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6 sm:mb-8 pb-4 border-b border-black/[0.06]">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0071e3] uppercase tracking-wider mb-1">
-              <Layers className="w-3.5 h-3.5" />
-              <span>Tested &amp; Calibrated</span>
-            </div>
-            <h2 id="featured-heading" className="text-2xl sm:text-4xl font-black tracking-tight text-[#1d1d1f]">
-              Featured Desk Tech &amp; Smart Clocks
-            </h2>
-            <p className="text-xs sm:text-sm text-[#6e6e73] mt-1">
-              Showing official stock ready for instant Cash on Delivery dispatch across Bangladesh.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f5f5f7] hover:bg-black/5 text-xs font-bold text-[#1d1d1f] transition border border-black/[0.06]"
-            >
-              <span>Explore All {allProducts.length} Products</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#0071e3]" />
-            </Link>
-          </div>
-        </div>
-
-        {allProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {allProducts.map((p, i) => (
-              <LiquidReveal key={p.id} delay={Math.min(i * 0.04, 0.2)}>
-                <ProductCard {...p} priority={i < 3} />
-              </LiquidReveal>
-            ))}
-          </div>
-        ) : (
-          <div className="liquid-glass-card rounded-[28px] p-10 text-center space-y-4">
-            <div className="mx-auto w-fit">
-              <LiquidIcon icon={Sparkles} tone="sky" size="lg" />
-            </div>
-            <h3 className="text-xl font-semibold text-[#1d1d1f]">New products coming soon</h3>
-            <p className="text-sm text-[#6e6e73] max-w-md mx-auto">
-              We&apos;re curating the best smart clocks, weather stations and desk gadgets for you.
-            </p>
-          </div>
-        )}
-      </section>
-
-      {/* --- 7. VERIFIED BANGLADESH REVIEWS & UNBOXING TRUST -------------- */}
+      {/* --- 9. VERIFIED BANGLADESH REVIEWS & UNBOXING TRUST -------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="reviews-heading">
         <div className="text-center max-w-2xl mx-auto space-y-2 mb-8 sm:mb-12">
           <p className="inline-flex items-center justify-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/50">
@@ -282,7 +239,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* --- 8. WHY ATMODESK (RETAIL ASSURANCE BANNER) ------------------- */}
+      {/* --- 10. WHY ATMODESK (RETAIL ASSURANCE BANNER) ------------------ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Why shop with ATMODESK">
         <div className="rounded-[36px] bg-[#f5f5f7] border border-black/[0.08] p-8 sm:p-12 relative overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center sm:text-left">
