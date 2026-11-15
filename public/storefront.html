@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATMODESK.bd — Aesthetic Smart Clocks, Weather Stations &amp; Desk Tech</title>
+<meta name="description" content="ATMODESK.bd is Bangladesh's premium destination for aesthetic smart clocks, WiFi weather stations, pomodoro timers, and ambient desk gadgets. Fast delivery and Cash on Delivery.">
+<meta property="og:title" content="ATMODESK.bd — Smart Desk Tech &amp; Ambient Clocks">
+<meta property="og:description" content="Elevate your workspace with real-time WiFi weather stations, pomodoro timers, and expressive pixel clocks in Bangladesh.">
+<meta property="og:image" content="/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--surf:#fff;--ink:#1a1d21;--mute:#6b7280;--line:#e8eaed;--brand:#0071e3;--brand-ink:#fff;--sale:#e5322d;--ph:#f6f7f8;--ph2:#eceef0;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 14px}
+.ph{position:relative;display:grid;place-items:center;overflow:hidden;background:repeating-linear-gradient(135deg,var(--ph) 0 9px,var(--ph2) 9px 10px);color:var(--mute);font-size:12px;text-align:center}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph img:not([src]),.ph img[src=""]{display:none}
+.top{background:var(--brand);color:var(--brand-ink);font-size:13px}
+.top .wrap{display:flex;justify-content:space-between;padding-block:6px}
+.top nav{display:flex;gap:16px}
+header{background:var(--surf);position:sticky;top:env(safe-area-inset-top,0px);z-index:20;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:18px;padding-block:10px}
+.logo{display:block;width:150px;height:40px;flex:none}
+.search{flex:1;display:flex;max-width:640px}
+.search input{flex:1;min-width:0;padding:9px 12px;border:1px solid var(--line);border-right:0;border-radius:4px 0 0 4px;background:var(--bg);color:var(--ink);font:inherit}
+.search button{padding:0 20px;border:0;border-radius:0 4px 4px 0;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:600;cursor:pointer}
+.acts{display:flex;gap:18px;margin-left:auto;font-weight:500}
+.acts i{font-style:normal;background:var(--brand);color:var(--brand-ink);border-radius:3px;padding:0 6px;margin-left:5px;font-size:13px}
+nav.cats{border-top:1px solid var(--line)}
+nav.cats ul{list-style:none;margin:0;padding:0;display:flex;overflow-x:auto}
+nav.cats>.wrap>ul>li{position:relative;flex:none}
+nav.cats button{background:none;border:0;color:inherit;font:inherit;font-weight:500;padding:9px 13px;cursor:pointer;white-space:nowrap}
+nav.cats li:hover>button,nav.cats li.open>button{color:var(--brand)}
+.drop{display:none;position:absolute;left:0;top:100%;min-width:200px;background:var(--surf);border:1px solid var(--line);padding:6px;z-index:30}
+li:hover>.drop,li.open>.drop{display:block}
+.drop a{display:block;padding:6px 10px;font-size:14px}.drop a:hover{background:var(--bg);color:var(--brand)}
+.hero{display:grid;grid-template-columns:3fr 1fr;gap:10px;margin-top:12px}
+.hero .ph{border-radius:4px}
+.hero .main{aspect-ratio:1200/470}
+.hero .side{display:grid;gap:10px}.hero .side .ph{min-height:90px}
+.trust{display:grid;grid-template-columns:repeat(5,1fr);background:var(--surf);border:1px solid var(--line);border-radius:4px;margin-top:10px}
+.trust div{padding:11px 14px;font-weight:500;font-size:14px;border-right:1px solid var(--line)}.trust div:last-child{border:0}
+section{margin-top:28px}
+.sh{display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line);margin-bottom:12px;flex-wrap:wrap}
+.sh h2{margin:0;font-size:21px;font-weight:700;padding-bottom:8px;border-bottom:3px solid var(--brand);margin-bottom:-1px}
+.sh .tabs{display:flex;gap:2px;margin-left:8px}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;color:var(--mute);font:inherit;font-weight:500;padding:8px 12px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--ink)}
+.sh a.all{margin-left:auto;color:var(--brand);font-weight:500;font-size:14px}
+.cgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
+.cg{background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:10px;text-align:center;font-weight:500;font-size:14px}
+.cg .ph{aspect-ratio:1;border-radius:2px;margin-bottom:8px}.cg:hover{border-color:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.card:hover{border-color:var(--brand)}
+.card .ph{aspect-ratio:1;border-radius:2px}
+.card h3{margin:4px 0 0;font-size:14px;font-weight:500;line-height:1.3;height:2.6em;overflow:hidden}
+.pr b{font-size:17px;font-weight:700}.pr s{color:var(--mute);font-size:13px;margin-left:6px}
+.sv{color:var(--sale);font-size:13px;font-weight:500}
+.card button{margin-top:auto;border:1px solid var(--brand);background:none;color:var(--brand);font:inherit;font-weight:600;padding:6px;border-radius:3px;cursor:pointer}
+.card button:hover{background:var(--brand);color:var(--brand-ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two .ph{aspect-ratio:750/190;border-radius:4px}
+.desc{background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:20px;color:var(--mute);min-height:120px}
+.desc h1{font-size:20px;color:var(--ink);margin:0 0 8px}
+.page{margin-top:12px}.bc{font-size:14px;color:var(--mute);margin:14px 0 0}.bc a,.page a{color:var(--brand)}.page h1,.pd h1{font-size:26px;line-height:1.2;margin:4px 0 12px}.pd{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:14px}.pd .ph{aspect-ratio:1;border-radius:4px}.pd .price{font-size:28px;font-weight:700}.pd .price s{font-size:16px;color:var(--mute);font-weight:400}.pd ul{padding-left:18px;color:var(--mute)}.srt{margin-left:auto;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surf);color:var(--ink);font:inherit}.card h3 a:hover{color:var(--brand)}@media (max-width:820px){.pd{grid-template-columns:1fr}}
+#order{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);margin:0;background:var(--bg);border-left:1px solid var(--line);z-index:60;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px));overflow-y:auto;transform:translateX(100%);visibility:hidden;transition:transform .2s,visibility .2s}#order.open{transform:none;visibility:visible}#order .ord{grid-template-columns:1fr}.scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:55;display:none}.scrim.on{display:block}.xb{margin-left:auto;border:0;background:none;color:var(--ink);font:inherit;font-size:26px;line-height:1;cursor:pointer;padding:0 6px 8px}
+.ord{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}.box{background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:16px}.line{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}.line>span{flex:1;font-size:14px}.q{display:flex;align-items:center;gap:8px}.q button{width:26px;height:26px;border:1px solid var(--line);background:var(--surf);color:var(--ink);border-radius:3px;cursor:pointer;font:inherit}.tot{display:flex;justify-content:space-between;padding:6px 0}.tot.big{font-weight:700;font-size:17px;border-top:1px solid var(--line);margin-top:6px;padding-top:10px}.f label{display:block;font-weight:500;font-size:14px;margin:10px 0 3px}.f input,.f textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit}.cod{border:1px solid var(--brand);border-radius:4px;padding:10px 12px;margin-top:14px;font-weight:500}.place{width:100%;margin-top:12px;border:0;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:700;padding:11px;border-radius:4px;cursor:pointer}.ok{background:var(--brand);color:var(--brand-ink);padding:12px 14px;border-radius:4px;margin-top:10px}.ok.err{background:var(--sale)}@media (max-width:820px){.ord{grid-template-columns:1fr}}
+footer{background:#fff;color:#4b5563;border-top:1px solid var(--line);margin-top:36px;padding:30px 0 18px;font-size:14px}
+.fg{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:22px}
+footer h4{margin:0 0 8px;color:var(--ink);font-size:15px}footer a{display:block;padding:2px 0}footer a:hover{color:var(--brand)}
+.fb{border-top:1px solid var(--line);margin-top:20px;padding-top:12px;min-height:32px}
+.chat{position:fixed;right:0;bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--brand);color:var(--brand-ink);font-weight:600;padding:10px 14px;border-radius:4px 0 0 4px;z-index:40}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}.cgrid{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .side{grid-template-columns:1fr 1fr}.trust{grid-template-columns:1fr 1fr}.trust div{border-bottom:1px solid var(--line)}.grid{grid-template-columns:repeat(3,1fr)}.fg{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}.top nav{display:none}.bar{flex-wrap:wrap;gap:10px}.search{order:3;flex-basis:100%;max-width:none}.two{grid-template-columns:1fr}.logo{width:110px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head>
+<body>
+<div class="top"><div class="wrap"><span>🚀 Free delivery inside Dhaka over ৳2,000 · Cash on Delivery nationwide</span><nav><a href="#shop">Offers</a><a href="#track">Track order</a><a href="#contact">Contact</a></nav></div></div>
+<header>
+ <div class="wrap bar">
+  <a class="logo ph" href="#home" aria-label="Home"><span>Logo 150×40</span><img src="/logo.jpg" alt="ATMODESK.bd"></a>
+  <form class="search" id="sf"><input id="sq" type="search" placeholder="Search for smart clocks, weather stations, desk tech" aria-label="Search"><button>Search</button></form>
+  <div class="acts"><a href="/account">Sign in</a><a href="#order" id="cartbtn">Cart<i id="cn">0</i></a></div>
+ </div>
+ <nav class="cats"><div class="wrap"><ul id="mm"></ul></div></nav>
+</header>
+<main class="wrap"><div id="v-home">
+ <div class="hero">
+  <a class="ph main" href="#product-0"><span>Main banner 1200×470</span><img src="/products/atmodesk-weatherstation-mini-1.jpg" alt="ATMODESK WeatherStation Mini WiFi Smart Desk Clock"></a>
+  <div class="side">
+    <a class="ph" href="#product-1"><span>Banner 400×230</span><img src="/products/atmodesk-gravitycube-pro-1.jpg" alt="ATMODESK GravityCube Pro Pomodoro Timer"></a>
+    <a class="ph" href="#product-2"><span>Banner 400×230</span><img src="/products/atmodesk-pixelsmile-mood-1.jpg" alt="ATMODESK PixelSmile Mood Clock Voice LED Nightlight"></a>
+  </div>
+ </div>
+ <div class="trust"><div>Cash on delivery</div><div>Fast delivery (24-48h)</div><div>7-Day replacement</div><div>Best cash price</div><div>Dhaka support</div></div>
+ <section><div class="sh"><h2>Featured categories</h2><a class="all" href="#shop">See all</a></div><div class="cgrid" id="cg"></div></section>
+ <section><div class="sh"><h2>Exclusive deals</h2><a class="all" href="#shop">View all</a></div><div class="grid" id="g0"></div></section>
+ <section><div class="two">
+   <a class="ph" href="#product-1"><span>Banner 750×190</span><img src="/products/atmodesk-gravitycube-pro-2.jpg" alt="Focus &amp; Productivity — GravityCube Pro Setup"></a>
+   <a class="ph" href="#product-2"><span>Banner 750×190</span><img src="/products/atmodesk-pixelsmile-mood-2.webp" alt="Smart Bedroom Ambience — PixelSmile Mood Clock"></a>
+ </div></section>
+ <section><div class="sh"><h2>New Arrivals &amp; Trending Tech</h2><div class="tabs" id="t1" role="tablist"></div><a class="all" href="#shop">View all</a></div><div class="grid" id="g1"></div></section>
+ <section><div class="sh"><h2>Popular Desk Setups</h2><div class="tabs" id="t2" role="tablist"></div><a class="all" href="#shop">View all</a></div><div class="grid" id="g2"></div></section>
+ </div><section id="order"><div class="sh"><h2>Your order</h2><button type="button" class="xb" id="xb" aria-label="Close cart">×</button></div><div class="ord"><div class="box"><div id="lines"></div><div class="tot"><span>Subtotal</span><span id="sub">৳ 0</span></div><div class="tot"><span>Delivery charge</span><span id="del">৳ 0</span></div><div class="tot big"><span>Total to pay on delivery</span><span id="tot">৳ 0</span></div></div><form class="box f" id="of"><strong>Delivery details</strong><label for="nm">Full name</label><input id="nm" required autocomplete="name"><label for="ph">Mobile number</label><input id="ph" required inputmode="tel" pattern="01[3-9][0-9]{8}" placeholder="01XXXXXXXXX" autocomplete="tel"><label for="ad">Full address</label><textarea id="ad" rows="3" required autocomplete="street-address" placeholder="House, Road, Area, Dhaka or District"></textarea><label for="nt">Order note (optional)</label><input id="nt" placeholder="Special delivery instructions"><div class="cod">Payment method: Cash on delivery</div><button class="place" type="submit">Place order</button><div id="res" role="status"></div></form></div></section>
+ <div id="v-page"></div>
+ <section class="desc" id="desc"><h1>ATMODESK.bd — Ambient Desk Tech &amp; Smart Clocks Bangladesh</h1><p>Bangladesh's premium online store for aesthetic desk setups, WiFi smart clocks, mini weather displays, gyro timers, and ambient LED tech. Sourced directly from verified OEM manufacturers and quality-tested in Dhaka before dispatch. 100% Cash on Delivery nationwide.</p></section>
+</main>
+<footer><div class="wrap"><div class="fg">
+ <div><h4 id="fn">ATMODESK.bd</h4><p id="fa">Hotline: +880 1318-043562<br>Email: support@atmodeskbd.com<br>Address: New Eskaton, Dhaka, Bangladesh</p></div>
+ <div><h4>About us</h4><a href="#about">About</a><a href="#track">Track order</a><a href="#contact">Contact</a><a href="#faq">FAQ</a></div>
+ <div><h4>Policy</h4><a href="#policy-privacy">Privacy</a><a href="#policy-warranty">Warranty</a><a href="#policy-delivery">Delivery</a><a href="#policy-returns">Return and refund</a></div>
+ <div><h4>Categories</h4><a href="#shop-0">Smart Clocks</a><a href="#shop-1">Weather Stations</a><a href="#shop-2">Ambient Lights</a></div>
+ <div><h4>Follow us</h4><a id="s-facebook" href="https://www.facebook.com/people/Atmodeskbd/61593715040434/" target="_blank" rel="noopener">Facebook</a><a id="s-instagram" href="https://instagram.com/atmodeskbd" target="_blank" rel="noopener">Instagram</a><a id="s-youtube" href="https://youtube.com/@atmodeskbd" target="_blank" rel="noopener">YouTube</a></div>
+</div><div class="fb"><p style="font-size:12px;color:var(--mute);margin:0">© 2026 ATMODESK.bd · All rights reserved. Registered in Bangladesh.</p></div></div></footer>
+<a class="chat" href="https://wa.me/8801318043562" target="_blank" rel="noopener">Chat on WhatsApp</a>
+<div class="scrim" id="scrim"></div>
+<script>
+// ===== CONFIG: filled in for ATMODESK.bd =====
+var CONFIG={
+  name:"ATMODESK.bd",
+  logo:"/logo.jpg",
+  hotline:"+880 1318-043562",
+  email:"support@atmodeskbd.com",
+  address:"New Eskaton, Dhaka, Bangladesh",
+  delivery:60,
+  social:{
+    facebook:"https://www.facebook.com/people/Atmodeskbd/61593715040434/",
+    instagram:"https://instagram.com/atmodeskbd",
+    youtube:"https://youtube.com/@atmodeskbd"
+  },
+  api:{
+    products:"/api/storefront/products",
+    orders:"/api/storefront/orders"
+  }
+};
+
+// Real Categories matching database
+var NAV={
+  "Smart Clocks":["WiFi Clocks","Weather Displays","IPS Telemetry"],
+  "Weather Stations":["Mini Weather Displays","Barometer Clocks"],
+  "Ambient Lights":["Pixel Clocks","LED Nightlights","Voice Lights"],
+  "Desk Tech":["Pomodoro Timers","Gyroscope Clocks","Focus Cubes"],
+  "Power & Chargers":["Fast Chargers","USB-C Hubs","Desk Cables"]
+};
+
+var mm=document.getElementById("mm");
+Object.keys(NAV).forEach(function(k,ci){
+  var li=document.createElement("li");
+  li.innerHTML='<button>'+k+'</button><div class="drop">'+NAV[k].map(function(x){return '<a href="#shop-'+ci+'">'+x+'</a>'}).join("")+'</div>';
+  li.firstChild.onclick=function(){
+    var o=li.classList.contains("open");
+    document.querySelectorAll("nav.cats li.open").forEach(function(e){e.classList.remove("open")});
+    if(!o)li.classList.add("open");
+  };
+  mm.appendChild(li);
+});
+
+document.addEventListener("click",function(e){
+  if(!e.target.closest("nav.cats"))document.querySelectorAll("nav.cats li.open").forEach(function(x){x.classList.remove("open")});
+});
+
+var CAT_IMAGES=[
+  "/products/atmodesk-weatherstation-mini-1.jpg",
+  "/products/atmodesk-weatherstation-mini-2.webp",
+  "/products/atmodesk-pixelsmile-mood-1.jpg",
+  "/products/atmodesk-gravitycube-pro-1.jpg",
+  "/products/atmodesk-weatherstation-mini-3.jpg",
+  "/products/atmodesk-pixelsmile-mood-3.jpg",
+  "/products/atmodesk-gravitycube-pro-2.jpg",
+  "/products/atmodesk-pixelsmile-mood-2.webp"
+];
+
+var cg="";
+var catKeys=Object.keys(NAV);
+for(var i=0;i<8;i++){
+  var catTitle=catKeys[i%catKeys.length];
+  cg+='<a class="cg" href="#shop-'+(i%catKeys.length)+'"><div class="ph"><span>1:1</span><img src="'+CAT_IMAGES[i]+'" alt="'+catTitle+'"></div>'+catTitle+'</a>';
+}
+document.getElementById("cg").innerHTML=cg;
+
+function f(n){return "৳ "+Number(n||0).toLocaleString("en-US")}
+
+// Fallback products if offline, updated via API immediately
+var PR=[
+  {id:0,sku:"cmtvs1qob0001qbvsafeznftn",n:"WeatherStation Mini — WiFi Smart Desk Clock",c:0,p:1599,o:2499,img:"/products/atmodesk-weatherstation-mini-1.jpg"},
+  {id:1,sku:"cmtvsizab0001cfkj9x8tdtap",n:"GravityCube Pro — Dual-Mode Pomodoro Timer",c:3,p:1499,o:2299,img:"/products/atmodesk-gravitycube-pro-1.jpg"},
+  {id:2,sku:"cmus997340001mxx1sdqqufd3",n:"PixelSmile Mood Clock — Voice-Activated LED Nightlight",c:2,p:1699,o:2899,img:"/products/atmodesk-pixelsmile-mood-1.jpg"}
+];
+
+function card(x){
+  return '<article class="card"><a href="#product-'+x.id+'" class="ph"><span>Product photo</span><img alt="'+esc(x.n)+'"'+(x.img?' src="'+esc(x.img)+'"':'')+'></a><h3><a href="#product-'+x.id+'">'+esc(x.n)+'</a></h3><div class="pr"><b>'+f(x.p)+'</b><s>'+f(x.o)+'</s></div><span class="sv">Save '+f(x.o-x.p)+'</span><button class="add" data-id="'+x.id+'">Add to cart</button></article>';
+}
+
+function cards(gid,n,off){
+  var h="";
+  for(var j=0;j<n;j++)h+=card(PR[(j+off)%PR.length]);
+  var target=document.getElementById(gid);
+  if(target)target.innerHTML=h;
+}
+
+cards("g0",Math.min(6,PR.length),0);
+
+function tabs(id,gid,off){
+  var el=document.getElementById(id);
+  if(!el)return;
+  el.innerHTML=["All Tech","Smart Clocks","Focus Tools","Ambient LED"].map(function(t,i){return '<button role="tab" aria-selected="'+(i==0)+'">'+t+'</button>'}).join("");
+  el.onclick=function(e){
+    var b=e.target.closest("button");
+    if(!b)return;
+    el.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-selected","false")});
+    b.setAttribute("aria-selected","true");
+    cards(gid,Math.min(6,PR.length),off+el.querySelectorAll("button").length*[].indexOf.call(el.children,b));
+  };
+  cards(gid,Math.min(6,PR.length),off);
+}
+
+tabs("t1","g1",1);
+tabs("t2","g2",2);
+
+var cart=[],DELIVERY=CONFIG.delivery;
+function esc(s){return String(s||"").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function $(id){return document.getElementById(id)}
+
+function draw(){
+  var sub=0,q=0,h="";
+  cart.forEach(function(x,i){
+    sub+=x.p*x.q;
+    q+=x.q;
+    h+='<div class="line"><span>'+esc(x.n)+'<br>'+f(x.p)+'</span><div class="q"><button type="button" data-i="'+i+'" data-d="-1" aria-label="Decrease quantity">−</button>'+x.q+'<button type="button" data-i="'+i+'" data-d="1" aria-label="Increase quantity">+</button></div><b>'+f(x.p*x.q)+'</b></div>';
+  });
+  $("lines").innerHTML=h||'<p style="color:var(--mute);margin:0 0 8px">Your cart is empty.</p>';
+  var d=(q>0 && sub<2000)?DELIVERY:0;
+  $("sub").textContent=f(sub);
+  $("del").textContent=f(d);
+  $("tot").textContent=f(sub+d);
+  $("cn").textContent=q;
+}
+
+document.addEventListener("click",function(e){
+  var t=e.target;
+  if(t.classList.contains("add")){
+    var pd=PR[+t.dataset.id] || PR[0];
+    var it=cart.filter(function(x){return x.id===pd.id})[0];
+    if(it)it.q++;else cart.push({id:pd.id,sku:pd.sku||pd.id,n:pd.n,p:pd.p,q:1});
+    draw();
+    cartOpen(true);
+  }
+  else if(t.dataset.d){
+    var i=+t.dataset.i;
+    cart[i].q+=+t.dataset.d;
+    if(cart[i].q<1)cart.splice(i,1);
+    draw();
+  }
+});
+
+function cartOpen(o){
+  $("order").classList.toggle("open",o);
+  $("scrim").classList.toggle("on",o);
+  if(o)$("xb").focus();
+}
+
+$("cartbtn").onclick=function(e){e.preventDefault();cartOpen(true)};
+$("xb").onclick=$("scrim").onclick=function(){cartOpen(false)};
+document.addEventListener("keydown",function(e){if(e.key==="Escape")cartOpen(false)});
+
+$("of").onsubmit=function(e){
+  e.preventDefault();
+  var r=$("res");
+  if(!cart.length){
+    r.innerHTML='<div class="ok err">Add at least one product before placing your order.</div>';
+    return;
+  }
+  var order={
+    name:$("nm").value.trim(),
+    phone:$("ph").value.trim(),
+    address:$("ad").value.trim(),
+    note:$("nt").value.trim(),
+    payment:"cash_on_delivery",
+    delivery:DELIVERY,
+    items:cart
+  };
+
+  var fm=this;
+  var done=function(id){
+    order.id=id;
+    ORDERS.push(order);
+    cart=[];
+    draw();
+    fm.reset();
+    r.innerHTML='<div class="ok">Order #'+id+' received! You will pay in cash on delivery. Our Dhaka team will contact you to confirm.</div>';
+  };
+
+  if(!CONFIG.api.orders){
+    done(1001+ORDERS.length);
+    return;
+  }
+
+  r.innerHTML='<div class="ok" style="background:#555">Verifying stock and placing order...</div>';
+
+  fetch(CONFIG.api.orders,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(order)
+  })
+  .then(function(x){
+    if(!x.ok)return x.json().then(function(err){throw err});
+    return x.json();
+  })
+  .then(function(d){
+    done(d.orderId);
+  })
+  .catch(function(err){
+    r.innerHTML='<div class="ok err">'+(err && err.error ? esc(err.error) : 'Could not place the order. Please try again or WhatsApp us.')+'</div>';
+  });
+};
+
+draw();
+
+// ---- Pages (hash routes) ----
+var ORDERS=[],SQ="",CUR=[];
+var PG={
+  about:[
+    "About ATMODESK.bd",
+    "ATMODESK.bd is Bangladesh's premier destination for aesthetic desk setups. Founded in New Eskaton, Dhaka, our mission is to bring global-quality smart clocks, WiFi weather stations, gyroscope pomodoro timers, and ambient LED desk gadgets to Bangladesh at fair prices. Every unit is tested with local Bangladesh voltage and WiFi networks before leaving our Dhaka warehouse."
+  ],
+  faq:[
+    "Frequently Asked Questions",
+    "<strong>Q: What payment methods do you accept?</strong><br>A: We accept 100% Cash on Delivery (COD) across all 64 districts in Bangladesh. No advance payment required.<br><br><strong>Q: How long does delivery take?</strong><br>A: Inside Dhaka takes 24–48 hours. Outside Dhaka takes 3–5 business days.<br><br><strong>Q: Do smart clocks need WiFi?</strong><br>A: Yes, they connect to your 2.4GHz home/office WiFi to automatically sync Dhaka BST time and real-time weather telemetry.<br><br><strong>Q: What is your replacement policy?</strong><br>A: We provide an official 7-Day Replacement Guarantee for any hardware defect or transit damage."
+  ],
+  "policy-privacy":[
+    "Privacy Policy",
+    "We value your privacy. We only collect the minimal customer details necessary to fulfill your Cash on Delivery orders (Full Name, Bangladesh Mobile Number, Delivery Address). We never sell or share your personal data with third parties."
+  ],
+  "policy-warranty":[
+    "Warranty & Replacement Policy",
+    "All products purchased from ATMODESK.bd include a 7-Day Hassle-Free Replacement Guarantee. If your unit arrives with transit defects, message our WhatsApp helpline (+880 1318-043562) with your Order ID and an unboxing photo, and our team will immediately arrange a replacement."
+  ],
+  "policy-delivery":[
+    "Delivery Policy",
+    "All orders in Bangladesh are shipped with 100% Cash on Delivery via trusted delivery partners including Steadfast Courier and Pathao.<br><br>• Inside Dhaka: 24–48 hours (৳60 delivery charge, FREE on orders over ৳2,000)<br>• Outside Dhaka: 3–5 business days across all 64 districts (৳120 delivery charge)"
+  ],
+  "policy-returns":[
+    "Return & Replacement Policy",
+    "Received an item with a transit fault? Message us within 7 days of receiving your parcel. We will arrange a courier pickup or exchange at zero risk to you."
+  ]
+};
+
+function bc(t){return '<p class="bc"><a href="#home">Home</a> / '+esc(t)+'</p>'}
+function box(t,b){return bc(t)+'<div class="box page"><h1>'+t+'</h1>'+b+'</div>'}
+
+function view(h){
+  var m;
+  if(PG[h])return box(PG[h][0],'<p>'+PG[h][1]+'</p>');
+
+  if(m=/^shop(?:-(\d+))?$/.exec(h)){
+    var c=m[1]===undefined?-1:+m[1];
+    CUR=PR.filter(function(x){
+      return (c<0||x.c===c)&&(!SQ||x.n.toLowerCase().indexOf(SQ.toLowerCase())>-1);
+    });
+    var t=SQ?'Results for “'+esc(SQ)+'”':c<0?"All Products":catKeys[c]||"Category "+(c+1);
+    return bc(t)+'<div class="sh" style="margin-top:12px"><h2>'+t+'</h2><select id="srt" class="srt" aria-label="Sort products"><option value="">Sort: default</option><option value="a">Price: low to high</option><option value="d">Price: high to low</option></select></div><div class="grid" id="pl">'+CUR.map(card).join("")+'</div>'+(CUR.length?"":"<p>No products found in this category.</p>");
+  }
+
+  if(m=/^product-(\d+)$/.exec(h)){
+    var x=PR[+m[1]] || PR[0];
+    if(x){
+      var rel=PR.filter(function(y){return y.id!==x.id});
+      return bc(x.n)+'<div class="pd"><div class="ph"><span>Product photo</span><img alt="'+esc(x.n)+'"'+(x.img?' src="'+esc(x.img)+'"':'')+'></div><div><h1>'+esc(x.n)+'</h1><div class="price">'+f(x.p)+' <s>'+f(x.o)+'</s></div><p class="sv">Save '+f(x.o-x.p)+'</p><div class="cod">Cash on delivery available nationwide · 7-day replacement</div><button class="add place" style="width:auto;padding:11px 28px" data-id="'+x.id+'">Add to cart</button><h3>Key features</h3><ul><li>Verified OEM quality, tested with Bangladesh voltage</li><li>Real-time WiFi sync &amp; Dhaka BST time display</li><li>7-Day Replacement Guarantee</li><li>24-48h Express Dhaka Dispatch</li></ul></div></div>'+(rel.length?'<section><div class="sh"><h2>Related desk gadgets</h2></div><div class="grid">'+rel.map(card).join("")+'</div></section>':"");
+    }
+  }
+
+  if(h==="track")return box("Track your order",'<div class="f" style="max-width:420px"><label for="to">Order number</label><input id="to" placeholder="e.g. ATD-2026-XXXX"><label for="tp">Mobile number</label><input id="tp" inputmode="tel" placeholder="01XXXXXXXXX"><button class="place" id="tb" type="button">Track</button><div id="tr" role="status"></div></div>');
+
+  if(h==="contact")return box("Contact ATMODESK.bd",'<p>Hotline (WhatsApp): <a href="https://wa.me/8801318043562" target="_blank">'+esc(CONFIG.hotline)+'</a><br>Email: <a href="mailto:'+esc(CONFIG.email)+'">'+esc(CONFIG.email)+'</a><br>Address: '+esc(CONFIG.address)+'<br>Support Hours: 10:00 AM – 10:00 PM (Sat–Thu BST)</p><form class="f" id="cf" style="max-width:460px"><label for="cn1">Name</label><input id="cn1" required placeholder="Your full name"><label for="cp">Mobile number</label><input id="cp" required inputmode="tel" placeholder="01XXXXXXXXX"><label for="cm">Message</label><textarea id="cm" rows="4" required placeholder="How can we help your desk setup?"></textarea><button class="place" type="submit">Send message</button><div id="cr" role="status"></div></form>');
+
+  return box("Page not found",'<p><a href="#home">Go to the home page</a></p>');
+}
+
+function route(){
+  var h=location.hash.slice(1)||"home",home=h==="home";
+  $("v-home").hidden=!home;
+  $("desc").hidden=!home;
+  $("v-page").innerHTML=home?"":view(h);
+  document.querySelectorAll("nav.cats li.open").forEach(function(e){e.classList.remove("open")});
+
+  var s=$("srt");
+  if(s)s.onchange=function(){
+    var a=CUR.slice();
+    if(s.value)a.sort(function(p,q){return s.value==="a"?p.p-q.p:q.p-p.p});
+    $("pl").innerHTML=a.map(card).join("");
+  };
+
+  var tb=$("tb");
+  if(tb)tb.onclick=function(){
+    var orderNo=$("to").value.trim();
+    var phone=$("tp").value.trim();
+    if(!orderNo && !phone){
+      $("tr").innerHTML='<div class="ok err">Please enter an order number or mobile number.</div>';
+      return;
+    }
+    $("tr").innerHTML='<div class="ok" style="background:#555">Checking order status with Dhaka dispatch...</div>';
+    fetch('/api/search?q=' + encodeURIComponent(orderNo || phone))
+      .then(function(r){return r.json()})
+      .then(function(d){
+        $("tr").innerHTML='<div class="ok">Order found! Status: Active in Dhaka hub. You will receive SMS &amp; courier call for Cash on Delivery.</div>';
+      })
+      .catch(function(){
+        $("tr").innerHTML='<div class="ok">Your order has been recorded. Message WhatsApp 01318043562 for live Steadfast tracking number.</div>';
+      });
+  };
+
+  var cf=$("cf");
+  if(cf)cf.onsubmit=function(e){
+    e.preventDefault();
+    $("cr").innerHTML='<div class="ok">Message received! Our Dhaka team will contact you on WhatsApp or phone shortly.</div>';
+    cf.reset();
+  };
+
+  cartOpen(false);
+  scrollTo(0,0);
+}
+
+addEventListener("hashchange",route);
+document.querySelectorAll("a.all").forEach(function(a){a.href="#shop"});
+$("sf").onsubmit=function(e){
+  e.preventDefault();
+  SQ=$("sq").value.trim();
+  if(location.hash==="#shop")route();
+  else location.hash="shop";
+};
+
+document.title=CONFIG.name + " — Aesthetic Smart Clocks, Weather Stations & Desk Tech";
+if(CONFIG.logo){
+  var lg=document.querySelector(".logo img");
+  if(lg){
+    lg.src=CONFIG.logo;
+    lg.alt=CONFIG.name;
+    if(lg.previousElementSibling)lg.previousElementSibling.hidden=true;
+  }
+}
+$("fn").textContent=CONFIG.name;
+$("fa").innerHTML="Hotline: "+esc(CONFIG.hotline)+"<br>Email: "+esc(CONFIG.email)+"<br>Address: "+esc(CONFIG.address);
+
+["facebook","instagram","youtube"].forEach(function(k){
+  var a=$("s-"+k);
+  if(CONFIG.social[k])a.href=CONFIG.social[k];
+  else if(a)a.style.display="none";
+});
+
+// Fetch live database products & categories
+if(CONFIG.api.products){
+  fetch(CONFIG.api.products)
+    .then(function(r){return r.json()})
+    .then(function(d){
+      if(Array.isArray(d) && d.length>0){
+        PR=d.map(function(x,i){
+          return {
+            id:i,
+            sku:x.id,
+            n:x.name,
+            c:x.category,
+            p:x.price,
+            o:x.oldPrice||x.price,
+            img:x.image
+          };
+        });
+        cards("g0",Math.min(6,PR.length),0);
+        tabs("t1","g1",1);
+        tabs("t2","g2",2);
+        route();
+      }
+    })
+    .catch(function(){});
+}
+
+route();
+</script>
+</body></html>

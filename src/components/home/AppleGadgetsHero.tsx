@@ -262,15 +262,15 @@ export function AppleGadgetsHero() {
 
                 {/* Right Product Image with Specular Glow & Float Badge */}
                 <div className="md:col-span-5 flex justify-center relative">
-                  <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-3xl bg-white p-3 shadow-lg border border-black/[0.06] flex items-center justify-center group">
+                  <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-[28px] bg-white p-3.5 shadow-xl border border-black/[0.08] flex items-center justify-center group overflow-hidden">
                     <img
                       src={slide.image}
                       alt={slide.title}
-                      className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition duration-500"
+                      className="w-full h-full object-cover rounded-2xl group-hover:scale-108 transition duration-500"
                     />
 
                     {/* Floating Quality Tag */}
-                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full border border-black/[0.08] shadow-md flex items-center gap-1.5 text-[10px] font-bold text-[#1d1d1f] whitespace-nowrap">
+                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full border border-black/[0.08] shadow-md flex items-center gap-1.5 text-[10px] font-bold text-[#1d1d1f] whitespace-nowrap z-10">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                       <span>Pre-Tested in Dhaka</span>
                     </div>
@@ -348,20 +348,20 @@ export function AppleGadgetsHero() {
               </span>
             </div>
 
-            <div className="my-3 flex items-center justify-between gap-3">
-              <div>
+            <div className="my-3 flex items-center justify-between gap-4">
+              <div className="space-y-1">
                 <div className="text-[10px] font-bold text-[#0071e3] uppercase">Special Cash Price:</div>
-                <div className="text-xl font-black text-[#1d1d1f] tabular">{formatBDT(1499)}</div>
+                <div className="text-xl sm:text-2xl font-black text-[#1d1d1f] tabular">{formatBDT(1499)}</div>
                 <div className="text-[11px] text-[#86868b] line-through tabular">
                   Regular: {formatBDT(2299)}
                 </div>
               </div>
 
-              <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl bg-white border border-black/[0.06] overflow-hidden flex items-center justify-center p-1.5 shadow-xs">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-white border border-black/[0.08] overflow-hidden flex items-center justify-center p-2 shadow-sm flex-shrink-0 group-hover:shadow-md transition">
                 <img
                   src="/products/atmodesk-gravitycube-pro-1.jpg"
                   alt="GravityCube Pro"
-                  className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition duration-300"
+                  className="w-full h-full object-cover rounded-xl group-hover:scale-108 transition duration-300"
                 />
               </div>
             </div>
@@ -415,20 +415,20 @@ export function AppleGadgetsHero() {
               </span>
             </div>
 
-            <div className="my-3 flex items-center justify-between gap-3">
-              <div>
+            <div className="my-3 flex items-center justify-between gap-4">
+              <div className="space-y-1">
                 <div className="text-[10px] font-bold text-[#0071e3] uppercase">Special Cash Price:</div>
-                <div className="text-xl font-black text-[#1d1d1f] tabular">{formatBDT(1699)}</div>
+                <div className="text-xl sm:text-2xl font-black text-[#1d1d1f] tabular">{formatBDT(1699)}</div>
                 <div className="text-[11px] text-[#86868b] line-through tabular">
                   Regular: {formatBDT(2899)}
                 </div>
               </div>
 
-              <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl bg-white border border-black/[0.06] overflow-hidden flex items-center justify-center p-1.5 shadow-xs">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-white border border-black/[0.08] overflow-hidden flex items-center justify-center p-2 shadow-sm flex-shrink-0 group-hover:shadow-md transition">
                 <img
                   src="/products/atmodesk-pixelsmile-mood-1.jpg"
                   alt="PixelSmile Mood Clock"
-                  className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition duration-300"
+                  className="w-full h-full object-cover rounded-xl group-hover:scale-108 transition duration-300"
                 />
               </div>
             </div>

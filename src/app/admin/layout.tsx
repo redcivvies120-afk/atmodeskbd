@@ -9,6 +9,7 @@ import {
   Tag,
   ExternalLink,
   ShieldCheck,
+  Image as ImageIcon,
 } from 'lucide-react'
 import { isServerAdminAuthenticated } from '@/lib/admin-auth'
 import { AdminLoginGate } from '@/components/admin/AdminLoginGate'
@@ -30,6 +31,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { label: 'Orders Hub', href: '/admin/orders', icon: ShoppingBag },
     { label: 'Prepared Orders', href: '/admin/orders?status=PREPARED', icon: Package },
     { label: 'Products', href: '/admin/products', icon: Layers },
+    { label: 'Store Banners & Hero', href: '/admin/banners', icon: ImageIcon },
     { label: 'Customers', href: '/admin/customers', icon: Users },
     { label: 'Categories', href: '/admin/categories', icon: Layers },
   ]
