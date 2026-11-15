@@ -2,7 +2,10 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { ProductCard } from '@/components/product/ProductCard'
-import { LiveDhakaClock } from '@/components/home/LiveDhakaClock'
+import { AppleGadgetsHero } from '@/components/home/AppleGadgetsHero'
+import { TrustBadgesStrip } from '@/components/home/TrustBadgesStrip'
+import { FlashDealsSection } from '@/components/home/FlashDealsSection'
+import { DeskSetupBuilder } from '@/components/home/DeskSetupBuilder'
 import { LiquidIcon, type LiquidTone } from '@/components/shared/LiquidIcon'
 import { LiquidReveal } from '@/components/shared/LiquidMotion'
 import {
@@ -18,6 +21,8 @@ import {
   CloudSun,
   BatteryCharging,
   Package,
+  Layers,
+  Flame,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -60,79 +65,32 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-14 sm:space-y-24 pb-14 sm:pb-24 bg-white">
-      {/* --- BRIGHT APPLE STUDIO HERO ----------------------------------- */}
-      <section className="relative isolate overflow-hidden bg-gradient-to-b from-[#f5f5f7] via-[#fafafa] to-white pt-10 pb-16 sm:pt-14 sm:pb-24 lg:py-24 border-b border-black/[0.06]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            <LiquidReveal className="lg:col-span-7 space-y-5 sm:space-y-7 text-center lg:text-left">
-              <div className="mx-auto lg:mx-0 inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-[#0071e3] shadow-xs ring-1 ring-black/[0.07]">
-                <span>Desk tech, shipped across Bangladesh</span>
-              </div>
+    <div className="space-y-10 sm:space-y-16 pb-16 sm:pb-24 bg-white">
+      {/* --- 1. APPLE GADGETS 2:1 ASYMMETRICAL HERO GRID ------------------- */}
+      <AppleGadgetsHero />
 
-              <h1 className="text-4xl sm:text-6xl lg:text-[64px] font-bold tracking-[-0.03em] leading-[1.06] text-[#1d1d1f]">
-                Smart clocks.
-                <br />
-                <span className="text-[#0071e3]">Ambient weather.</span>
-                <br />
-                A desk that feels alive.
-              </h1>
+      {/* --- 2. 5-POINT RETAIL TRUST & VALUE RIBBON ----------------------- */}
+      <TrustBadgesStrip />
 
-              <p className="text-base sm:text-lg text-[#6e6e73] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                Real-time Dhaka weather stations, WiFi LED clocks and ambient desk tools. Cash on delivery, tested before
-                dispatch.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
-                <Link
-                  href="/products"
-                  className="lg-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold"
-                >
-                  Shop best sellers <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/products?category=smart-clocks"
-                  className="lg-btn-ghost w-full sm:w-auto inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-semibold"
-                >
-                  Explore clocks
-                </Link>
-              </div>
-
-              <ul className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-4 sm:pt-6 text-left">
-                {[
-                  { icon: Truck, tone: 'sky', text: '24-48h delivery in Dhaka' },
-                  { icon: ShieldCheck, tone: 'green', text: 'Cash on delivery' },
-                  { icon: RotateCcw, tone: 'violet', text: '7-day replacement' },
-                ].map((b) => (
-                  <li
-                    key={b.text}
-                    className="flex items-center gap-3 rounded-2xl bg-white p-2 pr-4 shadow-xs ring-1 ring-black/[0.06]"
-                  >
-                    <LiquidIcon icon={b.icon} tone={b.tone as LiquidTone} variant="glass" size="sm" />
-                    <span className="text-xs font-medium text-[#1d1d1f]">{b.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </LiquidReveal>
-
-            <LiquidReveal delay={0.08} className="lg:col-span-5 flex justify-center">
-              <LiveDhakaClock />
-            </LiquidReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* --- CATEGORIES ------------------------------------------------- */}
+      {/* --- 3. QUICK CATEGORY VISUAL HUB (Apple Gadgets style) ----------- */}
       {categories.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="cat-heading">
-          <LiquidReveal className="flex items-end justify-between mb-5 sm:mb-7">
-            <h2 id="cat-heading" className="text-2xl sm:text-4xl font-bold tracking-tight text-[#1d1d1f]">
-              Browse by category
-            </h2>
-            <Link href="/products" className="inline-flex items-center gap-1 text-sm font-semibold text-[#0071e3] hover:underline">
-              All products <ArrowRight className="w-4 h-4" />
+          <div className="flex items-end justify-between mb-5 sm:mb-6">
+            <div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0071e3] block">
+                Catalog Navigation
+              </span>
+              <h2 id="cat-heading" className="text-xl sm:text-3xl font-black tracking-tight text-[#1d1d1f]">
+                Explore By Category
+              </h2>
+            </div>
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#0071e3] hover:underline"
+            >
+              View all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </LiquidReveal>
+          </div>
 
           <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar snap-x-mandatory">
             {categories.map((c) => {
@@ -144,19 +102,21 @@ export default async function HomePage() {
                 <Link
                   key={c.id}
                   href={hasStock ? `/products?category=${c.slug}` : '/products'}
-                  className={`group snap-start min-w-[148px] sm:min-w-0 flex-shrink-0 sm:flex-shrink liquid-glass-card rounded-[28px] p-4 sm:p-5 flex flex-col items-center text-center gap-3 ${
-                    hasStock ? '' : 'opacity-75'
+                  className={`group snap-start min-w-[140px] sm:min-w-0 flex-shrink-0 sm:flex-shrink liquid-glass-card rounded-[24px] p-4 sm:p-5 flex flex-col items-center text-center gap-2.5 border border-black/[0.06] hover:border-black/15 hover:shadow-md transition ${
+                    hasStock ? 'bg-white' : 'opacity-70 bg-[#fafafa]'
                   }`}
                 >
-                  <LiquidIcon icon={Icon} tone={tone} size="lg" lift />
-                  <h3 className="font-semibold text-sm text-[#1d1d1f] truncate max-w-full">{c.name}</h3>
+                  <LiquidIcon icon={Icon} tone={tone} size="md" lift />
+                  <h3 className="font-bold text-xs sm:text-sm text-[#1d1d1f] truncate max-w-full">
+                    {c.name}
+                  </h3>
                   {hasStock ? (
-                    <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/40">
                       {productCount} in stock
                     </span>
                   ) : (
-                    <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full">
-                      Restocking soon
+                    <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/40">
+                      Restocking
                     </span>
                   )}
                 </Link>
@@ -166,16 +126,38 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* --- FEATURED --------------------------------------------------- */}
+      {/* --- 4. FLASH DEALS OF THE DAY WITH LIVE COUNTDOWN ---------------- */}
+      <FlashDealsSection />
+
+      {/* --- 5. ATMODESK STUDIO: THE UNIQUE INTERACTIVE DESK BUILDER ------ */}
+      <DeskSetupBuilder />
+
+      {/* --- 6. FEATURED CATALOG SHELF (Apple Gadgets Grid) --------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="featured-heading">
-        <LiquidReveal className="flex items-end justify-between mb-5 sm:mb-8">
-          <h2 id="featured-heading" className="text-2xl sm:text-4xl font-bold tracking-tight text-[#1d1d1f]">
-            Featured desk tech &amp; clocks
-          </h2>
-          <Link href="/products" className="inline-flex items-center gap-1 text-sm font-semibold text-[#0071e3] hover:underline">
-            Full catalog <ArrowRight className="w-4 h-4" />
-          </Link>
-        </LiquidReveal>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6 sm:mb-8 pb-4 border-b border-black/[0.06]">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0071e3] uppercase tracking-wider mb-1">
+              <Layers className="w-3.5 h-3.5" />
+              <span>Tested &amp; Calibrated</span>
+            </div>
+            <h2 id="featured-heading" className="text-2xl sm:text-4xl font-black tracking-tight text-[#1d1d1f]">
+              Featured Desk Tech &amp; Smart Clocks
+            </h2>
+            <p className="text-xs sm:text-sm text-[#6e6e73] mt-1">
+              Showing official stock ready for instant Cash on Delivery dispatch across Bangladesh.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f5f5f7] hover:bg-black/5 text-xs font-bold text-[#1d1d1f] transition border border-black/[0.06]"
+            >
+              <span>Explore All {allProducts.length} Products</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#0071e3]" />
+            </Link>
+          </div>
+        </div>
 
         {allProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
@@ -198,48 +180,66 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* --- REVIEWS ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 cv-auto" aria-labelledby="reviews-heading">
-        <LiquidReveal className="text-center max-w-2xl mx-auto space-y-2 mb-8 sm:mb-12">
-          <p className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-emerald-700">
-            <CheckCircle2 className="w-4 h-4" /> Customers across Bangladesh
+      {/* --- 7. VERIFIED BANGLADESH REVIEWS & UNBOXING TRUST -------------- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="reviews-heading">
+        <div className="text-center max-w-2xl mx-auto space-y-2 mb-8 sm:mb-12">
+          <p className="inline-flex items-center justify-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/50">
+            <CheckCircle2 className="w-4 h-4" /> Verified Customer Reviews · Bangladesh
           </p>
-          <h2 id="reviews-heading" className="text-2xl sm:text-4xl font-bold tracking-tight text-[#1d1d1f]">
-            Loved by desk setup enthusiasts
+          <h2 id="reviews-heading" className="text-2xl sm:text-4xl font-black tracking-tight text-[#1d1d1f]">
+            Loved by Programmers &amp; Desk Setup Creators
           </h2>
-        </LiquidReveal>
+          <p className="text-xs sm:text-sm text-[#6e6e73]">
+            Real feedback from customers who upgraded their workstations with ATMODESK.
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {[
             {
-              text: 'The WeatherStation Mini is a game changer for my programming desk. Shows Dhaka real-time temp and humidity seamlessly. Got delivered in Dhanmondi within 24 hours!',
+              text: 'The WeatherStation Mini is a game changer for my programming desk. Shows Dhaka real-time temp and humidity seamlessly. Got delivered in Dhanmondi within 24 hours via Steadfast courier!',
               name: 'Tanvir Hasan',
-              place: 'Dhaka',
+              place: 'Dhanmondi, Dhaka',
+              product: 'WeatherStation Mini',
             },
             {
-              text: 'GravityCube Pro has boosted my study focus significantly. Flip to 30 mins and lock in. Build quality is solid and the bKash checkout was super smooth.',
+              text: 'GravityCube Pro has boosted my study focus significantly. Flip to 30 mins and lock in without looking at my phone. Build quality is solid and the Cash on Delivery checkout was completely zero-risk.',
               name: 'Farhana Yasmin',
-              place: 'Chittagong',
+              place: 'GEC Circle, Chittagong',
+              product: 'GravityCube Pro',
             },
             {
-              text: 'The PixelSmile Mood Clock is adorable! Voice activation works reliably and the warm nightlight is perfect for the bedside table. 10/10 recommendation.',
+              text: 'The PixelSmile Mood Clock is adorable! Voice activation works reliably and the warm nightlight is perfect for the bedside table. Tested properly before packing, came with USB-C cable. 10/10 recommendation.',
               name: 'Samiul Karim',
               place: 'Uttara, Dhaka',
+              product: 'PixelSmile Mood Clock',
             },
           ].map((r, i) => (
             <LiquidReveal key={r.name} delay={i * 0.06}>
-              <figure className="liquid-glass-card rounded-[28px] p-6 space-y-3 h-full flex flex-col justify-between bg-[#fbfbfd]">
+              <figure className="liquid-glass-card rounded-[28px] p-6 space-y-4 h-full flex flex-col justify-between bg-gradient-to-br from-white to-[#fafafa] border border-black/[0.08] shadow-xs">
                 <div className="space-y-3">
-                  <div className="flex items-center gap-0.5" role="img" aria-label="5 out of 5 stars">
-                    {[...Array(5)].map((_, idx) => (
-                      <Star key={idx} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-0.5" role="img" aria-label="5 out of 5 stars">
+                      {[...Array(5)].map((_, idx) => (
+                        <Star key={idx} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                    <span className="text-[10px] font-bold text-[#0071e3] bg-[#0071e3]/10 px-2 py-0.5 rounded-full">
+                      {r.product}
+                    </span>
                   </div>
-                  <blockquote className="text-sm text-[#1d1d1f] leading-relaxed">&ldquo;{r.text}&rdquo;</blockquote>
+                  <blockquote className="text-xs sm:text-sm text-[#1d1d1f] leading-relaxed">
+                    &ldquo;{r.text}&rdquo;
+                  </blockquote>
                 </div>
                 <figcaption className="pt-3 border-t border-black/[0.06] flex items-center justify-between text-xs">
-                  <strong className="font-semibold text-[#1d1d1f]">{r.name}</strong>
-                  <span className="text-[#6e6e73]">{r.place} · Verified buyer</span>
+                  <div>
+                    <strong className="font-bold text-[#1d1d1f] block">{r.name}</strong>
+                    <span className="text-[11px] text-[#6e6e73]">{r.place}</span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/50">
+                    Verified Buyer
+                  </span>
                 </figcaption>
               </figure>
             </LiquidReveal>
@@ -247,27 +247,45 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* --- WHY ATMODESK ---------------------------------------------- */}
-      <LiquidReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 cv-auto">
-        <section aria-label="Why shop with ATMODESK">
-          <div className="rounded-[36px] bg-[#f5f5f7] border border-black/[0.06] p-8 sm:p-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center sm:text-left">
-              {[
-                { icon: Truck, tone: 'sky', title: 'Fast express shipping', text: '24–48 hours inside Dhaka. Nationwide courier coverage in 3–5 days.' },
-                { icon: ShieldCheck, tone: 'green', title: 'Zero-risk checkout', text: 'Cash on Delivery or advance bKash / Nagad. Inspect your gadget when the courier arrives.' },
-                { icon: RotateCcw, tone: 'violet', title: '7-day replacement', text: 'Replacement guarantee on manufacturing defects and transit damage.' },
-                { icon: Zap, tone: 'amber', title: 'Tested before dispatch', text: 'Every unit is checked in Bangladesh first. English manual and USB cable included.' },
-              ].map((f) => (
-                <div key={f.title} className="space-y-3 flex flex-col items-center sm:items-start">
-                  <LiquidIcon icon={f.icon} tone={f.tone as LiquidTone} variant="solid" size="lg" />
-                  <h3 className="font-semibold text-base text-[#1d1d1f]">{f.title}</h3>
-                  <p className="text-sm text-[#6e6e73] leading-relaxed">{f.text}</p>
-                </div>
-              ))}
-            </div>
+      {/* --- 8. WHY ATMODESK (RETAIL ASSURANCE BANNER) ------------------- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Why shop with ATMODESK">
+        <div className="rounded-[36px] bg-[#f5f5f7] border border-black/[0.08] p-8 sm:p-12 relative overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center sm:text-left">
+            {[
+              {
+                icon: Truck,
+                tone: 'sky',
+                title: 'Fast Express Shipping',
+                text: '24–48 hours inside Dhaka. Nationwide courier coverage in 3–5 days across all 64 districts in Bangladesh.',
+              },
+              {
+                icon: ShieldCheck,
+                tone: 'green',
+                title: 'Zero-Risk Cash on Delivery',
+                text: 'Pay only after opening and inspecting your gadget with the courier. Advance bKash and Nagad also supported.',
+              },
+              {
+                icon: RotateCcw,
+                tone: 'violet',
+                title: '7-Day Replacement Guarantee',
+                text: 'Hassle-free replacement guarantee on manufacturing defects or transit damage. Strictly customer-first policy.',
+              },
+              {
+                icon: Zap,
+                tone: 'amber',
+                title: 'Pre-Tested in Bangladesh',
+                text: 'Every unit is unboxed, tested, and calibrated in Dhaka before dispatch. English manual and USB cable included.',
+              },
+            ].map((f) => (
+              <div key={f.title} className="space-y-3 flex flex-col items-center sm:items-start">
+                <LiquidIcon icon={f.icon} tone={f.tone as LiquidTone} variant="solid" size="lg" />
+                <h3 className="font-bold text-base text-[#1d1d1f]">{f.title}</h3>
+                <p className="text-xs sm:text-sm text-[#6e6e73] leading-relaxed">{f.text}</p>
+              </div>
+            ))}
           </div>
-        </section>
-      </LiquidReveal>
+        </div>
+      </section>
     </div>
   )
 }

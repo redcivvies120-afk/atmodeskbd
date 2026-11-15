@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useCart } from '@/store/cart'
 import { useWishlist } from '@/store/wishlist'
 import { useMounted } from '@/lib/use-mounted'
+import { formatBDT } from '@/lib/utils'
 import { MORPH_SPRING, TACTILE_SPRING } from '@/components/shared/LiquidMotion'
 import {
   Search,
@@ -26,6 +27,8 @@ import {
   Cpu,
   BatteryCharging,
   Flame,
+  SlidersHorizontal,
+  Zap,
   type LucideIcon,
 } from 'lucide-react'
 import { LiquidIcon, type LiquidTone } from '@/components/shared/LiquidIcon'
@@ -43,6 +46,7 @@ export function Navbar() {
   const pathname = usePathname()
   const mounted = useMounted()
   const cartCount = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0))
+  const cartSubtotal = useCart((s) => s.subtotal())
   const toggleCart = useCart((s) => s.toggleCart)
   const wishlistCount = useWishlist((s) => s.items.length)
 
@@ -263,7 +267,9 @@ export function Navbar() {
                 aria-label={`Open cart${mounted && cartCount ? `, ${cartCount} items` : ''}`}
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span className="hidden sm:inline">Cart</span>
+                <span className="hidden sm:inline">
+                  {mounted && cartCount > 0 ? formatBDT(cartSubtotal) : 'Cart'}
+                </span>
                 {mounted && cartCount > 0 && (
                   <motion.span
                     key={cartCount}
@@ -282,7 +288,7 @@ export function Navbar() {
           {/* Desktop Category Navigation with Morphing Frosted Dropdown */}
           <nav
             aria-label="Categories"
-            className="hidden md:flex items-center gap-8 py-2 border-t border-black/[0.05] text-sm font-medium text-[#6e6e73]"
+            className="hidden md:flex items-center gap-6 py-2 border-t border-black/[0.05] text-sm font-medium text-[#6e6e73]"
           >
             <div
               ref={catDropdownRef}
@@ -352,15 +358,22 @@ export function Navbar() {
             <Link href="/products" className="hover:text-[#1d1d1f] transition">
               All products
             </Link>
+            <a
+              href="#desk-builder"
+              className="inline-flex items-center gap-1.5 font-bold text-xs text-[#0071e3] bg-[#0071e3]/10 hover:bg-[#0071e3]/15 px-3 py-1 rounded-full border border-[#0071e3]/20 transition"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span>Desk Setup Studio</span>
+            </a>
             <Link href="/track-order" className="hover:text-[#1d1d1f] transition">
               Track order
             </Link>
-            <Link
-              href="/products"
-              className="ml-auto flex items-center gap-1.5 font-semibold text-amber-600 hover:text-amber-700 transition"
+            <a
+              href="#flash-deals-heading"
+              className="ml-auto flex items-center gap-1.5 font-bold text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-1 rounded-full border border-rose-200/50 transition"
             >
-              <Flame className="w-4 h-4" /> Hot deals
-            </Link>
+              <Flame className="w-3.5 h-3.5 animate-pulse text-rose-500" /> Flash Deals
+            </a>
           </nav>
         </div>
 
