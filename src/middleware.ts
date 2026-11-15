@@ -52,6 +52,11 @@ export async function middleware(req: NextRequest) {
 
   // 3. Add security headers to all responses
   const response = NextResponse.next()
+  if (pathname === '/' || pathname === '/storefront.html') {
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+    response.headers.set('CDN-Cache-Control', 'no-store')
+    response.headers.set('Vercel-CDN-Cache-Control', 'no-store')
+  }
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('X-Frame-Options', 'DENY')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
