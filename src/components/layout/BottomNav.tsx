@@ -58,7 +58,7 @@ export function BottomNav() {
               )}
               <span className="relative">
                 <Icon
-                  className={`h-[22px] w-[22px] transition-colors ${active ? 'text-[#0077C8]' : ''}`}
+                  className={`h-[22px] w-[22px] transition-colors ${active ? 'text-[#0A9EE6]' : ''}`}
                   strokeWidth={active ? 2.4 : 2}
                 />
                 {mounted && item.badge > 0 && (
@@ -88,7 +88,7 @@ export function BottomNav() {
             {mounted && cartCount > 0 && (
               <span
                 key={cartCount}
-                className="absolute -right-2.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#0077C8] px-1 text-[9px] font-bold text-white animate-bounce-in"
+                className="absolute -right-2.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#0A9EE6] px-1 text-[9px] font-bold text-white animate-bounce-in"
               >
                 {cartCount}
               </span>

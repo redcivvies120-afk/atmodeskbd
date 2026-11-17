@@ -77,16 +77,16 @@ export default async function HomePage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="cat-heading">
           <div className="flex items-end justify-between mb-5 sm:mb-6">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0077C8] block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0A9EE6] block">
                 Catalog Navigation
               </span>
-              <h2 id="cat-heading" className="text-xl sm:text-3xl font-black tracking-tight text-[#0F2138]">
+              <h2 id="cat-heading" className="text-xl sm:text-3xl font-black tracking-tight text-[#083466]">
                 Explore By Category
               </h2>
             </div>
             <Link
               href="/products"
-              className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#0077C8] hover:underline"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#0A9EE6] hover:underline"
             >
               View all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -107,7 +107,7 @@ export default async function HomePage() {
                   }`}
                 >
                   <LiquidIcon icon={Icon} tone={tone} size="md" lift />
-                  <h3 className="font-bold text-xs sm:text-sm text-[#0F2138] truncate max-w-full">
+                  <h3 className="font-bold text-xs sm:text-sm text-[#083466] truncate max-w-full">
                     {c.name}
                   </h3>
                   {hasStock ? (
@@ -139,23 +139,23 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-labelledby="telemetry-heading">
         <div className="rounded-[36px] bg-gradient-to-r from-[#f0f4f9] via-white to-[#F3F7FB] border border-black/[0.08] p-6 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-xs">
           <div className="space-y-4 text-center lg:text-left max-w-xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#0077C8]/10 px-3 py-1 text-xs font-bold text-[#0077C8]">
-              <CloudSun className="w-4 h-4 text-[#0077C8]" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#0A9EE6]/10 px-3 py-1 text-xs font-bold text-[#0A9EE6]">
+              <CloudSun className="w-4 h-4 text-[#0A9EE6]" />
               <span>LIVE DHAKA ATMOSPHERIC TELEMETRY</span>
             </div>
-            <h2 id="telemetry-heading" className="text-2xl sm:text-3xl font-black text-[#0F2138] tracking-tight">
+            <h2 id="telemetry-heading" className="text-2xl sm:text-3xl font-black text-[#083466] tracking-tight">
               Real-Time Dhaka Weather &amp; Time Sync
             </h2>
             <p className="text-xs sm:text-sm text-[#5B6B80] leading-relaxed">
               Every ATMODESK WeatherStation connects directly to Dhaka Open-Meteo telemetry over 2.4GHz WiFi,
               delivering accurate BST time (UTC+6), ambient humidity, and barometric pressure right on your desk.
             </p>
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-1 text-xs text-[#0F2138] font-semibold">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-1 text-xs text-[#083466] font-semibold">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Auto WiFi BST (UTC+6)
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#0077C8]" /> Live Pressure (hPa)
+                <CheckCircle2 className="w-4 h-4 text-[#0A9EE6]" /> Live Pressure (hPa)
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-amber-600" /> Temperature &amp; Humidity
@@ -178,7 +178,7 @@ export default async function HomePage() {
           <p className="inline-flex items-center justify-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/50">
             <CheckCircle2 className="w-4 h-4" /> Verified Customer Reviews · Bangladesh
           </p>
-          <h2 id="reviews-heading" className="text-2xl sm:text-4xl font-black tracking-tight text-[#0F2138]">
+          <h2 id="reviews-heading" className="text-2xl sm:text-4xl font-black tracking-tight text-[#083466]">
             Loved by Programmers &amp; Desk Setup Creators
           </h2>
           <p className="text-xs sm:text-sm text-[#5B6B80]">
@@ -216,17 +216,17 @@ export default async function HomePage() {
                         <Star key={idx} className="w-4 h-4 fill-amber-400 text-amber-400" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-bold text-[#0077C8] bg-[#0077C8]/10 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold text-[#0A9EE6] bg-[#0A9EE6]/10 px-2 py-0.5 rounded-full">
                       {r.product}
                     </span>
                   </div>
-                  <blockquote className="text-xs sm:text-sm text-[#0F2138] leading-relaxed">
+                  <blockquote className="text-xs sm:text-sm text-[#083466] leading-relaxed">
                     &ldquo;{r.text}&rdquo;
                   </blockquote>
                 </div>
                 <figcaption className="pt-3 border-t border-black/[0.06] flex items-center justify-between text-xs">
                   <div>
-                    <strong className="font-bold text-[#0F2138] block">{r.name}</strong>
+                    <strong className="font-bold text-[#083466] block">{r.name}</strong>
                     <span className="text-[11px] text-[#5B6B80]">{r.place}</span>
                   </div>
                   <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/50">
@@ -271,7 +271,7 @@ export default async function HomePage() {
             ].map((f) => (
               <div key={f.title} className="space-y-3 flex flex-col items-center sm:items-start">
                 <LiquidIcon icon={f.icon} tone={f.tone as LiquidTone} variant="solid" size="lg" />
-                <h3 className="font-bold text-base text-[#0F2138]">{f.title}</h3>
+                <h3 className="font-bold text-base text-[#083466]">{f.title}</h3>
                 <p className="text-xs sm:text-sm text-[#5B6B80] leading-relaxed">{f.text}</p>
               </div>
             ))}

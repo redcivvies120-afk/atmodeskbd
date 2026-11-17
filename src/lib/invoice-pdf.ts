@@ -33,10 +33,10 @@ export interface InvoiceData {
 }
 
 const C = {
-  navy: '#003060',
-  brand: '#0077C8',
-  sky: '#00A0F0',
-  ink: '#0F2138',
+  navy: '#083466',
+  brand: '#0A9EE6',
+  sky: '#0EADF0',
+  ink: '#083466',
   mute: '#5B6B80',
   line: '#E3E9F0',
   zebra: '#F5F8FC',

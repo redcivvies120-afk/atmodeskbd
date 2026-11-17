@@ -232,7 +232,7 @@ export function AccountClient() {
   if (loading) {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4">
-        <Loader2 className="w-8 h-8 text-[#0077C8] animate-spin mx-auto" />
+        <Loader2 className="w-8 h-8 text-[#0A9EE6] animate-spin mx-auto" />
         <p className="text-xs text-[#5B6B80]">Loading your customer profile...</p>
       </div>
     )
@@ -246,19 +246,19 @@ export function AccountClient() {
         {/* Profile Card */}
         <div className="liquid-glass-card bg-white border border-black/[0.08] rounded-[32px] p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-[#0077C8] text-white flex items-center justify-center text-xl font-black shadow-md">
+            <div className="w-16 h-16 rounded-2xl bg-[#0A9EE6] text-white flex items-center justify-center text-xl font-black shadow-md">
               {currentUser.name ? currentUser.name.slice(0, 2).toUpperCase() : 'AD'}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black text-[#0F2138] tracking-tight">{currentUser.name}</h1>
+                <h1 className="text-2xl font-black text-[#083466] tracking-tight">{currentUser.name}</h1>
                 <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 font-bold text-[10px] rounded-full uppercase tracking-wider border border-emerald-200/50">
                   Registered Customer
                 </span>
               </div>
               <p className="text-xs text-[#5B6B80] mt-1 flex flex-wrap items-center gap-4">
-                {currentUser.phone && <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5 text-[#0077C8]" /> {currentUser.phone}</span>}
-                {currentUser.email && <span className="flex items-center gap-1"><Mail className="w-3.5 h-3.5 text-[#0077C8]" /> {currentUser.email}</span>}
+                {currentUser.phone && <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5 text-[#0A9EE6]" /> {currentUser.phone}</span>}
+                {currentUser.email && <span className="flex items-center gap-1"><Mail className="w-3.5 h-3.5 text-[#0A9EE6]" /> {currentUser.email}</span>}
               </p>
             </div>
           </div>
@@ -266,7 +266,7 @@ export function AccountClient() {
           <div className="flex items-center gap-2.5 w-full sm:w-auto">
             <Link
               href="/track-order"
-              className="flex-1 sm:flex-none px-4 py-2.5 rounded-full bg-[#F3F7FB] hover:bg-black/5 text-[#0F2138] text-xs font-bold transition flex items-center justify-center gap-1.5 border border-black/[0.06]"
+              className="flex-1 sm:flex-none px-4 py-2.5 rounded-full bg-[#F3F7FB] hover:bg-black/5 text-[#083466] text-xs font-bold transition flex items-center justify-center gap-1.5 border border-black/[0.06]"
             >
               <Package className="w-3.5 h-3.5" /> Track Deliveries
             </Link>
@@ -283,7 +283,7 @@ export function AccountClient() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="liquid-glass-card bg-white border border-black/[0.08] rounded-[24px] p-5 shadow-xs">
             <span className="text-[11px] font-bold text-[#86868b] uppercase tracking-wider block">Total Orders</span>
-            <div className="text-2xl font-black text-[#0F2138] mt-1 tabular">{orders.length}</div>
+            <div className="text-2xl font-black text-[#083466] mt-1 tabular">{orders.length}</div>
             <p className="text-[11px] text-[#86868b] mt-1">Purchased with Cash on Delivery</p>
           </div>
 
@@ -297,7 +297,7 @@ export function AccountClient() {
 
           <div className="liquid-glass-card bg-white border border-black/[0.08] rounded-[24px] p-5 shadow-xs">
             <span className="text-[11px] font-bold text-[#86868b] uppercase tracking-wider block">Warranty Protection</span>
-            <div className="text-sm font-bold text-[#0077C8] mt-1 flex items-center gap-1">
+            <div className="text-sm font-bold text-[#0A9EE6] mt-1 flex items-center gap-1">
               <ShieldCheck className="w-4 h-4" /> 7-Day Replacement
             </div>
             <p className="text-[11px] text-[#86868b] mt-1">Hassle-free coverage on all gadgets</p>
@@ -308,12 +308,12 @@ export function AccountClient() {
         <div className="liquid-glass-card bg-white border border-black/[0.08] rounded-[32px] p-6 sm:p-8 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b border-black/[0.06] pb-4">
             <div>
-              <h2 className="text-lg font-black text-[#0F2138] tracking-tight">Your Order History</h2>
+              <h2 className="text-lg font-black text-[#083466] tracking-tight">Your Order History</h2>
               <p className="text-xs text-[#5B6B80] mt-0.5">All desk gadget purchases linked to your customer profile</p>
             </div>
             <Link
               href="/products"
-              className="text-xs font-bold text-[#0077C8] hover:underline"
+              className="text-xs font-bold text-[#0A9EE6] hover:underline"
             >
               Browse Catalog →
             </Link>
@@ -322,13 +322,13 @@ export function AccountClient() {
           {orders.length === 0 ? (
             <div className="text-center py-12 space-y-3">
               <Package className="w-10 h-10 text-[#86868b] mx-auto opacity-50" />
-              <h3 className="text-sm font-bold text-[#0F2138]">No orders yet</h3>
+              <h3 className="text-sm font-bold text-[#083466]">No orders yet</h3>
               <p className="text-xs text-[#5B6B80] max-w-xs mx-auto">
                 Ready to elevate your desk setup? Check out our aesthetic smart clocks.
               </p>
               <Link
                 href="/products"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#0077C8] text-white text-xs font-bold shadow-xs hover:bg-[#0066AD] transition"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#0A9EE6] text-white text-xs font-bold shadow-xs hover:bg-[#0888CC] transition"
               >
                 Start Shopping <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -339,7 +339,7 @@ export function AccountClient() {
                 <div key={o.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-sm text-[#0F2138]">{o.orderNumber}</span>
+                      <span className="font-mono font-bold text-sm text-[#083466]">{o.orderNumber}</span>
                       <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${getOrderStatusColor(o.status)}`}>
                         {getOrderStatusLabel(o.status)}
                       </span>
@@ -352,17 +352,17 @@ export function AccountClient() {
                   <div className="flex items-center justify-between sm:justify-end gap-2">
                     <div className="text-right mr-3">
                       <span className="text-[10px] text-[#86868b] block uppercase">Total</span>
-                      <strong className="text-base font-black text-[#0F2138] tabular">{formatBDT(o.total)}</strong>
+                      <strong className="text-base font-black text-[#083466] tabular">{formatBDT(o.total)}</strong>
                     </div>
                     <Link
                       href={`/track-order?orderNumber=${o.orderNumber}&phone=${encodeURIComponent(currentUser.phone || '')}`}
-                      className="px-3.5 py-1.5 bg-[#0077C8]/10 hover:bg-[#0077C8]/20 text-[#0077C8] text-xs font-bold rounded-full transition"
+                      className="px-3.5 py-1.5 bg-[#0A9EE6]/10 hover:bg-[#0A9EE6]/20 text-[#0A9EE6] text-xs font-bold rounded-full transition"
                     >
                       Track &amp; Manage
                     </Link>
                     <Link
                       href={`/order-confirmed/${o.orderNumber}`}
-                      className="px-3.5 py-1.5 bg-[#F3F7FB] hover:bg-black/5 text-[#0F2138] text-xs font-semibold rounded-full transition border border-black/[0.06]"
+                      className="px-3.5 py-1.5 bg-[#F3F7FB] hover:bg-black/5 text-[#083466] text-xs font-semibold rounded-full transition border border-black/[0.06]"
                     >
                       Receipt
                     </Link>
@@ -381,10 +381,10 @@ export function AccountClient() {
     <div className="max-w-md mx-auto px-4 py-12 sm:py-16 space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="w-16 h-16 rounded-3xl bg-[#0077C8]/10 text-[#0077C8] flex items-center justify-center mx-auto text-2xl shadow-xs">
+        <div className="w-16 h-16 rounded-3xl bg-[#0A9EE6]/10 text-[#0A9EE6] flex items-center justify-center mx-auto text-2xl shadow-xs">
           <User className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#0F2138]">
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#083466]">
           Customer Portal
         </h1>
         <p className="text-xs text-[#5B6B80]">
@@ -398,8 +398,8 @@ export function AccountClient() {
           onClick={() => { setActiveTab('login'); setErrorMsg(null); setSuccessMsg(null) }}
           className={`flex-1 py-2 text-xs font-bold rounded-full transition flex items-center justify-center gap-1.5 ${
             activeTab === 'login'
-              ? 'bg-[#0077C8] text-white shadow-xs'
-              : 'text-[#5B6B80] hover:text-[#0F2138]'
+              ? 'bg-[#0A9EE6] text-white shadow-xs'
+              : 'text-[#5B6B80] hover:text-[#083466]'
           }`}
         >
           <LogIn className="w-3.5 h-3.5" /> Sign In
@@ -408,8 +408,8 @@ export function AccountClient() {
           onClick={() => { setActiveTab('register'); setErrorMsg(null); setSuccessMsg(null) }}
           className={`flex-1 py-2 text-xs font-bold rounded-full transition flex items-center justify-center gap-1.5 ${
             activeTab === 'register'
-              ? 'bg-[#0077C8] text-white shadow-xs'
-              : 'text-[#5B6B80] hover:text-[#0F2138]'
+              ? 'bg-[#0A9EE6] text-white shadow-xs'
+              : 'text-[#5B6B80] hover:text-[#083466]'
           }`}
         >
           <UserPlus className="w-3.5 h-3.5" /> Register
@@ -418,8 +418,8 @@ export function AccountClient() {
           onClick={() => { setActiveTab('track'); setErrorMsg(null); setSuccessMsg(null) }}
           className={`flex-1 py-2 text-xs font-bold rounded-full transition flex items-center justify-center gap-1.5 ${
             activeTab === 'track'
-              ? 'bg-[#0077C8] text-white shadow-xs'
-              : 'text-[#5B6B80] hover:text-[#0F2138]'
+              ? 'bg-[#0A9EE6] text-white shadow-xs'
+              : 'text-[#5B6B80] hover:text-[#083466]'
           }`}
         >
           <Search className="w-3.5 h-3.5" /> Track Order
@@ -444,7 +444,7 @@ export function AccountClient() {
         {activeTab === 'login' && (
           <form onSubmit={handleLoginSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                 Phone Number or Email
               </label>
               <div className="relative">
@@ -453,7 +453,7 @@ export function AccountClient() {
                   placeholder="01318043562 or email@example.com"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#0F2138] transition"
+                  className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#083466] transition"
                   required
                 />
                 <User className="w-4 h-4 text-[#86868b] absolute right-3.5 top-1/2 -translate-y-1/2" />
@@ -462,13 +462,13 @@ export function AccountClient() {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider">
                   Password
                 </label>
                 <button
                   type="button"
                   onClick={() => { setActiveTab('forgot'); setErrorMsg(null); setSuccessMsg(null) }}
-                  className="text-xs text-[#0077C8] hover:underline font-semibold"
+                  className="text-xs text-[#0A9EE6] hover:underline font-semibold"
                 >
                   Forgot password?
                 </button>
@@ -479,7 +479,7 @@ export function AccountClient() {
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#0F2138] transition"
+                  className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#083466] transition"
                   required
                 />
                 <Lock className="w-4 h-4 text-[#86868b] absolute right-3.5 top-1/2 -translate-y-1/2" />
@@ -489,7 +489,7 @@ export function AccountClient() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 bg-[#0077C8] hover:bg-[#0066AD] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 disabled:opacity-50 shadow-md shadow-[#0077C8]/20"
+              className="w-full py-3.5 bg-[#0A9EE6] hover:bg-[#0888CC] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 disabled:opacity-50 shadow-md shadow-[#0A9EE6]/20"
             >
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Sign In <ArrowRight className="w-4 h-4" /></>}
             </button>
@@ -498,7 +498,7 @@ export function AccountClient() {
               <button
                 type="button"
                 onClick={() => setActiveTab('register')}
-                className="text-xs text-[#0077C8] hover:underline font-semibold"
+                className="text-xs text-[#0A9EE6] hover:underline font-semibold"
               >
                 Don&apos;t have an account? Register now →
               </button>
@@ -510,7 +510,7 @@ export function AccountClient() {
         {activeTab === 'register' && (
           <form onSubmit={handleRegisterSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                 Your Full Name
               </label>
               <input
@@ -518,13 +518,13 @@ export function AccountClient() {
                 placeholder="e.g. Tanvir Hasan"
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
-                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#0F2138] transition"
+                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#083466] transition"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                 Phone Number (Bangladesh)
               </label>
               <input
@@ -532,13 +532,13 @@ export function AccountClient() {
                 placeholder="01318043562"
                 value={regPhone}
                 onChange={(e) => setRegPhone(e.target.value)}
-                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#0F2138] transition"
+                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#083466] transition"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                 Email Address <span className="text-[#86868b] font-normal lowercase">(optional)</span>
               </label>
               <input
@@ -546,12 +546,12 @@ export function AccountClient() {
                 placeholder="you@example.com"
                 value={regEmail}
                 onChange={(e) => setRegEmail(e.target.value)}
-                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#0F2138] transition"
+                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#083466] transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                 Create Password
               </label>
               <input
@@ -559,7 +559,7 @@ export function AccountClient() {
                 placeholder="Minimum 6 characters"
                 value={regPassword}
                 onChange={(e) => setRegPassword(e.target.value)}
-                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#0F2138] transition"
+                className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] text-[#083466] transition"
                 required
               />
             </div>
@@ -567,7 +567,7 @@ export function AccountClient() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 bg-[#0077C8] hover:bg-[#0066AD] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 shadow-md shadow-[#0077C8]/20 disabled:opacity-50"
+              className="w-full py-3.5 bg-[#0A9EE6] hover:bg-[#0888CC] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 shadow-md shadow-[#0A9EE6]/20 disabled:opacity-50"
             >
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Create Customer Account <ArrowRight className="w-4 h-4" /></>}
             </button>
@@ -576,7 +576,7 @@ export function AccountClient() {
               <button
                 type="button"
                 onClick={() => setActiveTab('login')}
-                className="text-xs text-[#0077C8] hover:underline font-semibold"
+                className="text-xs text-[#0A9EE6] hover:underline font-semibold"
               >
                 Already have an account? Sign in →
               </button>
@@ -588,7 +588,7 @@ export function AccountClient() {
         {activeTab === 'track' && (
           <form onSubmit={handleTrackSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                 Phone Number or Order Number
               </label>
               <div className="relative">
@@ -597,7 +597,7 @@ export function AccountClient() {
                   placeholder="e.g. 01318043562 or ATD-2026-XXXX"
                   value={trackPhone}
                   onChange={(e) => setTrackPhone(e.target.value)}
-                  className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#0F2138] transition"
+                  className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#083466] transition"
                   required
                 />
                 <Package className="w-4 h-4 text-[#86868b] absolute right-3.5 top-1/2 -translate-y-1/2" />
@@ -609,7 +609,7 @@ export function AccountClient() {
 
             <button
               type="submit"
-              className="w-full py-3.5 bg-[#0077C8] hover:bg-[#0066AD] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 shadow-md shadow-[#0077C8]/20"
+              className="w-full py-3.5 bg-[#0A9EE6] hover:bg-[#0888CC] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 shadow-md shadow-[#0A9EE6]/20"
             >
               Track My Parcel <ArrowRight className="w-4 h-4" />
             </button>
@@ -620,7 +620,7 @@ export function AccountClient() {
         {activeTab === 'forgot' && (
           <div className="space-y-5 animate-fade-in">
             <div className="text-center space-y-1">
-              <h2 className="text-base font-bold text-[#0F2138]">
+              <h2 className="text-base font-bold text-[#083466]">
                 {forgotStep === 1 ? 'Find Your Account' : 'Verify and Set New Password'}
               </h2>
               <p className="text-xs text-[#5B6B80]">
@@ -633,7 +633,7 @@ export function AccountClient() {
             {forgotStep === 1 ? (
               <form onSubmit={handleForgotCheck} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                     Phone Number or Email
                   </label>
                   <div className="relative">
@@ -642,7 +642,7 @@ export function AccountClient() {
                       placeholder="e.g. 01318043562 or email@example.com"
                       value={forgotIdentifier}
                       onChange={(e) => setForgotIdentifier(e.target.value)}
-                      className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#0F2138] transition"
+                      className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] font-medium text-[#083466] transition"
                       required
                     />
                     <Mail className="w-4 h-4 text-[#86868b] absolute right-3.5 top-1/2 -translate-y-1/2" />
@@ -652,7 +652,7 @@ export function AccountClient() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-3.5 bg-[#0077C8] hover:bg-[#0066AD] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 shadow-md shadow-[#0077C8]/20 disabled:opacity-50"
+                  className="w-full py-3.5 bg-[#0A9EE6] hover:bg-[#0888CC] text-white font-bold text-xs rounded-full transition flex items-center justify-center gap-2 shadow-md shadow-[#0A9EE6]/20 disabled:opacity-50"
                 >
                   {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Verify Account &amp; Continue <ArrowRight className="w-4 h-4" /></>}
                 </button>
@@ -661,7 +661,7 @@ export function AccountClient() {
                   <button
                     type="button"
                     onClick={() => { setActiveTab('login'); setErrorMsg(null); setSuccessMsg(null) }}
-                    className="text-xs text-[#5B6B80] hover:text-[#0F2138] font-semibold"
+                    className="text-xs text-[#5B6B80] hover:text-[#083466] font-semibold"
                   >
                     ← Back to Sign In
                   </button>
@@ -669,13 +669,13 @@ export function AccountClient() {
               </form>
             ) : (
               <form onSubmit={handleForgotReset} className="space-y-4">
-                <div className="p-3 bg-sky-50 border border-sky-100 rounded-2xl text-xs text-[#0077C8] font-medium flex items-center gap-2">
+                <div className="p-3 bg-sky-50 border border-sky-100 rounded-2xl text-xs text-[#0A9EE6] font-medium flex items-center gap-2">
                   <span>👤</span>
                   <span>Resetting password for: <strong>{forgotIdentifier}</strong></span>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                     Verification Code *
                   </label>
                   <input
@@ -686,7 +686,7 @@ export function AccountClient() {
                     placeholder="6-digit code"
                     value={forgotCode}
                     onChange={(e) => setForgotCode(e.target.value.replace(/\D/g, ''))}
-                    className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] font-mono tracking-widest text-[#0F2138] transition"
+                    className="w-full px-4 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] font-mono tracking-widest text-[#083466] transition"
                     required
                   />
 
@@ -714,7 +714,7 @@ export function AccountClient() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                     New Password *
                   </label>
                   <div className="relative">
@@ -723,7 +723,7 @@ export function AccountClient() {
                       placeholder="At least 8 characters"
                       value={forgotNewPassword}
                       onChange={(e) => setForgotNewPassword(e.target.value)}
-                      className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] font-medium text-[#0F2138] transition"
+                      className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] font-medium text-[#083466] transition"
                       required
                     />
                     <Lock className="w-4 h-4 text-[#86868b] absolute right-3.5 top-1/2 -translate-y-1/2" />
@@ -731,7 +731,7 @@ export function AccountClient() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#0F2138] uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-[#083466] uppercase tracking-wider mb-1.5">
                     Confirm New Password *
                   </label>
                   <div className="relative">
@@ -740,7 +740,7 @@ export function AccountClient() {
                       placeholder="Retype your new password"
                       value={forgotConfirmPassword}
                       onChange={(e) => setForgotConfirmPassword(e.target.value)}
-                      className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0077C8] font-medium text-[#0F2138] transition"
+                      className="w-full pl-4 pr-10 py-3 text-sm bg-[#F3F7FB] border border-black/[0.08] rounded-full focus:bg-white focus:outline-none focus:border-[#0A9EE6] font-medium text-[#083466] transition"
                       required
                     />
                     <Lock className="w-4 h-4 text-[#86868b] absolute right-3.5 top-1/2 -translate-y-1/2" />
@@ -759,7 +759,7 @@ export function AccountClient() {
                   <button
                     type="button"
                     onClick={() => { setForgotStep(1); setErrorMsg(null); setSuccessMsg(null) }}
-                    className="text-xs text-[#5B6B80] hover:text-[#0F2138] font-semibold"
+                    className="text-xs text-[#5B6B80] hover:text-[#083466] font-semibold"
                   >
                     ← Back to Step 1
                   </button>

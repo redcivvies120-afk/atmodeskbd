@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-[#003060] text-white flex flex-col justify-between flex-shrink-0 md:sticky md:top-0 md:h-screen md:overflow-y-auto">
+      <aside className="w-full md:w-64 bg-[#083466] text-white flex flex-col justify-between flex-shrink-0 md:sticky md:top-0 md:h-screen md:overflow-y-auto">
         <div>
           <div className="p-5 border-b border-white/10">
             <Link href="/admin/dashboard" className="flex items-center gap-3">

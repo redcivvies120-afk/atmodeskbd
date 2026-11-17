@@ -128,12 +128,12 @@ export function Navbar() {
   }
 
   const iconBtn =
-    'relative hidden sm:flex items-center justify-center h-10 min-w-10 px-2.5 rounded-full text-[#0F2138] hover:text-[#0077C8] hover:bg-black/[0.04] transition'
+    'relative hidden sm:flex items-center justify-center h-10 min-w-10 px-2.5 rounded-full text-[#083466] hover:text-[#0A9EE6] hover:bg-black/[0.04] transition'
 
   return (
     <>
       {/* Scrolling Marquee Announcement Strip */}
-      <div className="bg-[#0F2138] text-white text-xs py-2 px-4 overflow-hidden relative">
+      <div className="bg-[#083466] text-white text-xs py-2 px-4 overflow-hidden relative">
         <div className="animate-marquee whitespace-nowrap inline-block">
           {[
             '🚀 Free delivery inside Dhaka over ৳2,000',
@@ -174,7 +174,7 @@ export function Navbar() {
                 whileTap={{ scale: 0.92 }}
                 transition={TACTILE_SPRING}
                 onClick={() => setMobileMenuOpen((v) => !v)}
-                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-[#0F2138] hover:bg-black/5 transition"
+                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-[#083466] hover:bg-black/5 transition"
                 aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
@@ -192,8 +192,8 @@ export function Navbar() {
                   className="h-7 sm:h-9 md:h-10 w-auto object-contain rounded-lg"
                 />
                 <span className="flex flex-col leading-none">
-                  <span className="font-bold text-base sm:text-xl tracking-tight text-[#0F2138] group-hover:text-[#0077C8] transition">
-                    ATMODESK<span className="text-[#0077C8]">.bd</span>
+                  <span className="font-bold text-base sm:text-xl tracking-tight text-[#083466] group-hover:text-[#0A9EE6] transition">
+                    ATMODESK<span className="text-[#0A9EE6]">.bd</span>
                   </span>
                   <span className="mt-0.5 hidden text-[10px] tracking-wide text-[#5B6B80] sm:block">
                     Smart desk tech
@@ -214,11 +214,11 @@ export function Navbar() {
                   onFocus={() => searchSuggestions.length > 0 && setShowSuggestions(true)}
                   placeholder="Search smart clocks, weather stations, desk gadgets"
                   autoComplete="off"
-                  className="w-full h-10 pl-11 pr-32 rounded-full text-sm text-[#0F2138] placeholder:text-[#86868b] outline-none transition-all duration-200 bg-[#F3F7FB] border border-black/[0.06] hover:bg-[#efeff2] focus:bg-white focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)]"
+                  className="w-full h-10 pl-11 pr-32 rounded-full text-sm text-[#083466] placeholder:text-[#86868b] outline-none transition-all duration-200 bg-[#F3F7FB] border border-black/[0.06] hover:bg-[#efeff2] focus:bg-white focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)]"
                 />
                 <Search className="w-4 h-4 text-[#86868b] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                  <Link href="/search" className="flex h-8 w-8 items-center justify-center rounded-full text-[#5B6B80] hover:text-[#0077C8] hover:bg-black/5 transition" title="Search by image" aria-label="Search by image">
+                  <Link href="/search" className="flex h-8 w-8 items-center justify-center rounded-full text-[#5B6B80] hover:text-[#0A9EE6] hover:bg-black/5 transition" title="Search by image" aria-label="Search by image">
                     <Camera className="w-4 h-4" />
                   </Link>
                   <motion.button whileTap={{ scale: 0.96 }} transition={TACTILE_SPRING} type="submit" className="lg-btn-primary h-8 px-4 rounded-full text-xs font-semibold">
@@ -241,17 +241,17 @@ export function Navbar() {
                         key={s.id}
                         href={`/product/${s.slug}`}
                         onClick={() => { setShowSuggestions(false); setSearchQuery('') }}
-                        className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-[#0077C8]/[0.06] transition group"
+                        className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-[#0A9EE6]/[0.06] transition group"
                       >
-                        <span className="flex items-center gap-2 text-[#0F2138] font-medium truncate">
+                        <span className="flex items-center gap-2 text-[#083466] font-medium truncate">
                           <Search className="w-3.5 h-3.5 text-[#86868b] flex-shrink-0" />
                           {s.name}
                         </span>
-                        <span className="text-xs font-bold text-[#0077C8] flex-shrink-0">৳{s.price?.toLocaleString()}</span>
+                        <span className="text-xs font-bold text-[#0A9EE6] flex-shrink-0">৳{s.price?.toLocaleString()}</span>
                       </Link>
                     ))}
                     <div className="border-t border-black/[0.05] px-4 py-2">
-                      <button onClick={() => { setShowSuggestions(false); router.push(`/search?q=${encodeURIComponent(searchQuery)}`) }} className="text-xs text-[#0077C8] font-semibold hover:underline">
+                      <button onClick={() => { setShowSuggestions(false); router.push(`/search?q=${encodeURIComponent(searchQuery)}`) }} className="text-xs text-[#0A9EE6] font-semibold hover:underline">
                         See all results for &quot;{searchQuery}&quot; →
                       </button>
                     </div>
@@ -264,7 +264,7 @@ export function Navbar() {
             <div className="flex items-center gap-0.5 sm:gap-1.5">
               <Link
                 href="/search"
-                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-[#0F2138] hover:bg-black/5 active:scale-95 transition"
+                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-[#083466] hover:bg-black/5 active:scale-95 transition"
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" />
@@ -313,7 +313,7 @@ export function Navbar() {
                     initial={{ scale: 0.4 }}
                     animate={{ scale: 1 }}
                     transition={TACTILE_SPRING}
-                    className="grid min-w-[20px] h-5 place-items-center rounded-full bg-white px-1.5 text-[11px] font-bold text-[#0077C8]"
+                    className="grid min-w-[20px] h-5 place-items-center rounded-full bg-white px-1.5 text-[11px] font-bold text-[#0A9EE6]"
                   >
                     {cartCount}
                   </motion.span>
@@ -338,12 +338,12 @@ export function Navbar() {
                 aria-haspopup="true"
                 aria-expanded={categoryMenuOpen}
                 onClick={() => setCategoryMenuOpen((v) => !v)}
-                className="flex items-center gap-1.5 py-1 font-semibold text-[#0F2138] hover:text-[#0077C8] transition"
+                className="flex items-center gap-1.5 py-1 font-semibold text-[#083466] hover:text-[#0A9EE6] transition"
               >
                 All categories
                 <ChevronDown
                   className={`w-4 h-4 transition-transform duration-300 ${
-                    categoryMenuOpen ? 'rotate-180 text-[#0077C8]' : ''
+                    categoryMenuOpen ? 'rotate-180 text-[#0A9EE6]' : ''
                   }`}
                 />
               </button>
@@ -364,7 +364,7 @@ export function Navbar() {
                           key={c.slug}
                           href={c.available ? `/products?category=${c.slug}` : '/products'}
                           onClick={() => setCategoryMenuOpen(false)}
-                          className="flex items-center justify-between gap-3 rounded-2xl px-2.5 py-2 text-[#0F2138] transition hover:bg-[#0077C8]/[0.06]"
+                          className="flex items-center justify-between gap-3 rounded-2xl px-2.5 py-2 text-[#083466] transition hover:bg-[#0A9EE6]/[0.06]"
                         >
                           <span className="flex items-center gap-3">
                             <LiquidIcon icon={c.icon} tone={c.tone} size="sm" />
@@ -388,21 +388,21 @@ export function Navbar() {
             </div>
 
             {CATEGORIES.filter((c) => c.available).map((c) => (
-              <Link key={c.slug} href={`/products?category=${c.slug}`} className="hover:text-[#0F2138] transition">
+              <Link key={c.slug} href={`/products?category=${c.slug}`} className="hover:text-[#083466] transition">
                 {c.name}
               </Link>
             ))}
-            <Link href="/products" className="hover:text-[#0F2138] transition">
+            <Link href="/products" className="hover:text-[#083466] transition">
               All products
             </Link>
             <a
               href="#desk-builder"
-              className="inline-flex items-center gap-1.5 font-bold text-xs text-[#0077C8] bg-[#0077C8]/10 hover:bg-[#0077C8]/15 px-3 py-1 rounded-full border border-[#0077C8]/20 transition"
+              className="inline-flex items-center gap-1.5 font-bold text-xs text-[#0A9EE6] bg-[#0A9EE6]/10 hover:bg-[#0A9EE6]/15 px-3 py-1 rounded-full border border-[#0A9EE6]/20 transition"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>Desk Setup Studio</span>
             </a>
-            <Link href="/track-order" className="hover:text-[#0F2138] transition">
+            <Link href="/track-order" className="hover:text-[#083466] transition">
               Track order
             </Link>
             <a
@@ -436,7 +436,7 @@ export function Navbar() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search smart clocks, weather tech"
-                    className="w-full h-11 rounded-2xl bg-[#F3F7FB] border border-black/[0.08] text-[#0F2138] placeholder:text-[#86868b] pl-10 pr-4 text-base outline-none focus:bg-white focus:border-[#0077C8]"
+                    className="w-full h-11 rounded-2xl bg-[#F3F7FB] border border-black/[0.08] text-[#083466] placeholder:text-[#86868b] pl-10 pr-4 text-base outline-none focus:bg-white focus:border-[#0A9EE6]"
                   />
                   <Search className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </form>
@@ -446,7 +446,7 @@ export function Navbar() {
                     <Link
                       key={c.slug}
                       href={c.available ? `/products?category=${c.slug}` : '/products'}
-                      className="flex items-center gap-2.5 rounded-2xl bg-[#F3F7FB] p-2 text-xs font-semibold text-[#0F2138] active:scale-95 transition"
+                      className="flex items-center gap-2.5 rounded-2xl bg-[#F3F7FB] p-2 text-xs font-semibold text-[#083466] active:scale-95 transition"
                     >
                       <LiquidIcon icon={c.icon} tone={c.tone} size="sm" />
                       <span className="flex-1 truncate">{c.name}</span>
@@ -459,7 +459,7 @@ export function Navbar() {
                   ))}
                 </div>
 
-                <div className="border-t border-black/[0.06] pt-3 text-[15px] font-medium text-[#0F2138] space-y-1">
+                <div className="border-t border-black/[0.06] pt-3 text-[15px] font-medium text-[#083466] space-y-1">
                   <Link
                     href="/account"
                     className="lg-btn-primary mb-2 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold"

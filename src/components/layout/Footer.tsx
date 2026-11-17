@@ -48,7 +48,7 @@ export function Footer() {
               <div key={f.title} className="flex items-center gap-4">
                 <LiquidIcon icon={f.icon} tone={f.tone} variant="glass" size="lg" />
                 <div>
-                  <h4 className="text-[#0F2138] font-semibold text-sm">{f.title}</h4>
+                  <h4 className="text-[#083466] font-semibold text-sm">{f.title}</h4>
                   <p className="text-xs text-[#5B6B80] mt-0.5">{f.text}</p>
                 </div>
               </div>
@@ -61,8 +61,8 @@ export function Footer() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-block font-bold text-2xl tracking-tight text-[#0F2138]">
-              ATMODESK<span className="text-[#0077C8]">.bd</span>
+            <Link href="/" className="inline-block font-bold text-2xl tracking-tight text-[#083466]">
+              ATMODESK<span className="text-[#0A9EE6]">.bd</span>
             </Link>
             <p className="text-sm text-[#5B6B80] max-w-sm leading-relaxed">
               Bangladesh&apos;s online store for aesthetic desk setups, WiFi smart clocks, mini weather displays and
@@ -70,7 +70,7 @@ export function Footer() {
             </p>
             <ul className="space-y-2.5 text-sm text-[#5B6B80] pt-2">
               <li className="flex items-center gap-2.5">
-                <MapPin className="w-4 h-4 text-[#0077C8] flex-shrink-0" />
+                <MapPin className="w-4 h-4 text-[#0A9EE6] flex-shrink-0" />
                 <span>New Eskaton, Dhaka, Bangladesh</span>
               </li>
               <li className="flex items-center gap-2.5">
@@ -79,14 +79,14 @@ export function Footer() {
                   href="https://wa.me/8801318043562"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#0F2138] transition"
+                  className="hover:text-[#083466] transition"
                 >
                   +880 1318-043562 (WhatsApp text only)
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#0077C8] flex-shrink-0" />
-                <a href="mailto:support@atmodeskbd.com" className="hover:text-[#0F2138] transition">
+                <Mail className="w-4 h-4 text-[#0A9EE6] flex-shrink-0" />
+                <a href="mailto:support@atmodeskbd.com" className="hover:text-[#083466] transition">
                   support@atmodeskbd.com
                 </a>
               </li>
@@ -149,11 +149,11 @@ export function Footer() {
           </div>
 
           <nav aria-label="Categories">
-            <h4 className="text-[#0F2138] font-semibold text-sm mb-4">Categories</h4>
+            <h4 className="text-[#083466] font-semibold text-sm mb-4">Categories</h4>
             <ul className="space-y-2.5 text-sm text-[#5B6B80]">
               {CATEGORY_LINKS.map(([href, label]) => (
                 <li key={label}>
-                  <Link href={href} className="hover:text-[#0F2138] transition">
+                  <Link href={href} className="hover:text-[#083466] transition">
                     {label}
                   </Link>
                 </li>
@@ -162,11 +162,11 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Customer care">
-            <h4 className="text-[#0F2138] font-semibold text-sm mb-4">Customer care</h4>
+            <h4 className="text-[#083466] font-semibold text-sm mb-4">Customer care</h4>
             <ul className="space-y-2.5 text-sm text-[#5B6B80]">
               {CARE_LINKS.map(([href, label]) => (
                 <li key={label}>
-                  <Link href={href} className="hover:text-[#0F2138] transition">
+                  <Link href={href} className="hover:text-[#083466] transition">
                     {label}
                   </Link>
                 </li>
@@ -177,7 +177,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://m.me/atmodeskbd" target="_blank" rel="noopener noreferrer" className="text-[#0077C8] font-medium hover:underline transition">
+                <a href="https://m.me/atmodeskbd" target="_blank" rel="noopener noreferrer" className="text-[#0A9EE6] font-medium hover:underline transition">
                   Message on Facebook
                 </a>
               </li>
@@ -185,17 +185,17 @@ export function Footer() {
           </nav>
 
           <div>
-            <h4 className="text-[#0F2138] font-semibold text-sm mb-4">Payment</h4>
+            <h4 className="text-[#083466] font-semibold text-sm mb-4">Payment</h4>
             <div className="rounded-3xl bg-white p-4 mb-6 space-y-2 shadow-xs ring-1 ring-black/[0.06]">
               <div className="flex items-center gap-2.5">
                 <LiquidIcon icon={Banknote} tone="green" variant="glass" size="sm" />
-                <span className="text-sm font-semibold text-[#0F2138]">Cash on Delivery</span>
+                <span className="text-sm font-semibold text-[#083466]">Cash on Delivery</span>
               </div>
               <p className="text-[12px] text-[#5B6B80] leading-relaxed">
                 Pay in cash when your order reaches your door. Available nationwide.
               </p>
             </div>
-            <h4 className="text-[#0F2138] font-semibold text-xs mb-2">Delivery partners</h4>
+            <h4 className="text-[#083466] font-semibold text-xs mb-2">Delivery partners</h4>
             <p className="text-xs text-[#5B6B80] leading-relaxed">
               Steadfast · Pathao Courier · RedX · Paperfly · Sundarban Courier
             </p>
@@ -208,9 +208,9 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#86868b]">
           <p>© {new Date().getFullYear()} ATMODESK.bd · All rights reserved. Registered in Bangladesh.</p>
           <div className="flex items-center gap-6">
-            <Link href="/terms" className="hover:text-[#0F2138] transition">Terms &amp; Conditions</Link>
-            <Link href="/privacy" className="hover:text-[#0F2138] transition">Privacy Policy</Link>
-            <Link href="/returns" className="hover:text-[#0F2138] transition">Returns Policy</Link>
+            <Link href="/terms" className="hover:text-[#083466] transition">Terms &amp; Conditions</Link>
+            <Link href="/privacy" className="hover:text-[#083466] transition">Privacy Policy</Link>
+            <Link href="/returns" className="hover:text-[#083466] transition">Returns Policy</Link>
           </div>
         </div>
       </div>

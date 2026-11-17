@@ -84,8 +84,8 @@ const FAQ_DATA: FAQCategory[] = [
     title: 'Shipping & Delivery',
     description: 'Transit times, shipping rates, coverage, and tracking parcels.',
     icon: Truck,
-    iconColor: 'text-[#0077C8]',
-    badgeBg: 'bg-sky-50 text-[#0077C8] border-sky-200/60',
+    iconColor: 'text-[#0A9EE6]',
+    badgeBg: 'bg-sky-50 text-[#0A9EE6] border-sky-200/60',
     items: [
       {
         id: 'shp-1',
@@ -250,18 +250,18 @@ export default function FAQPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="relative rounded-[32px] sm:rounded-[40px] bg-gradient-to-br from-white via-[#f8f9fa] to-sky-50/50 border border-black/[0.08] p-8 sm:p-14 shadow-xs overflow-hidden">
             {/* Ambient specular glows */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-[#0077C8]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#0A9EE6]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="max-w-3xl mx-auto text-center space-y-5 relative z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0077C8]/10 border border-[#0077C8]/20 text-[#0077C8] text-xs font-bold uppercase tracking-wider shadow-xs">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A9EE6]/10 border border-[#0A9EE6]/20 text-[#0A9EE6] text-xs font-bold uppercase tracking-wider shadow-xs">
                 <HelpCircle className="w-3.5 h-3.5" />
                 <span>ATMODESK Help Center &amp; FAQ</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#0F2138] leading-[1.08]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#083466] leading-[1.08]">
                 Frequently Asked{' '}
-                <span className="text-[#0077C8]">
+                <span className="text-[#0A9EE6]">
                   Questions
                 </span>
               </h1>
@@ -280,12 +280,12 @@ export default function FAQPage() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search questions (e.g., payment, delivery, wifi, warranty)..."
-                    className="w-full pl-11 pr-10 py-3.5 rounded-full bg-white border border-black/[0.08] text-[#0F2138] placeholder:text-[#86868b] text-sm focus:border-[#0077C8] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] outline-hidden transition shadow-xs"
+                    className="w-full pl-11 pr-10 py-3.5 rounded-full bg-white border border-black/[0.08] text-[#083466] placeholder:text-[#86868b] text-sm focus:border-[#0A9EE6] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.16)] outline-hidden transition shadow-xs"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-[#86868b] hover:text-[#0F2138] transition"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-[#86868b] hover:text-[#083466] transition"
                       aria-label="Clear search"
                     >
                       <X className="w-4 h-4" />
@@ -308,7 +308,7 @@ export default function FAQPage() {
               onClick={() => setSelectedCategory('all')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap ${
                 selectedCategory === 'all'
-                  ? 'bg-[#0077C8] text-white shadow-xs'
+                  ? 'bg-[#0A9EE6] text-white shadow-xs'
                   : 'bg-white text-[#5B6B80] border border-black/[0.08] hover:bg-[#F3F7FB]'
               }`}
             >
@@ -320,7 +320,7 @@ export default function FAQPage() {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
                   selectedCategory === cat.id
-                    ? 'bg-[#0077C8] text-white shadow-xs'
+                    ? 'bg-[#0A9EE6] text-white shadow-xs'
                     : 'bg-white text-[#5B6B80] border border-black/[0.08] hover:bg-[#F3F7FB]'
                 }`}
               >
@@ -333,14 +333,14 @@ export default function FAQPage() {
           <div className="flex items-center gap-2 flex-shrink-0 text-xs text-[#86868b]">
             <button
               onClick={expandAll}
-              className="px-3.5 py-1.5 rounded-full border border-black/[0.08] bg-white hover:bg-[#F3F7FB] text-[#0F2138] font-semibold transition shadow-2xs"
+              className="px-3.5 py-1.5 rounded-full border border-black/[0.08] bg-white hover:bg-[#F3F7FB] text-[#083466] font-semibold transition shadow-2xs"
             >
               Expand All
             </button>
             <span>·</span>
             <button
               onClick={collapseAll}
-              className="px-3.5 py-1.5 rounded-full border border-black/[0.08] bg-white hover:bg-[#F3F7FB] text-[#0F2138] font-semibold transition shadow-2xs"
+              className="px-3.5 py-1.5 rounded-full border border-black/[0.08] bg-white hover:bg-[#F3F7FB] text-[#083466] font-semibold transition shadow-2xs"
             >
               Collapse All
             </button>
@@ -349,7 +349,7 @@ export default function FAQPage() {
 
         {/* Search status indicator if searching */}
         {searchQuery && (
-          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#0077C8]/10 border border-[#0077C8]/20 text-xs text-[#0077C8]">
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#0A9EE6]/10 border border-[#0A9EE6]/20 text-xs text-[#0A9EE6]">
             <span>
               Showing <strong>{totalMatchingQuestions}</strong> result{totalMatchingQuestions === 1 ? '' : 's'} for &ldquo;{searchQuery}&rdquo;
             </span>
@@ -368,14 +368,14 @@ export default function FAQPage() {
             <div className="w-14 h-14 rounded-2xl bg-[#F3F7FB] text-[#86868b] flex items-center justify-center mx-auto">
               <Search className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold text-[#0F2138]">No matching questions found</h3>
+            <h3 className="text-lg font-bold text-[#083466]">No matching questions found</h3>
             <p className="text-xs sm:text-sm text-[#5B6B80] max-w-sm mx-auto">
               We couldn&apos;t find any answer matching &ldquo;{searchQuery}&rdquo;. Try using different keywords or message us directly on WhatsApp.
             </p>
             <div className="pt-2 flex justify-center gap-3">
               <button
                 onClick={() => setSearchQuery('')}
-                className="px-5 py-2.5 rounded-full bg-[#0F2138] text-white text-xs font-bold hover:bg-[#0077C8] transition"
+                className="px-5 py-2.5 rounded-full bg-[#083466] text-white text-xs font-bold hover:bg-[#0A9EE6] transition"
               >
                 Reset Search
               </button>
@@ -404,7 +404,7 @@ export default function FAQPage() {
                     <CatIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-black text-[#0F2138] tracking-tight">
+                    <h2 className="text-xl font-black text-[#083466] tracking-tight">
                       {category.title}
                     </h2>
                     <p className="text-xs text-[#5B6B80] mt-0.5">{category.description}</p>
@@ -421,7 +421,7 @@ export default function FAQPage() {
                         key={item.id}
                         className={`liquid-glass-card bg-white border transition-all duration-200 rounded-[22px] overflow-hidden ${
                           isOpen
-                            ? 'border-[#0077C8]/40 shadow-sm ring-1 ring-[#0077C8]/20'
+                            ? 'border-[#0A9EE6]/40 shadow-sm ring-1 ring-[#0A9EE6]/20'
                             : 'border-black/[0.08] hover:border-black/[0.15] shadow-xs'
                         }`}
                       >
@@ -432,7 +432,7 @@ export default function FAQPage() {
                           aria-expanded={isOpen}
                           className="w-full py-4 sm:py-5 px-5 sm:px-6 flex items-center justify-between gap-4 text-left cursor-pointer transition select-none group"
                         >
-                          <span className="text-sm sm:text-base font-bold text-[#0F2138] group-hover:text-[#0077C8] transition-colors">
+                          <span className="text-sm sm:text-base font-bold text-[#083466] group-hover:text-[#0A9EE6] transition-colors">
                             {item.question}
                           </span>
 
@@ -440,7 +440,7 @@ export default function FAQPage() {
                           <div
                             className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
                               isOpen
-                                ? 'bg-[#0077C8] text-white'
+                                ? 'bg-[#0A9EE6] text-white'
                                 : 'bg-[#F3F7FB] text-[#5B6B80] group-hover:bg-black/10'
                             }`}
                           >
@@ -467,7 +467,7 @@ export default function FAQPage() {
                                       href={link.href}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-50 hover:bg-sky-100 text-[#0077C8] font-bold text-xs border border-sky-200/50 transition"
+                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-50 hover:bg-sky-100 text-[#0A9EE6] font-bold text-xs border border-sky-200/50 transition"
                                     >
                                       <span>{link.label}</span>
                                       <ArrowRight className="w-3 h-3" />
@@ -476,7 +476,7 @@ export default function FAQPage() {
                                     <Link
                                       key={link.label}
                                       href={link.href}
-                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-[#F3F7FB] text-[#0F2138] font-bold text-xs border border-black/[0.08] transition shadow-2xs"
+                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-[#F3F7FB] text-[#083466] font-bold text-xs border border-black/[0.08] transition shadow-2xs"
                                     >
                                       <span>{link.label}</span>
                                       <ChevronRight className="w-3 h-3 text-[#86868b]" />
@@ -502,10 +502,10 @@ export default function FAQPage() {
         <div className="bg-white border border-black/[0.08] rounded-[32px] sm:rounded-[36px] p-8 sm:p-10 shadow-xs relative overflow-hidden">
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
             <div className="md:col-span-8 space-y-2">
-              <span className="px-3.5 py-1 bg-[#0077C8]/10 text-[#0077C8] font-bold text-xs rounded-full uppercase tracking-wider">
+              <span className="px-3.5 py-1 bg-[#0A9EE6]/10 text-[#0A9EE6] font-bold text-xs rounded-full uppercase tracking-wider">
                 Still Have Questions?
               </span>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#0F2138] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-black text-[#083466] tracking-tight">
                 We&apos;re Just a Message Away
               </h3>
               <p className="text-xs sm:text-sm text-[#5B6B80] leading-relaxed max-w-xl">
@@ -529,14 +529,14 @@ export default function FAQPage() {
                 href="https://m.me/atmodeskbd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#0077C8] hover:bg-[#0066AD] text-white font-bold text-xs shadow-sm transition hover:scale-[1.02] active:scale-95 text-center"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#0A9EE6] hover:bg-[#0888CC] text-white font-bold text-xs shadow-sm transition hover:scale-[1.02] active:scale-95 text-center"
               >
                 <span>Message on Facebook</span>
               </a>
 
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#F3F7FB] text-[#0F2138] font-semibold text-xs border border-black/[0.08] transition text-center shadow-2xs"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#F3F7FB] text-[#083466] font-semibold text-xs border border-black/[0.08] transition text-center shadow-2xs"
               >
                 <span>Visit Contact Page</span>
                 <ArrowRight className="w-3.5 h-3.5 text-[#5B6B80]" />

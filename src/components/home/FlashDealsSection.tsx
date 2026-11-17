@@ -130,7 +130,7 @@ export function FlashDealsSection() {
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <h2 id="flash-deals-heading" className="text-xl sm:text-2xl font-black text-[#0F2138] tracking-tight">
+                <h2 id="flash-deals-heading" className="text-xl sm:text-2xl font-black text-[#083466] tracking-tight">
                   Flash Deals of the Day
                 </h2>
                 <span className="rounded-full bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider">
@@ -146,7 +146,7 @@ export function FlashDealsSection() {
           {/* Countdown Clock (Apple Gadgets style) */}
           <div className="flex items-center gap-2 self-start md:self-auto bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-rose-200/70 shadow-xs">
             <Clock className="w-4 h-4 text-rose-500" />
-            <span className="text-xs font-bold text-[#0F2138] uppercase tracking-wider">Ends in:</span>
+            <span className="text-xs font-bold text-[#083466] uppercase tracking-wider">Ends in:</span>
             <div className="flex items-center gap-1 font-mono text-sm font-black text-rose-600">
               <span className="w-8 py-1 rounded-lg bg-rose-500 text-white text-center">
                 {String(timeLeft.hours).padStart(2, '0')}
@@ -188,7 +188,7 @@ export function FlashDealsSection() {
                       <span className="rounded-full bg-rose-600 text-white font-black text-xs px-2.5 py-0.5 shadow-xs">
                         Save {formatBDT(savings)}
                       </span>
-                      <span className="rounded-full bg-white/90 backdrop-blur-md text-[#0F2138] font-semibold text-[10px] px-2 py-0.5 shadow-xs">
+                      <span className="rounded-full bg-white/90 backdrop-blur-md text-[#083466] font-semibold text-[10px] px-2 py-0.5 shadow-xs">
                         -{discountPct}% OFF
                       </span>
                     </div>
@@ -200,12 +200,12 @@ export function FlashDealsSection() {
                     </div>
                   </div>
 
-                  <span className="text-[11px] font-semibold text-[#0077C8] uppercase tracking-wider block mb-1">
+                  <span className="text-[11px] font-semibold text-[#0A9EE6] uppercase tracking-wider block mb-1">
                     {prod.category}
                   </span>
 
                   <Link href={`/product/${prod.slug}`}>
-                    <h3 className="text-sm font-bold text-[#0F2138] group-hover:text-[#0077C8] transition line-clamp-2 leading-snug">
+                    <h3 className="text-sm font-bold text-[#083466] group-hover:text-[#0A9EE6] transition line-clamp-2 leading-snug">
                       {prod.name}
                     </h3>
                   </Link>
@@ -213,10 +213,10 @@ export function FlashDealsSection() {
                   {/* Pricing Breakdown: Special Cash Price vs Regular */}
                   <div className="mt-3 pt-3 border-t border-black/[0.06] flex items-baseline justify-between">
                     <div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#0077C8] block">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#0A9EE6] block">
                         Special Cash Price:
                       </span>
-                      <span className="text-xl font-black text-[#0F2138] tabular">{formatBDT(prod.price)}</span>
+                      <span className="text-xl font-black text-[#083466] tabular">{formatBDT(prod.price)}</span>
                     </div>
                     <div className="text-right">
                       <span className="text-[10px] text-[#86868b] block">Regular Price:</span>
@@ -248,7 +248,7 @@ export function FlashDealsSection() {
                     whileTap={{ scale: 0.96 }}
                     transition={TACTILE_SPRING}
                     onClick={() => handleInstantBuy(prod)}
-                    className="flex-1 py-2.5 px-3 rounded-full bg-[#0077C8] hover:bg-[#0066AD] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-[#0077C8]/20"
+                    className="flex-1 py-2.5 px-3 rounded-full bg-[#0A9EE6] hover:bg-[#0888CC] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-[#0A9EE6]/20"
                   >
                     <ShoppingBag className="w-3.5 h-3.5" />
                     <span>Instant Buy Now</span>
@@ -256,7 +256,7 @@ export function FlashDealsSection() {
 
                   <Link
                     href={`/product/${prod.slug}`}
-                    className="h-9 px-3 rounded-full bg-[#F3F7FB] hover:bg-black/5 flex items-center justify-center text-xs font-semibold text-[#0F2138] transition border border-black/[0.06]"
+                    className="h-9 px-3 rounded-full bg-[#F3F7FB] hover:bg-black/5 flex items-center justify-center text-xs font-semibold text-[#083466] transition border border-black/[0.06]"
                   >
                     View
                   </Link>

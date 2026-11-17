@@ -38,14 +38,14 @@ export function CartDrawer() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={LIQUID_SPRING}
-              className="w-screen max-w-md glass-bright border-l border-black/[0.08] flex flex-col text-[#0F2138]"
+              className="w-screen max-w-md glass-bright border-l border-black/[0.08] flex flex-col text-[#083466]"
             >
               {/* Header */}
               <div className="p-4 md:p-6 border-b border-black/[0.06] flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-[#0077C8]" />
-                  <h2 className="text-lg font-bold text-[#0F2138]">Your Shopping Cart</h2>
-                  <span className="bg-[#f0f7ff] text-[#0077C8] text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                  <ShoppingBag className="w-5 h-5 text-[#0A9EE6]" />
+                  <h2 className="text-lg font-bold text-[#083466]">Your Shopping Cart</h2>
+                  <span className="bg-[#f0f7ff] text-[#0A9EE6] text-xs font-semibold px-2.5 py-0.5 rounded-full">
                     {itemCount()} items
                   </span>
                 </div>
@@ -65,7 +65,7 @@ export function CartDrawer() {
                     <div className="w-16 h-16 bg-[#F3F7FB] rounded-full flex items-center justify-center mb-4 text-[#86868b]">
                       <ShoppingBag className="w-8 h-8" />
                     </div>
-                    <h3 className="text-base font-semibold text-[#0F2138] mb-1">Your cart is empty</h3>
+                    <h3 className="text-base font-semibold text-[#083466] mb-1">Your cart is empty</h3>
                     <p className="text-sm text-[#5B6B80] mb-6">
                       Looks like you haven&apos;t added any smart gadgets yet.
                     </p>
@@ -105,7 +105,7 @@ export function CartDrawer() {
                           <Link
                             href={`/product/${item.slug}`}
                             onClick={closeCart}
-                            className="text-sm font-semibold text-[#0F2138] hover:text-[#0077C8] line-clamp-1"
+                            className="text-sm font-semibold text-[#083466] hover:text-[#0A9EE6] line-clamp-1"
                           >
                             {item.name}
                           </Link>
@@ -113,23 +113,23 @@ export function CartDrawer() {
                             <p className="text-xs text-[#5B6B80] mt-0.5">{item.variantName}</p>
                           )}
                           <div className="flex items-center justify-between mt-2">
-                            <span className="text-sm font-bold text-[#0077C8] tabular">
+                            <span className="text-sm font-bold text-[#0A9EE6] tabular">
                               {formatBDT(item.price)}
                             </span>
                             <div className="flex items-center border border-black/10 rounded-lg bg-white overflow-hidden">
                               <button
                                 onClick={() => updateQty(item.productId, item.quantity - 1, item.variantId)}
-                                className="p-1.5 hover:bg-[#F3F7FB] text-[#0F2138] transition"
+                                className="p-1.5 hover:bg-[#F3F7FB] text-[#083466] transition"
                               >
                                 <Minus className="w-3.5 h-3.5" />
                               </button>
-                              <span className="px-2 text-xs font-semibold text-[#0F2138] min-w-6 text-center tabular">
+                              <span className="px-2 text-xs font-semibold text-[#083466] min-w-6 text-center tabular">
                                 {item.quantity}
                               </span>
                               <button
                                 onClick={() => updateQty(item.productId, item.quantity + 1, item.variantId)}
                                 disabled={item.quantity >= item.stock}
-                                className="p-1.5 hover:bg-[#F3F7FB] text-[#0F2138] transition disabled:opacity-30"
+                                className="p-1.5 hover:bg-[#F3F7FB] text-[#083466] transition disabled:opacity-30"
                               >
                                 <Plus className="w-3.5 h-3.5" />
                               </button>
@@ -155,7 +155,7 @@ export function CartDrawer() {
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-sm text-[#5B6B80]">
                       <span>Subtotal</span>
-                      <span className="font-semibold text-[#0F2138] tabular">{formatBDT(subtotal())}</span>
+                      <span className="font-semibold text-[#083466] tabular">{formatBDT(subtotal())}</span>
                     </div>
                     <div className="flex justify-between text-xs text-[#86868b]">
                       <span>Shipping</span>
@@ -164,8 +164,8 @@ export function CartDrawer() {
                   </div>
 
                   <div className="border-t border-black/[0.08] pt-3 flex justify-between items-baseline">
-                    <span className="text-base font-bold text-[#0F2138]">Total (Est.)</span>
-                    <span className="text-xl font-bold text-[#0077C8] tabular">
+                    <span className="text-base font-bold text-[#083466]">Total (Est.)</span>
+                    <span className="text-xl font-bold text-[#0A9EE6] tabular">
                       {formatBDT(subtotal())}
                     </span>
                   </div>

@@ -41,11 +41,11 @@ export function ProductCatalogShelf({ products, categories }: ProductCatalogShel
       {/* Header and Filter Tabs (Apple Gadgets Architecture) */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-4 border-b border-black/[0.06]">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0077C8] uppercase tracking-wider mb-1">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0A9EE6] uppercase tracking-wider mb-1">
             <Layers className="w-3.5 h-3.5" />
             <span>Curated Inventory</span>
           </div>
-          <h2 id="featured-heading" className="text-2xl sm:text-4xl font-black tracking-tight text-[#0F2138]">
+          <h2 id="featured-heading" className="text-2xl sm:text-4xl font-black tracking-tight text-[#083466]">
             Featured Desk Tech &amp; Smart Clocks
           </h2>
           <p className="text-xs sm:text-sm text-[#5B6B80] mt-1">
@@ -66,8 +66,8 @@ export function ProductCatalogShelf({ products, categories }: ProductCatalogShel
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 ${
                   isActive
-                    ? 'bg-[#0077C8] text-white shadow-sm'
-                    : 'bg-[#F3F7FB] text-[#5B6B80] hover:text-[#0F2138] hover:bg-black/5'
+                    ? 'bg-[#0A9EE6] text-white shadow-sm'
+                    : 'bg-[#F3F7FB] text-[#5B6B80] hover:text-[#083466] hover:bg-black/5'
                 }`}
               >
                 {tab.label}
@@ -88,17 +88,17 @@ export function ProductCatalogShelf({ products, categories }: ProductCatalogShel
         </div>
       ) : (
         <div className="liquid-glass-card rounded-[28px] p-12 text-center space-y-3 bg-[#fafafa] border border-black/[0.06]">
-          <div className="mx-auto w-12 h-12 rounded-2xl bg-[#0077C8]/10 text-[#0077C8] flex items-center justify-center">
+          <div className="mx-auto w-12 h-12 rounded-2xl bg-[#0A9EE6]/10 text-[#0A9EE6] flex items-center justify-center">
             <Sparkles className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-[#0F2138]">More Items Restocking Soon</h3>
+          <h3 className="text-lg font-bold text-[#083466]">More Items Restocking Soon</h3>
           <p className="text-xs text-[#5B6B80] max-w-sm mx-auto">
             Our next shipment of ambient desk devices is currently being calibrated in Dhaka.
           </p>
           <button
             type="button"
             onClick={() => setActiveTab('ALL')}
-            className="text-xs font-bold text-[#0077C8] hover:underline pt-2 block mx-auto"
+            className="text-xs font-bold text-[#0A9EE6] hover:underline pt-2 block mx-auto"
           >
             ← View All In-Stock Products
           </button>

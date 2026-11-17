@@ -393,7 +393,7 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
                   setResetDone(null)
                   setSelectedCustomer(null)
                 }}
-                className="px-4 py-2 bg-[#003060] hover:bg-[#00417f] text-white font-bold text-xs rounded-xl transition"
+                className="px-4 py-2 bg-[#083466] hover:bg-[#0A4585] text-white font-bold text-xs rounded-xl transition"
               >
                 Done
               </button>

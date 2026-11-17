@@ -44,7 +44,7 @@ const HERO_SLIDES: Slide[] = [
   {
     id: 'cmtvs1qob0001qbvsafeznftn',
     badge: 'FLAGSHIP · 2026 EDITION',
-    badgeColor: 'bg-[#0077C8] text-white',
+    badgeColor: 'bg-[#0A9EE6] text-white',
     title: 'WeatherStation Mini',
     titleHighlight: 'WiFi Smart Desk Clock',
     subtitle:
@@ -193,10 +193,10 @@ export function AppleGadgetsHero() {
                 {/* Left Text */}
                 <div className="md:col-span-7 space-y-4 text-center md:text-left">
                   <div>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0F2138] tracking-tight leading-[1.08]">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#083466] tracking-tight leading-[1.08]">
                       {slide.title}
                     </h2>
-                    <span className="text-lg sm:text-xl font-bold text-[#0077C8] block mt-1">
+                    <span className="text-lg sm:text-xl font-bold text-[#0A9EE6] block mt-1">
                       {slide.titleHighlight}
                     </span>
                   </div>
@@ -208,10 +208,10 @@ export function AppleGadgetsHero() {
                   {/* Pricing Display (Apple Gadgets Special Cash Price) */}
                   <div className="pt-1 flex items-baseline justify-center md:justify-start gap-3">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#0077C8] block">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#0A9EE6] block">
                         Special Cash Price:
                       </span>
-                      <span className="text-2xl sm:text-3xl font-black text-[#0F2138] tabular">
+                      <span className="text-2xl sm:text-3xl font-black text-[#083466] tabular">
                         {formatBDT(slide.price)}
                       </span>
                     </div>
@@ -244,7 +244,7 @@ export function AppleGadgetsHero() {
                           originalPrice: slide.originalPrice,
                         })
                       }
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-bold bg-[#0077C8] hover:bg-[#0066AD] text-white shadow-lg shadow-[#0077C8]/20 transition"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-bold bg-[#0A9EE6] hover:bg-[#0888CC] text-white shadow-lg shadow-[#0A9EE6]/20 transition"
                     >
                       <ShoppingBag className="w-4 h-4" />
                       <span>Order Now (Cash on Delivery)</span>
@@ -252,7 +252,7 @@ export function AppleGadgetsHero() {
 
                     <Link
                       href={`/product/${slide.slug}`}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-full px-6 py-3 text-sm font-semibold bg-white hover:bg-[#F3F7FB] text-[#0F2138] border border-black/[0.08] shadow-xs transition"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-full px-6 py-3 text-sm font-semibold bg-white hover:bg-[#F3F7FB] text-[#083466] border border-black/[0.08] shadow-xs transition"
                     >
                       <span>Explore Specs</span>
                       <ArrowRight className="w-3.5 h-3.5 text-[#5B6B80]" />
@@ -270,7 +270,7 @@ export function AppleGadgetsHero() {
                     />
 
                     {/* Floating Quality Tag */}
-                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full border border-black/[0.08] shadow-md flex items-center gap-1.5 text-[10px] font-bold text-[#0F2138] whitespace-nowrap z-10">
+                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full border border-black/[0.08] shadow-md flex items-center gap-1.5 text-[10px] font-bold text-[#083466] whitespace-nowrap z-10">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                       <span>Pre-Tested in Dhaka</span>
                     </div>
@@ -282,7 +282,7 @@ export function AppleGadgetsHero() {
               <div className="relative z-10 pt-4 border-t border-black/[0.06] flex flex-wrap items-center justify-between gap-2 text-xs text-[#5B6B80]">
                 {slide.specs.map((spec) => (
                   <span key={spec} className="inline-flex items-center gap-1 font-medium">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#0077C8]" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#0A9EE6]" />
                     {spec}
                   </span>
                 ))}
@@ -296,7 +296,7 @@ export function AppleGadgetsHero() {
               type="button"
               onClick={prevSlide}
               aria-label="Previous slide"
-              className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-[#0F2138] flex items-center justify-center shadow-md border border-black/[0.08] transition active:scale-95"
+              className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-[#083466] flex items-center justify-center shadow-md border border-black/[0.08] transition active:scale-95"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -304,7 +304,7 @@ export function AppleGadgetsHero() {
               type="button"
               onClick={nextSlide}
               aria-label="Next slide"
-              className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-[#0F2138] flex items-center justify-center shadow-md border border-black/[0.08] transition active:scale-95"
+              className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-[#083466] flex items-center justify-center shadow-md border border-black/[0.08] transition active:scale-95"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -319,7 +319,7 @@ export function AppleGadgetsHero() {
                 onClick={() => setCurrentSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  currentSlide === idx ? 'w-7 bg-[#0077C8]' : 'w-2 bg-black/20 hover:bg-black/40'
+                  currentSlide === idx ? 'w-7 bg-[#0A9EE6]' : 'w-2 bg-black/20 hover:bg-black/40'
                 }`}
               />
             ))}
@@ -335,7 +335,7 @@ export function AppleGadgetsHero() {
                 <span className="inline-flex items-center gap-1 rounded-full bg-amber-100/70 border border-amber-300/50 px-2.5 py-0.5 text-[10px] font-black text-amber-800">
                   <Flame className="w-3 h-3 text-amber-600" /> TRENDING FOCUS TOOL
                 </span>
-                <h3 className="text-base sm:text-lg font-black text-[#0F2138] mt-2 group-hover:text-[#0077C8] transition">
+                <h3 className="text-base sm:text-lg font-black text-[#083466] mt-2 group-hover:text-[#0A9EE6] transition">
                   GravityCube Pro
                 </h3>
                 <p className="text-xs text-[#5B6B80] line-clamp-1 mt-0.5">
@@ -350,8 +350,8 @@ export function AppleGadgetsHero() {
 
             <div className="my-3 flex items-center justify-between gap-4">
               <div className="space-y-1">
-                <div className="text-[10px] font-bold text-[#0077C8] uppercase">Special Cash Price:</div>
-                <div className="text-xl sm:text-2xl font-black text-[#0F2138] tabular">{formatBDT(1499)}</div>
+                <div className="text-[10px] font-bold text-[#0A9EE6] uppercase">Special Cash Price:</div>
+                <div className="text-xl sm:text-2xl font-black text-[#083466] tabular">{formatBDT(1499)}</div>
                 <div className="text-[11px] text-[#86868b] line-through tabular">
                   Regular: {formatBDT(2299)}
                 </div>
@@ -379,7 +379,7 @@ export function AppleGadgetsHero() {
                     originalPrice: 2299,
                   })
                 }
-                className="flex-1 py-2.5 px-3 rounded-full bg-[#0F2138] hover:bg-[#0077C8] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
+                className="flex-1 py-2.5 px-3 rounded-full bg-[#083466] hover:bg-[#0A9EE6] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>Instant Buy Now</span>
@@ -387,7 +387,7 @@ export function AppleGadgetsHero() {
 
               <Link
                 href="/product/atmodesk-gravitycube-pro-pomodoro-timer"
-                className="h-9 w-9 rounded-full bg-[#F3F7FB] hover:bg-black/5 flex items-center justify-center text-[#0F2138] transition border border-black/[0.06]"
+                className="h-9 w-9 rounded-full bg-[#F3F7FB] hover:bg-black/5 flex items-center justify-center text-[#083466] transition border border-black/[0.06]"
                 title="View details"
               >
                 <Eye className="w-4 h-4" />
@@ -399,10 +399,10 @@ export function AppleGadgetsHero() {
           <div className="liquid-glass-card rounded-[32px] p-5 sm:p-6 border border-black/[0.08] bg-gradient-to-br from-white via-[#fafafa] to-sky-50/30 flex-1 flex flex-col justify-between relative overflow-hidden group shadow-xs hover:shadow-md transition">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#0077C8]/10 border border-[#0077C8]/20 px-2.5 py-0.5 text-[10px] font-black text-[#0077C8]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#0A9EE6]/10 border border-[#0A9EE6]/20 px-2.5 py-0.5 text-[10px] font-black text-[#0A9EE6]">
                   <Sparkles className="w-3 h-3" /> VOICE-ACTIVATED
                 </span>
-                <h3 className="text-base sm:text-lg font-black text-[#0F2138] mt-2 group-hover:text-[#0077C8] transition">
+                <h3 className="text-base sm:text-lg font-black text-[#083466] mt-2 group-hover:text-[#0A9EE6] transition">
                   PixelSmile Mood Clock
                 </h3>
                 <p className="text-xs text-[#5B6B80] line-clamp-1 mt-0.5">
@@ -417,8 +417,8 @@ export function AppleGadgetsHero() {
 
             <div className="my-3 flex items-center justify-between gap-4">
               <div className="space-y-1">
-                <div className="text-[10px] font-bold text-[#0077C8] uppercase">Special Cash Price:</div>
-                <div className="text-xl sm:text-2xl font-black text-[#0F2138] tabular">{formatBDT(1699)}</div>
+                <div className="text-[10px] font-bold text-[#0A9EE6] uppercase">Special Cash Price:</div>
+                <div className="text-xl sm:text-2xl font-black text-[#083466] tabular">{formatBDT(1699)}</div>
                 <div className="text-[11px] text-[#86868b] line-through tabular">
                   Regular: {formatBDT(2899)}
                 </div>
@@ -446,7 +446,7 @@ export function AppleGadgetsHero() {
                     originalPrice: 2899,
                   })
                 }
-                className="flex-1 py-2.5 px-3 rounded-full bg-[#0F2138] hover:bg-[#0077C8] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
+                className="flex-1 py-2.5 px-3 rounded-full bg-[#083466] hover:bg-[#0A9EE6] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>Instant Buy Now</span>
@@ -454,7 +454,7 @@ export function AppleGadgetsHero() {
 
               <Link
                 href="/product/atmodesk-pixelsmile-mood-clock-voice-activated-led-nightlight-ufd3"
-                className="h-9 w-9 rounded-full bg-[#F3F7FB] hover:bg-black/5 flex items-center justify-center text-[#0F2138] transition border border-black/[0.06]"
+                className="h-9 w-9 rounded-full bg-[#F3F7FB] hover:bg-black/5 flex items-center justify-center text-[#083466] transition border border-black/[0.06]"
                 title="View details"
               >
                 <Eye className="w-4 h-4" />

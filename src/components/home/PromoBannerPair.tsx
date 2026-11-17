@@ -44,7 +44,7 @@ export function PromoBannerPair() {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" aria-label="Promotional Campaigns">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {/* Banner 1: Study & Work Productivity */}
-        <div className="rounded-[32px] p-6 sm:p-8 bg-gradient-to-br from-[#0F2138] via-slate-900 to-black text-white relative overflow-hidden flex flex-col justify-between shadow-lg group">
+        <div className="rounded-[32px] p-6 sm:p-8 bg-gradient-to-br from-[#083466] via-slate-900 to-black text-white relative overflow-hidden flex flex-col justify-between shadow-lg group">
           {/* Subtle Ambient Backlight */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -114,7 +114,7 @@ export function PromoBannerPair() {
         </div>
 
         {/* Banner 2: Ambient Voice Nightlight */}
-        <div className="rounded-[32px] p-6 sm:p-8 bg-gradient-to-br from-[#0077C8] via-blue-700 to-indigo-900 text-white relative overflow-hidden flex flex-col justify-between shadow-lg group">
+        <div className="rounded-[32px] p-6 sm:p-8 bg-gradient-to-br from-[#0A9EE6] via-blue-700 to-indigo-900 text-white relative overflow-hidden flex flex-col justify-between shadow-lg group">
           {/* Subtle Ambient Backlight */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none" />
 
@@ -122,7 +122,7 @@ export function PromoBannerPair() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 border border-white/30 px-3 py-1 text-[11px] font-bold text-white">
               <Sparkles className="w-3.5 h-3.5" /> VOICE ACTIVATED · NEW
             </span>
-            <span className="rounded-full bg-white text-[#0077C8] font-black text-xs px-2.5 py-0.5 shadow-xs">
+            <span className="rounded-full bg-white text-[#0A9EE6] font-black text-xs px-2.5 py-0.5 shadow-xs">
               -41% OFF
             </span>
           </div>
@@ -168,7 +168,7 @@ export function PromoBannerPair() {
                   originalPrice: 2899,
                 })
               }
-              className="flex-1 py-3 px-4 rounded-full bg-white hover:bg-slate-100 text-[#0077C8] font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md"
+              className="flex-1 py-3 px-4 rounded-full bg-white hover:bg-slate-100 text-[#0A9EE6] font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md"
             >
               <ShoppingBag className="w-4 h-4" />
               <span>Buy with Cash on Delivery</span>

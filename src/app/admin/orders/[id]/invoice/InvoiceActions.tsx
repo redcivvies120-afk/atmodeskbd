@@ -42,7 +42,7 @@ export function InvoiceActions({
   const btn = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer'
 
   return (
-    <div className="no-print bg-[#003060] text-white px-4 py-3 sm:px-6 sm:py-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-xl mb-6">
+    <div className="no-print bg-[#083466] text-white px-4 py-3 sm:px-6 sm:py-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-xl mb-6">
       <div className="flex items-center gap-3">
         <Link href="/admin/orders" className={`${btn} bg-white/10 hover:bg-white/20 text-white`}>
           <ArrowLeft className="w-3.5 h-3.5" />
@@ -59,7 +59,7 @@ export function InvoiceActions({
         <a
           href={pdfUrl}
           download={`Invoice-ATMODESK-${orderNumber}.pdf`}
-          className={`${btn} bg-sky-400 hover:bg-sky-300 text-[#003060] font-bold`}
+          className={`${btn} bg-sky-400 hover:bg-sky-300 text-[#083466] font-bold`}
           title="Download the invoice as a PDF file"
         >
           <Download className="w-4 h-4" />

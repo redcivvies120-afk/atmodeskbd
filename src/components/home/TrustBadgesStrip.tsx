@@ -63,14 +63,14 @@ export function TrustBadgesStrip() {
               <div className="flex items-center justify-between">
                 <LiquidIcon icon={Icon} tone={item.tone} variant="glass" size="sm" lift />
                 {item.highlight && (
-                  <span className="text-[10px] font-bold text-[#0077C8] bg-[#0077C8]/10 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-[#0A9EE6] bg-[#0A9EE6]/10 px-2 py-0.5 rounded-full">
                     {item.highlight}
                   </span>
                 )}
               </div>
 
               <div>
-                <h3 className="text-xs sm:text-sm font-bold text-[#0F2138] group-hover:text-[#0077C8] transition">
+                <h3 className="text-xs sm:text-sm font-bold text-[#083466] group-hover:text-[#0A9EE6] transition">
                   {item.title}
                 </h3>
                 <p className="text-[11px] text-[#5B6B80] leading-snug mt-0.5">

@@ -157,7 +157,7 @@ export function ProductCard({
               <Star className="h-3 w-3 fill-amber-400 text-amber-400" /> Best seller
             </span>
           ) : isNewArrival ? (
-            <span className="rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-semibold text-[#0077C8] backdrop-blur-md shadow-xs border border-[#0077C8]/20">
+            <span className="rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-semibold text-[#0A9EE6] backdrop-blur-md shadow-xs border border-[#0A9EE6]/20">
               New Arrival
             </span>
           ) : null}
@@ -183,14 +183,14 @@ export function ProductCard({
           onClick={() => setIsQuickViewOpen(true)}
           className="lg-glass-btn absolute bottom-3 left-1/2 z-20 h-9! w-auto! -translate-x-1/2 gap-1.5 px-4 text-xs font-semibold opacity-0 transition-opacity duration-200 focus-visible:opacity-100 group-hover:opacity-100"
         >
-          <Eye className="h-3.5 w-3.5 text-[#0077C8]" />
+          <Eye className="h-3.5 w-3.5 text-[#0A9EE6]" />
           Quick view
         </button>
 
         {/* Out of Stock Overlay */}
         {isOutOfStock && (
           <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center bg-white/70 backdrop-blur-[2px]">
-            <span className="rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-[#0F2138] shadow-md ring-1 ring-black/10">
+            <span className="rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-[#083466] shadow-md ring-1 ring-black/10">
               Out of stock
             </span>
           </div>
@@ -201,7 +201,7 @@ export function ProductCard({
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <div className="flex items-center justify-between gap-2 mb-1.5">
           {category && (
-            <span className="truncate text-[11px] font-semibold text-[#0077C8] uppercase tracking-wider">
+            <span className="truncate text-[11px] font-semibold text-[#0A9EE6] uppercase tracking-wider">
               {category.name}
             </span>
           )}
@@ -214,8 +214,8 @@ export function ProductCard({
           )}
         </div>
 
-        <Link href={`/product/${slug}`} className="transition group-hover:text-[#0077C8]">
-          <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-bold leading-snug text-[#0F2138]">
+        <Link href={`/product/${slug}`} className="transition group-hover:text-[#0A9EE6]">
+          <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-bold leading-snug text-[#083466]">
             {name}
           </h3>
         </Link>
@@ -226,7 +226,7 @@ export function ProductCard({
             <>
               <span className="inline-flex items-center gap-1">
                 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                <span className="font-semibold tabular text-[#0F2138]">{rating.toFixed(1)}</span>
+                <span className="font-semibold tabular text-[#083466]">{rating.toFixed(1)}</span>
               </span>
               <span aria-hidden="true">·</span>
               <span>
@@ -247,10 +247,10 @@ export function ProductCard({
         <div className="mt-auto pt-3 border-t border-black/[0.06] space-y-3">
           <div className="flex items-baseline justify-between gap-2">
             <div>
-              <span className="text-[10px] font-bold text-[#0077C8] uppercase tracking-wider block">
+              <span className="text-[10px] font-bold text-[#0A9EE6] uppercase tracking-wider block">
                 Special Cash Price:
               </span>
-              <div className="text-lg sm:text-xl font-black tabular tracking-tight text-[#0F2138]">
+              <div className="text-lg sm:text-xl font-black tabular tracking-tight text-[#083466]">
                 {formatBDT(price)}
               </div>
             </div>
@@ -273,7 +273,7 @@ export function ProductCard({
               transition={TACTILE_SPRING}
               onClick={handleBuyNow}
               disabled={isOutOfStock}
-              className="col-span-8 sm:col-span-9 py-2.5 px-3 rounded-full bg-[#0F2138] hover:bg-[#0077C8] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs disabled:opacity-50"
+              className="col-span-8 sm:col-span-9 py-2.5 px-3 rounded-full bg-[#083466] hover:bg-[#0A9EE6] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs disabled:opacity-50"
             >
               <Zap className="w-3.5 h-3.5 text-amber-400" />
               <span>Buy Now</span>
@@ -285,7 +285,7 @@ export function ProductCard({
               transition={TACTILE_SPRING}
               onClick={handleAddToCart}
               disabled={isOutOfStock}
-              className="col-span-4 sm:col-span-3 py-2.5 rounded-full bg-[#F3F7FB] hover:bg-black/[0.08] text-[#0F2138] hover:text-[#0077C8] transition flex items-center justify-center border border-black/[0.06] disabled:opacity-50"
+              className="col-span-4 sm:col-span-3 py-2.5 rounded-full bg-[#F3F7FB] hover:bg-black/[0.08] text-[#083466] hover:text-[#0A9EE6] transition flex items-center justify-center border border-black/[0.06] disabled:opacity-50"
               aria-label={isOutOfStock ? `${name} is out of stock` : `Add ${name} to cart`}
               title="Add to cart"
             >

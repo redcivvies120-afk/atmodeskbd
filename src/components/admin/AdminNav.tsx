@@ -34,10 +34,10 @@ function NavList() {
             href={item.href}
             aria-current={active ? 'page' : undefined}
             className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition ${
-              active ? 'bg-white text-[#003060] shadow-sm' : 'text-sky-100/80 hover:bg-white/10 hover:text-white'
+              active ? 'bg-white text-[#083466] shadow-sm' : 'text-sky-100/80 hover:bg-white/10 hover:text-white'
             }`}
           >
-            <Icon className={`w-4 h-4 ${active ? 'text-[#0077C8]' : 'text-sky-300'}`} />
+            <Icon className={`w-4 h-4 ${active ? 'text-[#0A9EE6]' : 'text-sky-300'}`} />
             <span>{item.label}</span>
           </Link>
         )

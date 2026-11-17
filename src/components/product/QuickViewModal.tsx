@@ -157,7 +157,7 @@ export function QuickViewModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 10 }}
             transition={LIQUID_SPRING}
-            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-bright rounded-[32px] z-10 no-scrollbar text-[#0F2138]"
+            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-bright rounded-[32px] z-10 no-scrollbar text-[#083466]"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -199,7 +199,7 @@ export function QuickViewModal({
                         onClick={() => setSelectedImageIndex(idx)}
                         className={`relative w-14 h-14 rounded-xl overflow-hidden border-2 transition flex-shrink-0 cursor-pointer ${
                           selectedImageIndex === idx
-                            ? 'border-[#0077C8] shadow-xs'
+                            ? 'border-[#0A9EE6] shadow-xs'
                             : 'border-black/10 opacity-70 hover:opacity-100'
                         }`}
                       >
@@ -222,17 +222,17 @@ export function QuickViewModal({
               <div className="flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
                   {categoryName && (
-                    <span className="inline-block text-xs font-semibold text-[#0077C8] bg-[#f0f7ff] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="inline-block text-xs font-semibold text-[#0A9EE6] bg-[#f0f7ff] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                       {categoryName}
                     </span>
                   )}
 
-                  <h2 className="text-xl sm:text-2xl font-bold text-[#0F2138] leading-tight">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#083466] leading-tight">
                     {activeProduct.name}
                   </h2>
 
                   <div className="flex items-baseline gap-3">
-                    <span className="text-2xl sm:text-3xl font-bold text-[#0F2138] tabular">
+                    <span className="text-2xl sm:text-3xl font-bold text-[#083466] tabular">
                       {formatBDT(activeProduct.price)}
                     </span>
                     {activeProduct.originalPrice && activeProduct.originalPrice > activeProduct.price && (
@@ -274,19 +274,19 @@ export function QuickViewModal({
                           type="button"
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
                           disabled={quantity <= 1}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#0F2138] hover:bg-white transition disabled:opacity-30 cursor-pointer"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#083466] hover:bg-white transition disabled:opacity-30 cursor-pointer"
                           aria-label="Decrease quantity"
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="w-10 text-center font-bold text-[#0F2138] text-sm tabular">
+                        <span className="w-10 text-center font-bold text-[#083466] text-sm tabular">
                           {quantity}
                         </span>
                         <button
                           type="button"
                           onClick={() => setQuantity(Math.min(activeProduct.stock, quantity + 1))}
                           disabled={quantity >= activeProduct.stock}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#0F2138] hover:bg-white transition disabled:opacity-30 cursor-pointer"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#083466] hover:bg-white transition disabled:opacity-30 cursor-pointer"
                           aria-label="Increase quantity"
                         >
                           <Plus className="w-3.5 h-3.5" />
@@ -320,7 +320,7 @@ export function QuickViewModal({
                     <Link
                       href={`/product/${activeProduct.slug}`}
                       onClick={onClose}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#5B6B80] hover:text-[#0077C8] transition"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#5B6B80] hover:text-[#0A9EE6] transition"
                     >
                       <span>View Full Details</span>
                       <ArrowRight className="w-3.5 h-3.5" />
