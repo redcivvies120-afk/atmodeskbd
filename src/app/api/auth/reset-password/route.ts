@@ -1,6 +1,7 @@
 // src/app/api/auth/reset-password/route.ts
 // Step 2: verify the one-time code and set the new password.
 import { NextResponse } from 'next/server'
+import { SELF_SERVICE_PASSWORD_RESET } from '@/lib/features'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
 import { normalizeBDPhone } from '@/lib/utils'
@@ -10,6 +11,12 @@ import { getClientIp, checkRateLimit, rateLimitExceededResponse } from '@/lib/ra
 const bad = () => NextResponse.json({ error: 'Invalid or expired code.' }, { status: 400 })
 
 export async function POST(req: Request) {
+  if (!SELF_SERVICE_PASSWORD_RESET) {
+    return NextResponse.json(
+      { error: 'Password reset by code is turned off. Please contact support on WhatsApp.' },
+      { status: 503 }
+    )
+  }
   try {
     const rl = await checkRateLimit(`rp_ip:${getClientIp(req)}`, 10, 900)
     if (!rl.success) return rateLimitExceededResponse(rl)

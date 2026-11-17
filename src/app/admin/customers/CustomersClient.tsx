@@ -92,6 +92,16 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
 
   return (
     <div className="space-y-6">
+      {/* How password reset works */}
+      <div className="bg-sky-50 border border-sky-100 rounded-2xl px-5 py-4 text-xs text-slate-700 flex items-start gap-3">
+        <KeyRound className="w-4 h-4 text-sky-600 mt-0.5 flex-shrink-0" />
+        <p>
+          <strong className="text-slate-900">Customer forgot their password?</strong> They message you on WhatsApp. Find
+          them below, click <strong>Reset password</strong>, then send the new temporary password to them on WhatsApp.
+          No code is involved.
+        </p>
+      </div>
+
       {/* Header Stat Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center gap-4">
@@ -239,7 +249,7 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
                             className="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1 shadow-2xs"
                           >
                             <KeyRound className="w-3 h-3 text-sky-400" />
-                            <span>Reset</span>
+                            <span>Reset password</span>
                           </button>
 
                           {/* WhatsApp Customer */}

@@ -1,6 +1,7 @@
 // src/app/api/auth/forgot-password/route.ts
 // Step 1: request a one-time code. Always returns the same response (no account enumeration).
 import { NextResponse } from 'next/server'
+import { SELF_SERVICE_PASSWORD_RESET } from '@/lib/features'
 import { randomInt } from 'crypto'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
@@ -15,6 +16,12 @@ const GENERIC = {
 }
 
 export async function POST(req: Request) {
+  if (!SELF_SERVICE_PASSWORD_RESET) {
+    return NextResponse.json(
+      { error: 'Password reset by code is turned off. Please contact support on WhatsApp.' },
+      { status: 503 }
+    )
+  }
   try {
     const rl = await checkRateLimit(`fp_ip:${getClientIp(req)}`, 5, 900)
     if (!rl.success) return rateLimitExceededResponse(rl)
