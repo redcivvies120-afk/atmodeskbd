@@ -186,24 +186,24 @@ export function DeskSetupBuilder() {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" id="desk-builder">
-      <div className="liquid-glass-card rounded-[36px] p-6 sm:p-10 md:p-12 border border-black/[0.08] shadow-xl relative overflow-hidden bg-gradient-to-b from-white via-[#fafafa] to-[#f5f5f7]">
+      <div className="liquid-glass-card rounded-[36px] p-6 sm:p-10 md:p-12 border border-black/[0.08] shadow-xl relative overflow-hidden bg-gradient-to-b from-white via-[#fafafa] to-[#F3F7FB]">
         {/* Specular Ambient Glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#0071e3]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#0077C8]/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* Section Header */}
         <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10 pb-6 border-b border-black/[0.06]">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#0071e3]/10 px-3.5 py-1 text-xs font-bold text-[#0071e3] mb-3">
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#0077C8]/10 px-3.5 py-1 text-xs font-bold text-[#0077C8] mb-3">
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>ATMODESK STUDIO · INTERACTIVE BUILDER</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#1d1d1f]">
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#0F2138]">
               Build Your Dream Ambient Desk
             </h2>
-            <p className="text-sm sm:text-base text-[#6e6e73] max-w-2xl mt-1.5">
+            <p className="text-sm sm:text-base text-[#5B6B80] max-w-2xl mt-1.5">
               Customize your workstation centerpiece, ambient lighting, and desk surface accessories. Get an instant{' '}
-              <strong className="text-[#0071e3]">10% Bundle Discount</strong> with Cash on Delivery nationwide.
+              <strong className="text-[#0077C8]">10% Bundle Discount</strong> with Cash on Delivery nationwide.
             </p>
           </div>
 
@@ -220,13 +220,13 @@ export function DeskSetupBuilder() {
             {/* Step 1: Centerpiece */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1d1d1f]">
-                  <span className="w-6 h-6 rounded-full bg-[#0071e3] text-white flex items-center justify-center text-xs font-black">
+                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0F2138]">
+                  <span className="w-6 h-6 rounded-full bg-[#0077C8] text-white flex items-center justify-center text-xs font-black">
                     1
                   </span>
                   Choose Smart Centerpiece
                 </span>
-                <span className="text-xs text-[#6e6e73]">WiFi Weather &amp; Clocks</span>
+                <span className="text-xs text-[#5B6B80]">WiFi Weather &amp; Clocks</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -241,23 +241,23 @@ export function DeskSetupBuilder() {
                       onClick={() => setSelectedCenter(item)}
                       className={`text-left rounded-2xl p-4 transition-all duration-200 border flex flex-col justify-between relative ${
                         isSelected
-                          ? 'bg-white border-[#0071e3] shadow-md ring-2 ring-[#0071e3]/20'
+                          ? 'bg-white border-[#0077C8] shadow-md ring-2 ring-[#0077C8]/20'
                           : 'bg-white/80 border-black/[0.08] hover:border-black/20 hover:bg-white'
                       }`}
                     >
                       {isSelected && (
-                        <span className="absolute top-3 right-3 text-[#0071e3]">
-                          <CheckCircle2 className="w-4 h-4 fill-[#0071e3] text-white" />
+                        <span className="absolute top-3 right-3 text-[#0077C8]">
+                          <CheckCircle2 className="w-4 h-4 fill-[#0077C8] text-white" />
                         </span>
                       )}
                       <div>
-                        <div className="text-xs font-bold text-[#1d1d1f]">{item.name}</div>
-                        <p className="text-[11px] text-[#6e6e73] line-clamp-2 mt-0.5 leading-snug">
+                        <div className="text-xs font-bold text-[#0F2138]">{item.name}</div>
+                        <p className="text-[11px] text-[#5B6B80] line-clamp-2 mt-0.5 leading-snug">
                           {item.subtitle}
                         </p>
                       </div>
                       <div className="mt-4 pt-2 border-t border-black/[0.06] flex items-baseline gap-2">
-                        <span className="text-sm font-bold text-[#1d1d1f] tabular">{formatBDT(item.price)}</span>
+                        <span className="text-sm font-bold text-[#0F2138] tabular">{formatBDT(item.price)}</span>
                         <span className="text-[10px] text-[#86868b] line-through tabular">
                           {formatBDT(item.originalPrice)}
                         </span>
@@ -271,13 +271,13 @@ export function DeskSetupBuilder() {
             {/* Step 2: Lighting Accents */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1d1d1f]">
-                  <span className="w-6 h-6 rounded-full bg-[#0071e3] text-white flex items-center justify-center text-xs font-black">
+                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0F2138]">
+                  <span className="w-6 h-6 rounded-full bg-[#0077C8] text-white flex items-center justify-center text-xs font-black">
                     2
                   </span>
                   Choose Ambient Lighting
                 </span>
-                <span className="text-xs text-[#6e6e73]">Eye-care &amp; Mood</span>
+                <span className="text-xs text-[#5B6B80]">Eye-care &amp; Mood</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -292,25 +292,25 @@ export function DeskSetupBuilder() {
                       onClick={() => setSelectedLight(item)}
                       className={`text-left rounded-2xl p-4 transition-all duration-200 border flex flex-col justify-between relative ${
                         isSelected
-                          ? 'bg-white border-[#0071e3] shadow-md ring-2 ring-[#0071e3]/20'
+                          ? 'bg-white border-[#0077C8] shadow-md ring-2 ring-[#0077C8]/20'
                           : 'bg-white/80 border-black/[0.08] hover:border-black/20 hover:bg-white'
                       }`}
                     >
                       {isSelected && (
-                        <span className="absolute top-3 right-3 text-[#0071e3]">
-                          <CheckCircle2 className="w-4 h-4 fill-[#0071e3] text-white" />
+                        <span className="absolute top-3 right-3 text-[#0077C8]">
+                          <CheckCircle2 className="w-4 h-4 fill-[#0077C8] text-white" />
                         </span>
                       )}
                       <div>
-                        <div className="text-xs font-bold text-[#1d1d1f]">{item.name}</div>
-                        <p className="text-[11px] text-[#6e6e73] line-clamp-2 mt-0.5 leading-snug">
+                        <div className="text-xs font-bold text-[#0F2138]">{item.name}</div>
+                        <p className="text-[11px] text-[#5B6B80] line-clamp-2 mt-0.5 leading-snug">
                           {item.subtitle}
                         </p>
                       </div>
                       <div className="mt-4 pt-2 border-t border-black/[0.06] flex items-baseline gap-2">
                         {item.price > 0 ? (
                           <>
-                            <span className="text-sm font-bold text-[#1d1d1f] tabular">
+                            <span className="text-sm font-bold text-[#0F2138] tabular">
                               +{formatBDT(item.price)}
                             </span>
                             <span className="text-[10px] text-[#86868b] line-through tabular">
@@ -330,13 +330,13 @@ export function DeskSetupBuilder() {
             {/* Step 3: Desk Surface & Power */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1d1d1f]">
-                  <span className="w-6 h-6 rounded-full bg-[#0071e3] text-white flex items-center justify-center text-xs font-black">
+                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0F2138]">
+                  <span className="w-6 h-6 rounded-full bg-[#0077C8] text-white flex items-center justify-center text-xs font-black">
                     3
                   </span>
                   Choose Power &amp; Surface
                 </span>
-                <span className="text-xs text-[#6e6e73]">Desk Organization</span>
+                <span className="text-xs text-[#5B6B80]">Desk Organization</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -351,25 +351,25 @@ export function DeskSetupBuilder() {
                       onClick={() => setSelectedAcc(item)}
                       className={`text-left rounded-2xl p-4 transition-all duration-200 border flex flex-col justify-between relative ${
                         isSelected
-                          ? 'bg-white border-[#0071e3] shadow-md ring-2 ring-[#0071e3]/20'
+                          ? 'bg-white border-[#0077C8] shadow-md ring-2 ring-[#0077C8]/20'
                           : 'bg-white/80 border-black/[0.08] hover:border-black/20 hover:bg-white'
                       }`}
                     >
                       {isSelected && (
-                        <span className="absolute top-3 right-3 text-[#0071e3]">
-                          <CheckCircle2 className="w-4 h-4 fill-[#0071e3] text-white" />
+                        <span className="absolute top-3 right-3 text-[#0077C8]">
+                          <CheckCircle2 className="w-4 h-4 fill-[#0077C8] text-white" />
                         </span>
                       )}
                       <div>
-                        <div className="text-xs font-bold text-[#1d1d1f]">{item.name}</div>
-                        <p className="text-[11px] text-[#6e6e73] line-clamp-2 mt-0.5 leading-snug">
+                        <div className="text-xs font-bold text-[#0F2138]">{item.name}</div>
+                        <p className="text-[11px] text-[#5B6B80] line-clamp-2 mt-0.5 leading-snug">
                           {item.subtitle}
                         </p>
                       </div>
                       <div className="mt-4 pt-2 border-t border-black/[0.06] flex items-baseline gap-2">
                         {item.price > 0 ? (
                           <>
-                            <span className="text-sm font-bold text-[#1d1d1f] tabular">
+                            <span className="text-sm font-bold text-[#0F2138] tabular">
                               +{formatBDT(item.price)}
                             </span>
                             <span className="text-[10px] text-[#86868b] line-through tabular">
@@ -391,8 +391,8 @@ export function DeskSetupBuilder() {
           <div className="lg:col-span-4">
             <div className="liquid-glass-card rounded-3xl p-6 border border-black/[0.08] bg-white sticky top-24 space-y-6 shadow-lg">
               <div className="flex items-center justify-between pb-4 border-b border-black/[0.06]">
-                <div className="text-sm font-bold text-[#1d1d1f] uppercase tracking-wider flex items-center gap-2">
-                  <PackageCheck className="w-4 h-4 text-[#0071e3]" />
+                <div className="text-sm font-bold text-[#0F2138] uppercase tracking-wider flex items-center gap-2">
+                  <PackageCheck className="w-4 h-4 text-[#0077C8]" />
                   Setup Summary
                 </div>
                 <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
@@ -403,37 +403,37 @@ export function DeskSetupBuilder() {
               {/* Selected List */}
               <div className="space-y-3 text-xs">
                 <div className="flex items-start justify-between gap-2">
-                  <div className="text-[#1d1d1f] font-semibold">
+                  <div className="text-[#0F2138] font-semibold">
                     1. {selectedCenter.name}
-                    <span className="block text-[10px] text-[#6e6e73] font-normal">Centerpiece</span>
+                    <span className="block text-[10px] text-[#5B6B80] font-normal">Centerpiece</span>
                   </div>
-                  <span className="font-bold tabular text-[#1d1d1f]">{formatBDT(selectedCenter.price)}</span>
+                  <span className="font-bold tabular text-[#0F2138]">{formatBDT(selectedCenter.price)}</span>
                 </div>
 
                 {selectedLight.price > 0 && (
                   <div className="flex items-start justify-between gap-2">
-                    <div className="text-[#1d1d1f] font-semibold">
+                    <div className="text-[#0F2138] font-semibold">
                       2. {selectedLight.name}
-                      <span className="block text-[10px] text-[#6e6e73] font-normal">Ambient Light</span>
+                      <span className="block text-[10px] text-[#5B6B80] font-normal">Ambient Light</span>
                     </div>
-                    <span className="font-bold tabular text-[#1d1d1f]">+{formatBDT(selectedLight.price)}</span>
+                    <span className="font-bold tabular text-[#0F2138]">+{formatBDT(selectedLight.price)}</span>
                   </div>
                 )}
 
                 {selectedAcc.price > 0 && (
                   <div className="flex items-start justify-between gap-2">
-                    <div className="text-[#1d1d1f] font-semibold">
+                    <div className="text-[#0F2138] font-semibold">
                       3. {selectedAcc.name}
-                      <span className="block text-[10px] text-[#6e6e73] font-normal">Surface &amp; Power</span>
+                      <span className="block text-[10px] text-[#5B6B80] font-normal">Surface &amp; Power</span>
                     </div>
-                    <span className="font-bold tabular text-[#1d1d1f]">+{formatBDT(selectedAcc.price)}</span>
+                    <span className="font-bold tabular text-[#0F2138]">+{formatBDT(selectedAcc.price)}</span>
                   </div>
                 )}
               </div>
 
               {/* Pricing Breakdown */}
               <div className="pt-4 border-t border-black/[0.06] space-y-2 text-xs">
-                <div className="flex items-center justify-between text-[#6e6e73]">
+                <div className="flex items-center justify-between text-[#5B6B80]">
                   <span>Item Subtotal:</span>
                   <span className="tabular font-medium">{formatBDT(subtotal)}</span>
                 </div>
@@ -441,19 +441,19 @@ export function DeskSetupBuilder() {
                   <span>Bundle Special Discount (10%):</span>
                   <span className="tabular">-{formatBDT(bundleDiscount)}</span>
                 </div>
-                <div className="flex items-center justify-between text-[#6e6e73]">
+                <div className="flex items-center justify-between text-[#5B6B80]">
                   <span>Delivery inside Dhaka:</span>
                   <span className="text-emerald-700 font-semibold uppercase">Free</span>
                 </div>
                 <div className="pt-3 border-t border-black/[0.08] flex items-baseline justify-between">
                   <div>
-                    <span className="text-xs font-bold text-[#1d1d1f] block">Special Cash Price:</span>
+                    <span className="text-xs font-bold text-[#0F2138] block">Special Cash Price:</span>
                     <span className="text-[10px] text-[#86868b] line-through tabular">
                       Regular: {formatBDT(originalSubtotal)}
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-black text-[#0071e3] tabular tracking-tight">
+                    <span className="text-2xl font-black text-[#0077C8] tabular tracking-tight">
                       {formatBDT(bundleTotal)}
                     </span>
                     <span className="block text-[10px] font-bold text-rose-600">
@@ -470,14 +470,14 @@ export function DeskSetupBuilder() {
                 whileTap={{ scale: 0.98 }}
                 transition={TACTILE_SPRING}
                 onClick={handleOrderSetup}
-                className="w-full py-3.5 px-4 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-sm shadow-lg shadow-[#0071e3]/20 flex items-center justify-center gap-2 transition"
+                className="w-full py-3.5 px-4 rounded-full bg-[#0077C8] hover:bg-[#0066AD] text-white font-bold text-sm shadow-lg shadow-[#0077C8]/20 flex items-center justify-center gap-2 transition"
               >
                 <span>Order Complete Setup (COD)</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
 
               {/* Trust Indicators */}
-              <div className="space-y-1.5 pt-2 text-[11px] text-[#6e6e73]">
+              <div className="space-y-1.5 pt-2 text-[11px] text-[#5B6B80]">
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
                   <span>Cash on Delivery across all 64 districts</span>

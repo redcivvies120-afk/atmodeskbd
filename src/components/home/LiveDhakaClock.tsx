@@ -139,16 +139,16 @@ export function LiveDhakaClock() {
       {/* Frosted Silver & White Apple Hardware Enclosure */}
       <div className="relative rounded-[34px] p-5 bg-white/85 backdrop-blur-2xl backdrop-saturate-180 border border-black/[0.08] shadow-[0_24px_54px_-16px_rgba(0,0,0,0.12),inset_0_1px_0_#ffffff]">
         {/* Top Status Row */}
-        <div className="mb-4 flex items-center justify-between text-xs text-[#6e6e73]">
-          <span className="inline-flex items-center gap-2 font-semibold text-[#1d1d1f]">
+        <div className="mb-4 flex items-center justify-between text-xs text-[#5B6B80]">
+          <span className="inline-flex items-center gap-2 font-semibold text-[#0F2138]">
             <span className="relative flex h-2 w-2" aria-hidden="true">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
             Live Dhaka time
           </span>
-          <span className="inline-flex items-center gap-1.5 font-medium text-[#6e6e73]">
-            <Wifi className="h-3.5 w-3.5 text-[#0071e3]" /> UTC+6
+          <span className="inline-flex items-center gap-1.5 font-medium text-[#5B6B80]">
+            <Wifi className="h-3.5 w-3.5 text-[#0077C8]" /> UTC+6
           </span>
         </div>
 
@@ -176,7 +176,7 @@ export function LiveDhakaClock() {
                   aria-selected={selected}
                   onClick={() => setMode(m.id)}
                   className={`relative rounded-full px-3.5 py-1 text-[11px] font-semibold transition-colors ${
-                    selected ? 'text-[#1d1d1f]' : 'text-slate-300 hover:text-white'
+                    selected ? 'text-[#0F2138]' : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   {selected && (
@@ -317,12 +317,12 @@ export function LiveDhakaClock() {
         </div>
 
         {/* Light Spec Chips */}
-        <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] font-medium text-[#1d1d1f]">
-          <div className="flex items-center gap-2.5 rounded-2xl bg-[#f5f5f7] p-2">
+        <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] font-medium text-[#0F2138]">
+          <div className="flex items-center gap-2.5 rounded-2xl bg-[#F3F7FB] p-2">
             <LiquidIcon icon={Zap} tone="amber" variant="glass" size="sm" />
             <span>USB-C powered</span>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-[#f5f5f7] p-2">
+          <div className="flex items-center gap-2.5 rounded-2xl bg-[#F3F7FB] p-2">
             <LiquidIcon icon={Wifi} tone="sky" variant="glass" size="sm" />
             <span>Auto-sync over WiFi</span>
           </div>

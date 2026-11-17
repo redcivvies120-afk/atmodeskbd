@@ -12,7 +12,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight } from 'lucide-react'
 const FALLBACK_IMG =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' fill='#f5f5f7'/><circle cx='100' cy='100' r='34' fill='none' stroke='#86868b' stroke-width='6'/></svg>`
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' fill='#F3F7FB'/><circle cx='100' cy='100' r='34' fill='none' stroke='#86868b' stroke-width='6'/></svg>`
   )
 
 export function CartDrawer() {
@@ -38,14 +38,14 @@ export function CartDrawer() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={LIQUID_SPRING}
-              className="w-screen max-w-md glass-bright border-l border-black/[0.08] flex flex-col text-[#1d1d1f]"
+              className="w-screen max-w-md glass-bright border-l border-black/[0.08] flex flex-col text-[#0F2138]"
             >
               {/* Header */}
               <div className="p-4 md:p-6 border-b border-black/[0.06] flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-[#0071e3]" />
-                  <h2 className="text-lg font-bold text-[#1d1d1f]">Your Shopping Cart</h2>
-                  <span className="bg-[#f0f7ff] text-[#0071e3] text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                  <ShoppingBag className="w-5 h-5 text-[#0077C8]" />
+                  <h2 className="text-lg font-bold text-[#0F2138]">Your Shopping Cart</h2>
+                  <span className="bg-[#f0f7ff] text-[#0077C8] text-xs font-semibold px-2.5 py-0.5 rounded-full">
                     {itemCount()} items
                   </span>
                 </div>
@@ -61,12 +61,12 @@ export function CartDrawer() {
               {/* Body */}
               <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3">
                 {items.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-center p-6 text-[#6e6e73]">
-                    <div className="w-16 h-16 bg-[#f5f5f7] rounded-full flex items-center justify-center mb-4 text-[#86868b]">
+                  <div className="h-full flex flex-col items-center justify-center text-center p-6 text-[#5B6B80]">
+                    <div className="w-16 h-16 bg-[#F3F7FB] rounded-full flex items-center justify-center mb-4 text-[#86868b]">
                       <ShoppingBag className="w-8 h-8" />
                     </div>
-                    <h3 className="text-base font-semibold text-[#1d1d1f] mb-1">Your cart is empty</h3>
-                    <p className="text-sm text-[#6e6e73] mb-6">
+                    <h3 className="text-base font-semibold text-[#0F2138] mb-1">Your cart is empty</h3>
+                    <p className="text-sm text-[#5B6B80] mb-6">
                       Looks like you haven&apos;t added any smart gadgets yet.
                     </p>
                     <motion.button
@@ -88,7 +88,7 @@ export function CartDrawer() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: 24 }}
                         transition={LIQUID_SPRING}
-                        className="flex gap-4 p-3 bg-[#f5f5f7] rounded-2xl border border-black/[0.05] items-center"
+                        className="flex gap-4 p-3 bg-[#F3F7FB] rounded-2xl border border-black/[0.05] items-center"
                       >
                         <div className="relative w-18 h-18 bg-white rounded-xl overflow-hidden flex-shrink-0 border border-black/[0.06]">
                           <img
@@ -105,31 +105,31 @@ export function CartDrawer() {
                           <Link
                             href={`/product/${item.slug}`}
                             onClick={closeCart}
-                            className="text-sm font-semibold text-[#1d1d1f] hover:text-[#0071e3] line-clamp-1"
+                            className="text-sm font-semibold text-[#0F2138] hover:text-[#0077C8] line-clamp-1"
                           >
                             {item.name}
                           </Link>
                           {item.variantName && (
-                            <p className="text-xs text-[#6e6e73] mt-0.5">{item.variantName}</p>
+                            <p className="text-xs text-[#5B6B80] mt-0.5">{item.variantName}</p>
                           )}
                           <div className="flex items-center justify-between mt-2">
-                            <span className="text-sm font-bold text-[#0071e3] tabular">
+                            <span className="text-sm font-bold text-[#0077C8] tabular">
                               {formatBDT(item.price)}
                             </span>
                             <div className="flex items-center border border-black/10 rounded-lg bg-white overflow-hidden">
                               <button
                                 onClick={() => updateQty(item.productId, item.quantity - 1, item.variantId)}
-                                className="p-1.5 hover:bg-[#f5f5f7] text-[#1d1d1f] transition"
+                                className="p-1.5 hover:bg-[#F3F7FB] text-[#0F2138] transition"
                               >
                                 <Minus className="w-3.5 h-3.5" />
                               </button>
-                              <span className="px-2 text-xs font-semibold text-[#1d1d1f] min-w-6 text-center tabular">
+                              <span className="px-2 text-xs font-semibold text-[#0F2138] min-w-6 text-center tabular">
                                 {item.quantity}
                               </span>
                               <button
                                 onClick={() => updateQty(item.productId, item.quantity + 1, item.variantId)}
                                 disabled={item.quantity >= item.stock}
-                                className="p-1.5 hover:bg-[#f5f5f7] text-[#1d1d1f] transition disabled:opacity-30"
+                                className="p-1.5 hover:bg-[#F3F7FB] text-[#0F2138] transition disabled:opacity-30"
                               >
                                 <Plus className="w-3.5 h-3.5" />
                               </button>
@@ -151,11 +151,11 @@ export function CartDrawer() {
 
               {/* Footer */}
               {items.length > 0 && (
-                <div className="p-4 md:p-6 border-t border-black/[0.06] bg-[#f5f5f7]/70 space-y-4">
+                <div className="p-4 md:p-6 border-t border-black/[0.06] bg-[#F3F7FB]/70 space-y-4">
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-sm text-[#6e6e73]">
+                    <div className="flex justify-between text-sm text-[#5B6B80]">
                       <span>Subtotal</span>
-                      <span className="font-semibold text-[#1d1d1f] tabular">{formatBDT(subtotal())}</span>
+                      <span className="font-semibold text-[#0F2138] tabular">{formatBDT(subtotal())}</span>
                     </div>
                     <div className="flex justify-between text-xs text-[#86868b]">
                       <span>Shipping</span>
@@ -164,8 +164,8 @@ export function CartDrawer() {
                   </div>
 
                   <div className="border-t border-black/[0.08] pt-3 flex justify-between items-baseline">
-                    <span className="text-base font-bold text-[#1d1d1f]">Total (Est.)</span>
-                    <span className="text-xl font-bold text-[#0071e3] tabular">
+                    <span className="text-base font-bold text-[#0F2138]">Total (Est.)</span>
+                    <span className="text-xl font-bold text-[#0077C8] tabular">
                       {formatBDT(subtotal())}
                     </span>
                   </div>

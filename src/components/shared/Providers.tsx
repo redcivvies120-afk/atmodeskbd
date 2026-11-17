@@ -25,7 +25,7 @@ export const useToast = () => useContext(ToastContext)
 const TONE: Record<ToastType, { icon: typeof Info; cls: string }> = {
   success: { icon: CheckCircle2, cls: 'text-emerald-600' },
   error: { icon: AlertTriangle, cls: 'text-rose-600' },
-  info: { icon: Info, cls: 'text-[#0071e3]' },
+  info: { icon: Info, cls: 'text-[#0077C8]' },
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -68,7 +68,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={LIQUID_SPRING}
-                  className="pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-[#1d1d1f] glass-bright"
+                  className="pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-[#0F2138] glass-bright"
                 >
                   <Icon className={`h-5 w-5 flex-none ${cls}`} aria-hidden="true" />
                   <span className="flex-1 leading-snug">{t.text}</span>

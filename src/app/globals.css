@@ -3,7 +3,7 @@
 
 /* =========================================================================
    ATMODESK.bd Design System — Bright White Apple Liquid Glass (iOS 26)
-   Pure White (#ffffff) · Studio Off-White (#f5f5f7) · Crisp Frosted Glass
+   Pure White (#ffffff) · Studio Off-White (#F3F7FB) · Crisp Frosted Glass
    ========================================================================= */
 
 @theme inline {
@@ -14,18 +14,18 @@
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #1d1d1f;
-    --primary: #0071e3;
-    --primary-hover: #0077ed;
+    --foreground: #0F2138;
+    --primary: #0077C8;
+    --primary-hover: #0066AD;
     --primary-light: #f0f7ff;
     --accent: #f59e0b;
     --border: rgba(0, 0, 0, 0.08);
-    --muted: #6e6e73;
+    --muted: #5B6B80;
     --card: #ffffff;
-    --card-foreground: #1d1d1f;
+    --card-foreground: #0F2138;
 
-    --sys-blue: #0071e3;
-    --sys-cyan: #32ade6;
+    --sys-blue: #0077C8;
+    --sys-cyan: #00A0F0;
     --sys-indigo: #5856d6;
     --sys-purple: #af52de;
     --sys-teal: #00c7be;
@@ -61,7 +61,7 @@ html {
 
 body {
   background-color: #ffffff;
-  color: #1d1d1f;
+  color: #0F2138;
   font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -80,7 +80,7 @@ p { text-wrap: pretty; }
 }
 :focus:not(:focus-visible) { outline: none; }
 
-::selection { background: #0071e3; color: #ffffff; }
+::selection { background: #0077C8; color: #ffffff; }
 
 /* --- Scrollbar --------------------------------------------------------- */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -185,11 +185,11 @@ p { text-wrap: pretty; }
 
 .lg-dock-item {
   position: relative;
-  color: #6e6e73;
+  color: #5B6B80;
   transition: color 0.25s var(--ease);
 }
 .lg-dock-item[data-active="true"] {
-  color: #0071e3;
+  color: #0077C8;
 }
 .lg-dock-item > * {
   position: relative;
@@ -204,7 +204,7 @@ p { text-wrap: pretty; }
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  color: #1d1d1f;
+  color: #0F2138;
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
@@ -217,7 +217,7 @@ p { text-wrap: pretty; }
 .lg-glass-btn:hover {
   transform: scale(1.06);
   background: #ffffff;
-  color: #0071e3;
+  color: #0077C8;
 }
 .lg-glass-btn:active { transform: scale(0.93); }
 .lg-glass-btn[aria-pressed="true"] { color: #ff2d55; }
@@ -227,14 +227,14 @@ p { text-wrap: pretty; }
   position: relative;
   isolation: isolate;
   color: #ffffff;
-  background: #0071e3;
+  background: #0077C8;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     0 4px 14px -4px rgba(0, 113, 227, 0.45);
   transition: transform 0.25s var(--spring), background 0.2s, box-shadow 0.2s;
 }
 .lg-btn-primary:hover {
-  background: #0077ed;
+  background: #0066AD;
   transform: translateY(-1px);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
@@ -243,7 +243,7 @@ p { text-wrap: pretty; }
 .lg-btn-primary:active { transform: scale(0.97); }
 
 .lg-btn-ghost {
-  color: #1d1d1f;
+  color: #0F2138;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(14px) saturate(180%);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
@@ -255,7 +255,7 @@ p { text-wrap: pretty; }
 }
 .lg-btn-ghost:hover {
   background: #ffffff;
-  color: #0071e3;
+  color: #0077C8;
   transform: translateY(-1px);
 }
 .lg-btn-ghost:active { transform: scale(0.97); }
@@ -266,7 +266,7 @@ p { text-wrap: pretty; }
 .lg-icon {
   --s: 44px;
   --t1: #5ac8fa;
-  --t2: #0071e3;
+  --t2: #0077C8;
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -293,7 +293,7 @@ p { text-wrap: pretty; }
   stroke-width: 2;
 }
 
-.lg-sky    { --t1: #5ac8fa; --t2: #0071e3; }
+.lg-sky    { --t1: #5ac8fa; --t2: #0077C8; }
 .lg-indigo { --t1: #8e8cff; --t2: #5856d6; }
 .lg-violet { --t1: #da8fff; --t2: #af52de; }
 .lg-teal   { --t1: #5eead4; --t2: #00a99f; }

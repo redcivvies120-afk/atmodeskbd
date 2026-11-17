@@ -42,7 +42,7 @@ export interface QuickViewModalProps {
 const FALLBACK_IMG =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'><rect width='600' height='600' fill='#f5f5f7'/><circle cx='300' cy='300' r='92' fill='none' stroke='#86868b' stroke-width='14'/></svg>`
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'><rect width='600' height='600' fill='#F3F7FB'/><circle cx='300' cy='300' r='92' fill='none' stroke='#86868b' stroke-width='14'/></svg>`
   )
 
 export function QuickViewModal({
@@ -157,7 +157,7 @@ export function QuickViewModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 10 }}
             transition={LIQUID_SPRING}
-            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-bright rounded-[32px] z-10 no-scrollbar text-[#1d1d1f]"
+            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-bright rounded-[32px] z-10 no-scrollbar text-[#0F2138]"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -172,7 +172,7 @@ export function QuickViewModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 sm:p-7 lg:p-8">
               {/* Product Gallery */}
               <div className="flex flex-col gap-3">
-                <div className="relative aspect-square w-full bg-[#f5f5f7] rounded-2xl overflow-hidden border border-black/[0.06]">
+                <div className="relative aspect-square w-full bg-[#F3F7FB] rounded-2xl overflow-hidden border border-black/[0.06]">
                   <img
                     src={currentImage}
                     alt={activeProduct.name}
@@ -199,7 +199,7 @@ export function QuickViewModal({
                         onClick={() => setSelectedImageIndex(idx)}
                         className={`relative w-14 h-14 rounded-xl overflow-hidden border-2 transition flex-shrink-0 cursor-pointer ${
                           selectedImageIndex === idx
-                            ? 'border-[#0071e3] shadow-xs'
+                            ? 'border-[#0077C8] shadow-xs'
                             : 'border-black/10 opacity-70 hover:opacity-100'
                         }`}
                       >
@@ -222,17 +222,17 @@ export function QuickViewModal({
               <div className="flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
                   {categoryName && (
-                    <span className="inline-block text-xs font-semibold text-[#0071e3] bg-[#f0f7ff] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="inline-block text-xs font-semibold text-[#0077C8] bg-[#f0f7ff] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                       {categoryName}
                     </span>
                   )}
 
-                  <h2 className="text-xl sm:text-2xl font-bold text-[#1d1d1f] leading-tight">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#0F2138] leading-tight">
                     {activeProduct.name}
                   </h2>
 
                   <div className="flex items-baseline gap-3">
-                    <span className="text-2xl sm:text-3xl font-bold text-[#1d1d1f] tabular">
+                    <span className="text-2xl sm:text-3xl font-bold text-[#0F2138] tabular">
                       {formatBDT(activeProduct.price)}
                     </span>
                     {activeProduct.originalPrice && activeProduct.originalPrice > activeProduct.price && (
@@ -257,7 +257,7 @@ export function QuickViewModal({
                   </div>
 
                   {activeProduct.description && (
-                    <p className="text-xs sm:text-sm text-[#6e6e73] line-clamp-4 leading-relaxed pt-1">
+                    <p className="text-xs sm:text-sm text-[#5B6B80] line-clamp-4 leading-relaxed pt-1">
                       {activeProduct.description}
                     </p>
                   )}
@@ -266,27 +266,27 @@ export function QuickViewModal({
                 <div className="space-y-4 pt-3 border-t border-black/[0.06]">
                   {!isOutOfStock && (
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">
+                      <span className="text-xs font-semibold text-[#5B6B80] uppercase tracking-wider">
                         Quantity:
                       </span>
-                      <div className="flex items-center border border-black/10 rounded-xl bg-[#f5f5f7] p-1">
+                      <div className="flex items-center border border-black/10 rounded-xl bg-[#F3F7FB] p-1">
                         <button
                           type="button"
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
                           disabled={quantity <= 1}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#1d1d1f] hover:bg-white transition disabled:opacity-30 cursor-pointer"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#0F2138] hover:bg-white transition disabled:opacity-30 cursor-pointer"
                           aria-label="Decrease quantity"
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="w-10 text-center font-bold text-[#1d1d1f] text-sm tabular">
+                        <span className="w-10 text-center font-bold text-[#0F2138] text-sm tabular">
                           {quantity}
                         </span>
                         <button
                           type="button"
                           onClick={() => setQuantity(Math.min(activeProduct.stock, quantity + 1))}
                           disabled={quantity >= activeProduct.stock}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#1d1d1f] hover:bg-white transition disabled:opacity-30 cursor-pointer"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#0F2138] hover:bg-white transition disabled:opacity-30 cursor-pointer"
                           aria-label="Increase quantity"
                         >
                           <Plus className="w-3.5 h-3.5" />
@@ -320,7 +320,7 @@ export function QuickViewModal({
                     <Link
                       href={`/product/${activeProduct.slug}`}
                       onClick={onClose}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#6e6e73] hover:text-[#0071e3] transition"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#5B6B80] hover:text-[#0077C8] transition"
                     >
                       <span>View Full Details</span>
                       <ArrowRight className="w-3.5 h-3.5" />
