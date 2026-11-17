@@ -15,8 +15,8 @@ export async function POST(
   const body = await req.json().catch(() => ({}))
   const newPassword = body?.newPassword
 
-  if (!newPassword || typeof newPassword !== 'string' || newPassword.length < 6) {
-    return NextResponse.json({ error: 'Password must be at least 6 characters.' }, { status: 400 })
+  if (!newPassword || typeof newPassword !== 'string' || newPassword.length < 8) {
+    return NextResponse.json({ error: 'Password must be at least 8 characters.' }, { status: 400 })
   }
 
   const user = await prisma.user.findUnique({ where: { id } })

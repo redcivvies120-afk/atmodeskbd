@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
 
+  // PDF invoices: keep pdfkit as a normal Node dependency and ship the fonts/logo with the function
+  serverExternalPackages: ['pdfkit'],
+  outputFileTracingIncludes: {
+    '/api/admin/orders/[id]/invoice': ['./src/assets/fonts/**/*', './public/logo-header.png'],
+  },
+
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

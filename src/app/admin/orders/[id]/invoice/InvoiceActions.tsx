@@ -1,19 +1,12 @@
 'use client'
 
 import React, { useState } from 'react'
-import {
-  Printer,
-  ArrowLeft,
-  Download,
-  Share2,
-  Check,
-  MessageCircle,
-  FileText,
-  Loader2,
-} from 'lucide-react'
+import { Printer, ArrowLeft, Download, Share2, Check, MessageCircle, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
+import { STORE } from '@/lib/store-info'
 
 interface InvoiceActionsProps {
+  orderId: string
   orderNumber: string
   customerPhone?: string
   customerName?: string
@@ -22,159 +15,92 @@ interface InvoiceActionsProps {
 }
 
 export function InvoiceActions({
+  orderId,
   orderNumber,
   customerPhone = '',
   customerName = 'Customer',
-  totalAmount,
   codAmount,
 }: InvoiceActionsProps) {
-  const [isGenerating, setIsGenerating] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
 
-  // Dynamically load html2pdf from CDN
-  const loadHtml2Pdf = async (): Promise<any> => {
-    if (typeof window === 'undefined') return null
-    if ((window as any).html2pdf) return (window as any).html2pdf
-    return new Promise((resolve, reject) => {
-      const existing = document.getElementById('html2pdf-cdn')
-      if (existing) {
-        existing.addEventListener('load', () => resolve((window as any).html2pdf))
-        return
-      }
-      const script = document.createElement('script')
-      script.id = 'html2pdf-cdn'
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
-      script.async = true
-      script.onload = () => resolve((window as any).html2pdf)
-      script.onerror = () => reject(new Error('PDF generator script failed to load'))
-      document.head.appendChild(script)
-    })
-  }
-
-  const handleDownloadPDF = async () => {
-    setIsGenerating(true)
-    try {
-      const html2pdf = await loadHtml2Pdf()
-      const element = document.getElementById('invoice-printable-card')
-      if (!element) throw new Error('Invoice content element not found')
-
-      const opt = {
-        margin: [6, 8, 6, 8],
-        filename: `Invoice-ATMODESK-${orderNumber}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      }
-
-      await html2pdf().set(opt).from(element).save()
-    } catch (err) {
-      console.warn('Direct PDF export encountered an error, falling back to print dialog:', err)
-      window.print()
-    } finally {
-      setIsGenerating(false)
-    }
-  }
-
-  const handlePrint = () => {
-    window.print()
-  }
+  const pdfUrl = `/api/admin/orders/${orderId}/invoice`
+  const trackUrl = `${STORE.siteUrl}/track-order?order=${orderNumber}`
 
   const handleCopyLink = () => {
-    const trackUrl = `${window.location.origin}/track-order?order=${orderNumber}`
     navigator.clipboard.writeText(trackUrl)
     setCopiedLink(true)
     setTimeout(() => setCopiedLink(false), 2500)
   }
 
-  // Pre-formatted WhatsApp text link
-  const cleanPhone = customerPhone.startsWith('0')
-    ? '88' + customerPhone
-    : customerPhone.replace('+', '')
+  const digits = customerPhone.replace(/[^0-9]/g, '')
+  const cleanPhone = digits.startsWith('0') ? '88' + digits : digits
   const waText = encodeURIComponent(
-    `Hello ${customerName}, thank you for choosing Atmodesk Bangladesh! 📦\n\nYour order #${orderNumber} is confirmed for Cash on Delivery.\nAmount to pay upon delivery: ৳${codAmount.toLocaleString(
-      'en-BD'
-    )}\n\nLive tracking link: https://atmodeskbd.vercel.app/track-order?order=${orderNumber}\n\nOur delivery partner will send an SMS/text before arrival.`
+    `Hello ${customerName}, thank you for choosing ${STORE.name}!\n\nYour order #${orderNumber} is confirmed for Cash on Delivery.\nAmount to pay on delivery: ৳${codAmount.toLocaleString('en-BD')}\n\nTrack your order: ${trackUrl}`
   )
   const waUrl = `https://wa.me/${cleanPhone}?text=${waText}`
 
+  const btn = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer'
+
   return (
-    <div className="no-print bg-slate-900 text-white px-4 py-3 sm:px-6 sm:py-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-xl mb-6 border border-slate-800">
-      {/* Left: Navigation and Order ID */}
+    <div className="no-print bg-[#003060] text-white px-4 py-3 sm:px-6 sm:py-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-xl mb-6">
       <div className="flex items-center gap-3">
-        <Link
-          href="/admin/orders"
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition"
-        >
+        <Link href="/admin/orders" className={`${btn} bg-white/10 hover:bg-white/20 text-white`}>
           <ArrowLeft className="w-3.5 h-3.5" />
-          Orders Hub
+          Orders
         </Link>
         <div className="hidden sm:block">
-          <span className="text-xs text-slate-400 font-mono block">Order ID</span>
-          <span className="text-sm font-mono font-bold text-white">#{orderNumber}</span>
+          <span className="text-[10px] uppercase tracking-wider text-sky-200 block">Invoice for order</span>
+          <span className="text-sm font-mono font-bold">#{orderNumber}</span>
         </div>
       </div>
 
-      {/* Right: PDF Download, Print, and WhatsApp Actions */}
       <div className="flex flex-wrap items-center gap-2">
-        {/* Download PDF Button */}
-        <button
-          onClick={handleDownloadPDF}
-          disabled={isGenerating}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold transition shadow-sm cursor-pointer disabled:opacity-60"
-          title="Save as a high-resolution PDF file"
+        {/* Real PDF, generated on the server */}
+        <a
+          href={pdfUrl}
+          download={`Invoice-ATMODESK-${orderNumber}.pdf`}
+          className={`${btn} bg-sky-400 hover:bg-sky-300 text-[#003060] font-bold`}
+          title="Download the invoice as a PDF file"
         >
-          {isGenerating ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
-              <span>Generating PDF...</span>
-            </>
-          ) : (
-            <>
-              <Download className="w-4 h-4 text-slate-950" />
-              <span>Download PDF</span>
-            </>
-          )}
-        </button>
-
-        {/* Print / Save as PDF Button */}
-        <button
-          onClick={handlePrint}
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition cursor-pointer"
-          title="Print directly to A4 paper or system PDF printer"
+          <Download className="w-4 h-4" />
+          Download PDF
+        </a>
+        <a
+          href={`${pdfUrl}?inline=1`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${btn} bg-white/10 hover:bg-white/20 text-white`}
+          title="Open the PDF in a new tab"
         >
-          <Printer className="w-3.5 h-3.5 text-slate-300" />
-          <span className="hidden md:inline">Print / Save as PDF</span>
+          <ExternalLink className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">Open PDF</span>
+        </a>
+        <button onClick={() => window.print()} className={`${btn} bg-white/10 hover:bg-white/20 text-white`} title="Print this page">
+          <Printer className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">Print page</span>
         </button>
-
-        {/* WhatsApp Customer Button */}
         {cleanPhone && (
           <a
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs font-semibold transition"
-            title="Send invoice & tracking info to customer on WhatsApp"
+            className={`${btn} bg-emerald-600 hover:bg-emerald-500 text-white`}
+            title="Open WhatsApp with the order message ready to send"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">WhatsApp Invoice</span>
+            <span className="hidden sm:inline">WhatsApp customer</span>
           </a>
         )}
-
-        {/* Copy Tracking Link */}
-        <button
-          onClick={handleCopyLink}
-          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer"
-          title="Copy customer tracking link to clipboard"
-        >
+        <button onClick={handleCopyLink} className={`${btn} bg-white/10 hover:bg-white/20 text-white`} title="Copy the customer tracking link">
           {copiedLink ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-emerald-400">Copied</span>
+              <Check className="w-3.5 h-3.5 text-emerald-300" />
+              <span className="text-emerald-300">Copied</span>
             </>
           ) : (
             <>
               <Share2 className="w-3.5 h-3.5" />
-              <span className="hidden lg:inline">Copy Link</span>
+              <span className="hidden lg:inline">Copy link</span>
             </>
           )}
         </button>

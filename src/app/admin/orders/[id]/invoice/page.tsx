@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import { formatBDT, formatDate } from '@/lib/utils'
 import { InvoiceActions } from './InvoiceActions'
-import Image from 'next/image'
+import { STORE } from '@/lib/store-info'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -96,7 +96,7 @@ export default async function OrderInvoicePage({ params }: InvoicePageProps) {
     .filter(Boolean)
     .join(', ')
 
-  const trackOrderUrl = `https://atmodeskbd.vercel.app/track-order?order=${order.orderNumber}`
+  const trackOrderUrl = `${STORE.siteUrl}/track-order?order=${order.orderNumber}`
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=${encodeURIComponent(
     trackOrderUrl
   )}`
@@ -132,6 +132,7 @@ export default async function OrderInvoicePage({ params }: InvoicePageProps) {
       <div className="max-w-4xl mx-auto">
         {/* Interactive PDF, Print & WhatsApp Header */}
         <InvoiceActions
+          orderId={order.id}
           orderNumber={order.orderNumber}
           customerPhone={phone}
           customerName={customerName}
@@ -147,28 +148,15 @@ export default async function OrderInvoicePage({ params }: InvoicePageProps) {
           {/* TOP BANNER & BRAND HEADER */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border-b-2 border-slate-950 pb-6">
             <div>
-              {/* Brand Logo & Title */}
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-slate-950 flex items-center justify-center text-white font-black text-lg shadow-sm">
-                  A
-                </div>
-                <div>
-                  <span className="text-2xl font-black tracking-tight text-slate-950 font-mono block leading-none">
-                    ATMODESK
-                  </span>
-                  <span className="text-[9px] uppercase tracking-widest text-slate-500 font-bold">
-                    Smart Workspace Tech • Bangladesh
-                  </span>
-                </div>
-              </div>
+              {/* Brand Logo */}
+              <img src="/logo-header.png" alt={STORE.name} className="h-14 w-auto" />
 
               {/* Company Info & Official Contacts */}
               <div className="text-[11px] text-slate-600 mt-3 space-y-0.5">
-                <p className="font-semibold text-slate-800">Atmodesk Bangladesh Ltd.</p>
-                <p>House 14, Road 7, Dhanmondi, Dhaka-1205</p>
+                <p className="font-semibold text-slate-800">{STORE.name}</p>
+                <p>{STORE.address}</p>
                 <p>
-                  WhatsApp: <strong className="text-slate-900">01318043562</strong> (Text only) | Web:{' '}
-                  <span className="text-slate-900 font-medium">atmodeskbd.com</span>
+                  {STORE.phone} ({STORE.phoneNote}) | {STORE.email}
                 </p>
               </div>
             </div>

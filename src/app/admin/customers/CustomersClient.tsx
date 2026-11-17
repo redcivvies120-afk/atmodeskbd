@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { STORE } from '@/lib/store-info'
 import { formatBDT, formatDate } from '@/lib/utils'
 import { useToast } from '@/components/shared/Providers'
 import {
@@ -27,12 +28,20 @@ interface Customer {
   orders: any[]
 }
 
+function generatePassword(): string {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'
+  const arr = new Uint32Array(10)
+  crypto.getRandomValues(arr)
+  return Array.from(arr, (n) => chars[n % chars.length]).join('')
+}
+
 export function CustomersClient({ initialCustomers }: { initialCustomers: Customer[] }) {
   const { toast } = useToast()
   const [search, setSearch] = useState('')
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
   const [newPassword, setNewPassword] = useState('')
   const [isResetting, setIsResetting] = useState(false)
+  const [resetDone, setResetDone] = useState<{ name: string; phone: string; password: string } | null>(null)
 
   const filtered = initialCustomers.filter((c) => {
     const q = search.toLowerCase()
@@ -44,15 +53,16 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
   })
 
   const handleOpenReset = (c: Customer) => {
+    setResetDone(null)
     setSelectedCustomer(c)
     // Generate a secure, friendly temporary password suggestion
-    setNewPassword(`Atmo@${Math.floor(1000 + Math.random() * 9000)}`)
+    setNewPassword(generatePassword())
   }
 
   const handleSavePassword = async () => {
     if (!selectedCustomer) return
-    if (!newPassword || newPassword.length < 6) {
-      toast('Password must be at least 6 characters', 'error')
+    if (!newPassword || newPassword.length < 8) {
+      toast('Password must be at least 8 characters', 'error')
       return
     }
 
@@ -67,9 +77,12 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
       if (!res.ok) throw new Error(data.error || 'Failed to reset password')
 
       toast(`Password updated for ${selectedCustomer.name || selectedCustomer.phone}!`, 'success')
-      navigator.clipboard.writeText(newPassword)
-      toast('Temporary password copied to clipboard!', 'info')
-      setSelectedCustomer(null)
+      try { await navigator.clipboard.writeText(newPassword) } catch {}
+      setResetDone({
+        name: selectedCustomer.name || 'Customer',
+        phone: selectedCustomer.phone || '',
+        password: newPassword,
+      })
     } catch (err: any) {
       toast(err.message || 'Error updating password', 'error')
     } finally {
@@ -253,7 +266,7 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
       </div>
 
       {/* Password Reset Modal */}
-      {selectedCustomer && (
+      {selectedCustomer && !resetDone && (
         <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl border border-slate-200 p-6 max-w-md w-full shadow-2xl space-y-4 animate-scale-up">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -278,7 +291,7 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
 
             <div className="space-y-3 text-xs">
               <p className="text-slate-600">
-                Enter a new password for this customer. When saved, it will be automatically copied to your clipboard so you can text it to them on WhatsApp.
+                Set a new password (at least 8 characters). Their current password stops working and they are signed out everywhere. After saving you can send the new password to them on WhatsApp.
               </p>
 
               <div>
@@ -295,7 +308,7 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
                   />
                   <button
                     type="button"
-                    onClick={() => setNewPassword(`Atmo@${Math.floor(1000 + Math.random() * 9000)}`)}
+                    onClick={() => setNewPassword(generatePassword())}
                     className="px-2.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-[10px] transition"
                   >
                     Random
@@ -326,9 +339,63 @@ export function CustomersClient({ initialCustomers }: { initialCustomers: Custom
                 ) : (
                   <>
                     <Check className="w-3.5 h-3.5" />
-                    <span>Save &amp; Copy Password</span>
+                    <span>Save new password</span>
                   </>
                 )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Password reset result: copy or send on WhatsApp */}
+      {selectedCustomer && resetDone && (
+        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+              <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                <Check className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-bold text-sm text-slate-900">Password updated</h3>
+                <p className="text-[11px] text-slate-500">{resetDone.name}</p>
+              </div>
+            </div>
+            <p className="text-xs text-slate-600">
+              Share this temporary password with the customer and ask them to sign in and change it. It is shown only now.
+            </p>
+            <div className="px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-xl font-mono text-sm font-bold text-slate-900 select-all">
+              {resetDone.password}
+            </div>
+            <div className="flex flex-wrap items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => navigator.clipboard.writeText(resetDone.password)}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition"
+              >
+                Copy
+              </button>
+              {resetDone.phone && (
+                <a
+                  href={`https://wa.me/${resetDone.phone.replace(/[^0-9]/g, '').replace(/^0/, '88')}?text=${encodeURIComponent(
+                    `Hello ${resetDone.name}, your ${STORE.name} account password has been reset.\n\nTemporary password: ${resetDone.password}\nSign in: ${STORE.siteUrl}/account\n\nPlease sign in and change it right away. Do not share this password with anyone.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition"
+                >
+                  Send on WhatsApp
+                </a>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  setResetDone(null)
+                  setSelectedCustomer(null)
+                }}
+                className="px-4 py-2 bg-[#003060] hover:bg-[#00417f] text-white font-bold text-xs rounded-xl transition"
+              >
+                Done
               </button>
             </div>
           </div>
